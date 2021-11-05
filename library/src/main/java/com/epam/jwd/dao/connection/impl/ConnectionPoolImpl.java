@@ -22,7 +22,7 @@ public final class ConnectionPoolImpl implements ConnectionPool {
     private final BlockingQueue<ProxyConnection> busyConnection = new LinkedBlockingQueue<>();
 
     // TODO: need synchronized or lock
-    private volatile static ConnectionPoolImpl instance;
+    private static volatile ConnectionPoolImpl instance;
     private boolean initialized = false;
 
     private ConnectionPoolImpl() {}
@@ -65,6 +65,7 @@ public final class ConnectionPoolImpl implements ConnectionPool {
             connection = freeConnection.take();
             busyConnection.add(connection);
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             // TODO: add logger
         }
         return connection;
