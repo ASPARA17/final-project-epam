@@ -4,9 +4,10 @@ import java.util.Arrays;
 
 public enum UserRole {
     ADMIN(1),
-    USER(2);
+    USER(2),
+    GUEST(3);
 
-    private int id;
+    private final int id;
 
     UserRole(int id) {
         this.id = id;
