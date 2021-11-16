@@ -8,4 +8,5 @@ public interface BaseDao<T extends Entity<K>, K> {
     T add(T entity);
     T remove(T entity);
     List<T> findAll();
+    T findById(K id);
 }
