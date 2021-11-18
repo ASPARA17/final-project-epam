@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface BaseDao<T extends Entity<K>, K> {
     T add(T entity);
-    T remove(T entity);
+    T delete(T entity);
     List<T> findAll();
     Optional<T> findById(K id);
 }
