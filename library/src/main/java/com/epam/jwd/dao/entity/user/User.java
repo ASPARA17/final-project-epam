@@ -1,8 +1,10 @@
-package com.epam.jwd.dao.entity;
+package com.epam.jwd.dao.entity.user;
+
+import com.epam.jwd.dao.entity.Entity;
 
 import java.util.Objects;
 
-public class User extends Entity<Integer>{
+public class User extends Entity<Integer> {
     private String login;
     private String password;
     private UserRole role;

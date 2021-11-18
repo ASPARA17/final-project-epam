@@ -1,4 +1,6 @@
-package com.epam.jwd.dao.entity;
+package com.epam.jwd.dao.entity.book;
+
+import com.epam.jwd.dao.entity.Entity;
 
 import java.sql.Date;
 

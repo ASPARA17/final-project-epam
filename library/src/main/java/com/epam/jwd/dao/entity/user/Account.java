@@ -1,6 +1,8 @@
-package com.epam.jwd.dao.entity;
+package com.epam.jwd.dao.entity.user;
 
-public class Account extends Entity<Integer>{
+import com.epam.jwd.dao.entity.Entity;
+
+public class Account extends Entity<Integer> {
     private User user;
     private String firstName;
     private String secondName;

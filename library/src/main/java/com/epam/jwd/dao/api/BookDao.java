@@ -1,6 +1,6 @@
 package com.epam.jwd.dao.api;
 
-import com.epam.jwd.dao.entity.Book;
+import com.epam.jwd.dao.entity.book.Book;
 import com.epam.jwd.dao.exception.DaoException;
 
 import java.util.List;

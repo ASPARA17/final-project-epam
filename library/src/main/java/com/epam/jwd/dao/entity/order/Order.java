@@ -1,8 +1,12 @@
-package com.epam.jwd.dao.entity;
+package com.epam.jwd.dao.entity.order;
+
+import com.epam.jwd.dao.entity.Entity;
+import com.epam.jwd.dao.entity.book.Book;
+import com.epam.jwd.dao.entity.user.Account;
 
 import java.sql.Date;
 
-public class Order extends Entity<Integer>{
+public class Order extends Entity<Integer> {
     //TODO: know when use entityId or object of Entity
     private OrderStatus orderStatus;
     private Account account;

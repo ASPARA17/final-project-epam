@@ -1,4 +1,4 @@
-package com.epam.jwd.dao.entity;
+package com.epam.jwd.dao.entity.order;
 
 import java.util.Arrays;
 
