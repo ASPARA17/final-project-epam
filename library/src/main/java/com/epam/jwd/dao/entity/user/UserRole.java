@@ -1,4 +1,4 @@
-package com.epam.jwd.dao.entity;
+package com.epam.jwd.dao.entity.user;
 
 import java.util.Arrays;
 
@@ -13,13 +13,13 @@ public enum UserRole {
         this.id = id;
     }
 
-    public int getId() {
+    public int getRoleId() {
         return id;
     }
 
     public static UserRole getRoleById(int id) {
         return Arrays.stream(UserRole.values())
-                .filter(role -> role.getId() == id)
+                .filter(role -> role.getRoleId() == id)
                 .findFirst()
                 .orElse(null);
     }
