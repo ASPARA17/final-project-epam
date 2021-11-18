@@ -28,15 +28,17 @@ public final class ConnectionPoolImpl implements ConnectionPool {
     private ConnectionPoolImpl() {}
 
     public static ConnectionPoolImpl getInstance(){
+        ConnectionPoolImpl localInstance = instance;
         if (instance == null){
             synchronized (ConnectionPoolImpl.class) {
+                localInstance = instance;
                 if (instance == null) {
-                    instance = new ConnectionPoolImpl();
                     instance.init();
+                    instance = localInstance = new ConnectionPoolImpl();
                 }
             }
         }
-        return instance;
+        return localInstance;
     }
 
     @Override
@@ -94,7 +96,7 @@ public final class ConnectionPoolImpl implements ConnectionPool {
             }
             // TODO: ask about many exception
         } catch (IOException | ClassNotFoundException | SQLException e) {
-            //TODO: add logger and exception
+            // TODO: add logger and exception
         }
     }
 
