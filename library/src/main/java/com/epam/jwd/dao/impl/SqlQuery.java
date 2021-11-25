@@ -29,4 +29,15 @@ public class SqlQuery {
             "publishing_house, year_publishing, number_of_page, quantity FROM books WHERE genre=?";
     public static final String FIND_BOOK_BY_AUTHOR = "SELECT id, id_genre, author, name, " +
             "publishing_house, year_publishing, number_of_page, quantity FROM books WHERE author=?";
+
+    // account table
+    public static final String ADD_ACCOUNT = "INSERT INTO accounts(id_user, first_name, " +
+            "second_name) VALUES(?,?,?)";
+    public static final String UPDATE_PHONE_BY_ID = "UPDATE accounts SET phone = ? WHERE id = ?";
+    public static final String FIND_ALL_ACCOUNTS = "SELECT id, id_user, first_name, second_name, " +
+            "phone FROM accounts";
+    public static final String FIND_ACCOUNT_BY_ID = "SELECT id, id_user, first_name, second_name," +
+            " phone FROM accounts WHERE id = ?";
+    public static final String FIND_ACCOUNT_BY_USER_ID = "SELECT id, id_user, first_name, " +
+            "second_name, phone FROM accounts WHERE id_user = ?";
 }
