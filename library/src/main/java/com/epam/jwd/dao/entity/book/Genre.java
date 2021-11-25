@@ -3,27 +3,27 @@ package com.epam.jwd.dao.entity.book;
 import java.util.Arrays;
 
 public enum Genre {
-    DETECTIVE("detective"),
-    FANTASTIC("fantastic"),
-    ADVENTURE("adventure"),
-    NOVEL("novel"),
-    SCIENTIFIC("scientific"),
-    CHILDREN("children"),
-    EDUCATIONAL("educational");
+    DETECTIVE(1),
+    FANTASTIC(2),
+    ADVENTURE(3),
+    NOVEL(4),
+    SCIENTIFIC(5),
+    CHILDREN(6),
+    EDUCATIONAL(7);
 
-    private final String nameGenre;
+    private final int genreId;
 
-    Genre(String nameGenre) {
-        this.nameGenre = nameGenre;
+    Genre(int genreId) {
+        this.genreId = genreId;
     }
 
-    public String getNameGenre() {
-        return nameGenre;
+    public int getGenreId() {
+        return genreId;
     }
 
-    public static Genre getGenreByName(String nameGenre) {
+    public static Genre getGenreById(int genreId) {
         return Arrays.stream(Genre.values())
-                .filter(genre -> genre.getNameGenre().equals(nameGenre))
+                .filter(genre -> genre.getGenreId() == genreId)
                 .findFirst()
                 .orElse(null);
     }
