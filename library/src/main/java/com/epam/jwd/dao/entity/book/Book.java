@@ -8,26 +8,30 @@ public class Book extends Entity<Integer> {
     private Genre genre;
     private String author;
     private String name;
-    private Date yearPublishing;
+    private String publishingHouse;
+    private int yearPublishing;
     private int numberOfPage;
     private int quantity;
 
-    public Book(Integer id, Genre genre, String author, String name, Date yearPublishing,
-                int numberOfPage, int quantity) {
+    // TODO: add Builder
+    public Book(Integer id, Genre genre, String author, String name, String publishingHouse,
+                int yearPublishing, int numberOfPage, int quantity) {
         super(id);
         this.genre = genre;
         this.author = author;
         this.name = name;
+        this.publishingHouse = publishingHouse;
         this.yearPublishing = yearPublishing;
         this.numberOfPage = numberOfPage;
         this.quantity = quantity;
     }
 
-    public Book(Genre genre, String author, String name, Date yearPublishing, int numberOfPage,
-                int quantity) {
+    public Book(Genre genre, String author, String name, String publishingHouse,
+                int yearPublishing, int numberOfPage, int quantity) {
         this.genre = genre;
         this.author = author;
         this.name = name;
+        this.publishingHouse = publishingHouse;
         this.yearPublishing = yearPublishing;
         this.numberOfPage = numberOfPage;
         this.quantity = quantity;
@@ -57,11 +61,19 @@ public class Book extends Entity<Integer> {
         this.name = name;
     }
 
-    public Date getYearPublishing() {
+    public String getPublishingHouse() {
+        return publishingHouse;
+    }
+
+    public void setPublishingHouse(String publishingHouse) {
+        this.publishingHouse = publishingHouse;
+    }
+
+    public int getYearPublishing() {
         return yearPublishing;
     }
 
-    public void setYearPublishing(Date yearPublishing) {
+    public void setYearPublishing(int yearPublishing) {
         this.yearPublishing = yearPublishing;
     }
 
