@@ -7,7 +7,6 @@ import com.epam.jwd.dao.entity.user.User;
 import com.epam.jwd.dao.entity.user.UserRole;
 import com.epam.jwd.dao.exception.DaoException;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,7 +38,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User add(User user) throws DaoException {
-        // TODO: know
         try (Connection connection = pool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(SqlQuery.ADD_USER)) {
             statement.setString(1, user.getLogin());
@@ -57,8 +55,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User delete(User entity) throws DaoException {
-        return null;
+    public boolean delete(User entity) throws DaoException {
+        return false;
     }
 
     // TODO: think about creator
@@ -83,21 +81,48 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findById(Integer id) throws DaoException {
-        return Optional.empty();
+        Optional<User> user = Optional.empty();
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.FIND_USER_BY_ID)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String login = resultSet.getString("login");
+                String password = resultSet.getString("password");
+                user = Optional.of(new User(login, password));
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return user;
     }
 
-    @Override
-    public void createAccount(User user) throws DaoException {
-        // while nothing
-    }
 
     @Override
     public String findPasswordByLogin(String login) throws DaoException {
-        return null;
+        String password = null;
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.FIND_PASSWORD_BY_LOGIN)) {
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                password = resultSet.getString("password");
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return password;
     }
 
     @Override
-    public void updatePasswordByLogin(String login) throws DaoException {
-        // while nothing
+    public void updatePasswordByLogin(String password, String login) throws DaoException {
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.UPDATE_PASSWORD_BY_LOGIN)) {
+            statement.setString(1, password);
+            statement.setString(2, login);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 }

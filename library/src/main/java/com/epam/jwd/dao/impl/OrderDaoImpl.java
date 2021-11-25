@@ -14,8 +14,8 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Order delete(Order entity) throws DaoException {
-        return null;
+    public boolean delete(Order entity) throws DaoException {
+        return false;
     }
 
     @Override
