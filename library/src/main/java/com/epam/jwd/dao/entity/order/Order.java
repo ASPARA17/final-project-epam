@@ -1,36 +1,33 @@
 package com.epam.jwd.dao.entity.order;
 
 import com.epam.jwd.dao.entity.Entity;
-import com.epam.jwd.dao.entity.book.Book;
-import com.epam.jwd.dao.entity.user.Account;
 
 import java.sql.Date;
 
 public class Order extends Entity<Integer> {
-    //TODO: know when use entityId or object of Entity
     private OrderStatus orderStatus;
-    private Account account;
-    private Book book;
+    private Integer accountId;
+    private Integer bookId;
     private Date dateOfIssue;
     private Date returnDate;
     private boolean subscription;
 
-    public Order(Integer id, OrderStatus orderStatus, Account account, Book book,
+    public Order(Integer id, OrderStatus orderStatus, Integer accountId, Integer bookId,
                  Date dateOfIssue, Date returnDate, boolean subscription) {
         super(id);
         this.orderStatus = orderStatus;
-        this.account = account;
-        this.book = book;
+        this.accountId = accountId;
+        this.bookId = bookId;
         this.dateOfIssue = dateOfIssue;
         this.returnDate = returnDate;
         this.subscription = subscription;
     }
 
-    public Order(OrderStatus orderStatus, Account account, Book book, Date dateOfIssue,
+    public Order(OrderStatus orderStatus, Integer accountId, Integer bookId, Date dateOfIssue,
                  Date returnDate, boolean subscription) {
         this.orderStatus = orderStatus;
-        this.account = account;
-        this.book = book;
+        this.accountId = accountId;
+        this.bookId = bookId;
         this.dateOfIssue = dateOfIssue;
         this.returnDate = returnDate;
         this.subscription = subscription;
@@ -44,20 +41,20 @@ public class Order extends Entity<Integer> {
         this.orderStatus = orderStatus;
     }
 
-    public Account getAccount() {
-        return account;
+    public Integer getAccountId() {
+        return accountId;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setAccountId(Integer accountId) {
+        this.accountId = accountId;
     }
 
-    public Book getBook() {
-        return book;
+    public Integer getBookId() {
+        return bookId;
     }
 
-    public void setBook(Book book) {
-        this.book = book;
+    public void setBookId(Integer bookId) {
+        this.bookId = bookId;
     }
 
     public Date getDateOfIssue() {
