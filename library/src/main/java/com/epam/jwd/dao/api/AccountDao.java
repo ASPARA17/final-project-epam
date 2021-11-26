@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface AccountDao extends BaseDao<Account, Integer> {
     Optional<Account> findAccountByUserId(Integer userId) throws DaoException;
     void updatePhoneById(String phone, Integer id) throws DaoException;
+    void updateSubscriptionIdByAccountId(Integer subscriptionId, Integer accountId) throws DaoException;
 }
