@@ -35,9 +35,18 @@ public class SqlQuery {
             "second_name) VALUES(?,?,?)";
     public static final String UPDATE_PHONE_BY_ID = "UPDATE accounts SET phone = ? WHERE id = ?";
     public static final String FIND_ALL_ACCOUNTS = "SELECT id, id_user, first_name, second_name, " +
-            "phone FROM accounts";
+            "phone, id_subscription FROM accounts";
     public static final String FIND_ACCOUNT_BY_ID = "SELECT id, id_user, first_name, second_name," +
-            " phone FROM accounts WHERE id = ?";
+            " phone, id_subscription FROM accounts WHERE id = ?";
     public static final String FIND_ACCOUNT_BY_USER_ID = "SELECT id, id_user, first_name, " +
-            "second_name, phone FROM accounts WHERE id_user = ?";
+            "second_name, phone, id_subscription FROM accounts WHERE id_user = ?";
+    public static final String UPDATE_SUBSCRIPTION_ID_BY_ID = "UPDATE accounts SET " +
+            "id_subscription = ? WHERE id = ?";
+
+    // library card table
+    public static final String ADD_LIBRARY_CARD = "INSERT INTO library_cards(date_of_issue, " +
+            "expiration_date) VALUES(?,?)";
+
+    // order table
+
 }
