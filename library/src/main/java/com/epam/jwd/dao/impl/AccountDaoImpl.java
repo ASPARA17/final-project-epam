@@ -4,6 +4,7 @@ import com.epam.jwd.dao.api.AccountDao;
 import com.epam.jwd.dao.connection.api.ConnectionPool;
 import com.epam.jwd.dao.connection.impl.ConnectionPoolImpl;
 import com.epam.jwd.dao.entity.user.Account;
+import com.epam.jwd.dao.entity.user.LibraryCard;
 import com.epam.jwd.dao.exception.DaoException;
 
 import java.sql.Connection;
@@ -88,10 +89,14 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     private Account createAccount(ResultSet resultSet) throws SQLException{
-        return new Account(resultSet.getInt(2),
-                resultSet.getString(3),
-                resultSet.getString(4),
-                resultSet.getString(5));
+        return new Account.AccountBuilder()
+                .withId(resultSet.getInt(1))
+                .withUserId(resultSet.getInt(2))
+                .withFirstName(resultSet.getString(3))
+                .withSecondName(resultSet.getString(4))
+                .withPhone(resultSet.getString(5))
+                .withSubscriptionId(resultSet.getInt(6))
+                .build();
     }
 
     @Override
@@ -120,5 +125,32 @@ public class AccountDaoImpl implements AccountDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    public void updateSubscriptionIdByAccountId(Integer subscriptionId, Integer accountId) throws DaoException {
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.UPDATE_SUBSCRIPTION_ID_BY_ID)) {
+            statement.setInt(1, subscriptionId);
+            statement.setInt(2, accountId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public LibraryCard addLibraryCard(LibraryCard libraryCard) throws DaoException {
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.ADD_LIBRARY_CARD)) {
+            statement.setDate(1, libraryCard.getDateOfIssue());
+            statement.setDate(2, libraryCard.getExpirationDate());
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                libraryCard.setId(resultSet.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return libraryCard;
     }
 }
