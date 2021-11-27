@@ -48,5 +48,19 @@ public class SqlQuery {
             "expiration_date) VALUES(?,?)";
 
     // order table
+    public static final String ADD_ORDER = "INSERT INTO orders(id_order_status, id_account, " +
+            "id_book, date_of_issue, subscription) VALUES(?,?,?,?,?)";
+    public static final String FIND_ALL_ORDERS = "SELECT id, id_order_status, id_account, " +
+            "id_book, date_of_issue, return_date, subscription FROM orders";
+    public static final String FIND_ORDER_BY_ID = "SELECT id, id_order_status, id_account, " +
+            "id_book, date_of_issue, return_date, subscription FROM orders WHERE id = ?";
+    public static final String FIND_ORDER_BY_STATUS = "SELECT id, id_order_status, id_account, " +
+            "id_book, date_of_issue, return_date, subscription FROM orders WHERE id_order_status = ?";
+    public static final String UPDATE_STATUS_BY_ID = "UPDATE orders SET id_order_status = ? WHERE" +
+            " id = ?";
+    public static final String FIND_ALL_BY_ACCOUNT_ID = "SELECT id, id_order_status, id_account, " +
+            "id_book, date_of_issue, return_date, subscription FROM orders WHERE id_account = ?";
+    public static final String UPDATE_RETURN_DATE_BY_ID = "UPDATE orders SET return_date = ? " +
+            "WHERE id = ?";
 
 }
