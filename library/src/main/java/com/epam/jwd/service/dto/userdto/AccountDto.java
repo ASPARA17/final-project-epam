@@ -71,7 +71,7 @@ public class AccountDto extends EntityDto<Integer> {
         private String phone;
         private Integer subscriptionId;
 
-        public  AccountDtoBuilder() {
+        public AccountDtoBuilder() {
         }
 
         public AccountDtoBuilder withId(Integer id) {
