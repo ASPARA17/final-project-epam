@@ -3,23 +3,23 @@ package com.epam.jwd.dao.entity.order;
 import java.util.Arrays;
 
 public enum OrderStatus {
-    WAITING("waiting"),
-    ACTIVE("active"),
-    REJECTED("rejected");
+    WAITING(1),
+    ACTIVE(2),
+    REJECTED(3);
 
-    private final String nameStatus;
+    private final int statusId;
 
-    OrderStatus(String nameStatus) {
-        this.nameStatus = nameStatus;
+    OrderStatus(int statusId) {
+        this.statusId = statusId;
     }
 
-    public String getNameStatus() {
-        return nameStatus;
+    public int getStatusId() {
+        return statusId;
     }
 
-    public static OrderStatus getStatusByName(String name) {
+    public static OrderStatus getStatusById(int statusId) {
         return Arrays.stream(OrderStatus.values())
-                .filter(status -> status.getNameStatus().equals(name))
+                .filter(status -> status.getStatusId() == statusId)
                 .findFirst()
                 .orElse(null);
     }
