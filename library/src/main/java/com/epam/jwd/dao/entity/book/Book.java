@@ -2,8 +2,6 @@ package com.epam.jwd.dao.entity.book;
 
 import com.epam.jwd.dao.entity.Entity;
 
-import java.sql.Date;
-
 public class Book extends Entity<Integer> {
     private Genre genre;
     private String author;
@@ -13,21 +11,13 @@ public class Book extends Entity<Integer> {
     private int numberOfPage;
     private int quantity;
 
-    // TODO: add Builder
+    public Book(Integer id) {
+        super(id);
+    }
+
     public Book(Integer id, Genre genre, String author, String name, String publishingHouse,
                 int yearPublishing, int numberOfPage, int quantity) {
         super(id);
-        this.genre = genre;
-        this.author = author;
-        this.name = name;
-        this.publishingHouse = publishingHouse;
-        this.yearPublishing = yearPublishing;
-        this.numberOfPage = numberOfPage;
-        this.quantity = quantity;
-    }
-
-    public Book(Genre genre, String author, String name, String publishingHouse,
-                int yearPublishing, int numberOfPage, int quantity) {
         this.genre = genre;
         this.author = author;
         this.name = name;
@@ -91,5 +81,71 @@ public class Book extends Entity<Integer> {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public static class BookBuilder {
+        private Integer id;
+        private Genre genre;
+        private String author;
+        private String name;
+        private String publishingHouse;
+        private int yearPublishing;
+        private int numberOfPage;
+        private int quantity;
+
+        public BookBuilder() {
+        }
+
+        public BookBuilder withId(Integer id) {
+            this.id = id;
+            return this;
+        }
+
+        public BookBuilder withGenre(Genre genre) {
+            this.genre = genre;
+            return this;
+        }
+
+        public BookBuilder withAuthor(String author) {
+            this.author = author;
+            return this;
+        }
+
+        public BookBuilder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public BookBuilder withPublishingHouse(String publishingHouse) {
+            this.publishingHouse = publishingHouse;
+            return this;
+        }
+
+        public BookBuilder withYearPublishing(int yearPublishing) {
+            this.yearPublishing = yearPublishing;
+            return this;
+        }
+
+        public BookBuilder withNumberOfPage(int numberOfPage) {
+            this.numberOfPage = numberOfPage;
+            return this;
+        }
+
+        public BookBuilder withQuantity(int quantity) {
+            this.quantity = quantity;
+            return this;
+        }
+
+        public Book build() {
+            Book book = new Book(this.id);
+            book.setGenre(this.genre);
+            book.setAuthor(this.author);
+            book.setName(this.name);
+            book.setPublishingHouse(this.publishingHouse);
+            book.setYearPublishing(this.yearPublishing);
+            book.setNumberOfPage(this.numberOfPage);
+            book.setQuantity(this.quantity);
+            return book;
+        }
     }
 }
