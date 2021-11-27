@@ -5,8 +5,6 @@ import com.epam.jwd.dao.connection.api.ConnectionPool;
 import com.epam.jwd.dao.connection.impl.ConnectionPoolImpl;
 import com.epam.jwd.dao.entity.book.Book;
 import com.epam.jwd.dao.entity.book.Genre;
-import com.epam.jwd.dao.entity.user.User;
-import com.epam.jwd.dao.entity.user.UserRole;
 import com.epam.jwd.dao.exception.DaoException;
 
 import java.sql.Connection;
@@ -161,14 +159,15 @@ public class BookDaoImpl implements BookDao {
     }
 
     private Book createBook(ResultSet resultSet) throws SQLException{
-        int genreId = resultSet.getInt(2);
-        return new Book(resultSet.getInt(1),
-                Genre.getGenreById(genreId),
-                resultSet.getString(3),
-                resultSet.getString(4),
-                resultSet.getString(5),
-                resultSet.getInt(6),
-                resultSet.getInt(7),
-                resultSet.getInt(8));
+        return new Book.BookBuilder()
+                .withId(resultSet.getInt(1))
+                .withGenre(Genre.getGenreById(resultSet.getInt(2)))
+                .withAuthor(resultSet.getString(3))
+                .withName(resultSet.getString(4))
+                .withPublishingHouse(resultSet.getString(5))
+                .withYearPublishing(resultSet.getInt(6))
+                .withNumberOfPage(resultSet.getInt(7))
+                .withQuantity(resultSet.getInt(8))
+                .build();
     }
 }
