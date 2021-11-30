@@ -13,6 +13,8 @@ public class SqlQuery {
             " ?";
     public static final String UPDATE_PASSWORD_BY_LOGIN = "UPDATE users SET password = ? WHERE " +
             "login = ?";
+    public static final String FIND_USER_BY_LOGIN = "id, login, password, id_role FROM users " +
+            "WHERE login = ?";
 
     // books table
     public static final String ADD_BOOK = "INSERT INTO books(id_genre, author, name, " +
