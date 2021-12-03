@@ -138,19 +138,4 @@ public class AccountDaoImpl implements AccountDao {
             throw new DaoException(e);
         }
     }
-
-    public LibraryCard addLibraryCard(LibraryCard libraryCard) throws DaoException {
-        try (Connection connection = pool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(SqlQuery.ADD_LIBRARY_CARD)) {
-            statement.setDate(1, libraryCard.getDateOfIssue());
-            statement.setDate(2, libraryCard.getExpirationDate());
-            ResultSet resultSet = statement.getGeneratedKeys();
-            if (resultSet.next()) {
-                libraryCard.setId(resultSet.getInt(1));
-            }
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-        return libraryCard;
-    }
 }
