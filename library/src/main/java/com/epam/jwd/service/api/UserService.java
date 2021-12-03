@@ -1,11 +1,10 @@
 package com.epam.jwd.service.api;
 
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.exception.LoginNotUniqueException;
+import com.epam.jwd.service.exception.ServiceException;
 
-import java.util.Optional;
-
+// TODO: think about importance EntityService
 public interface UserService extends Service<UserDto, Integer> {
-    Optional<UserDto> sigInUser(String login, String password);
-    UserDto registerUser(String login, String password, String confirmPassword, String firstName,
-                         String secondName, String phone);
+    UserDto create(UserDto entity) throws ServiceException, LoginNotUniqueException;
 }
