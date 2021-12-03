@@ -1,8 +1,7 @@
 package com.epam.jwd.controller.command;
 
-import com.epam.jwd.controller.command.impl.showpage.DefaultCommand;
+import com.epam.jwd.controller.command.impl.DefaultCommand;
 import com.epam.jwd.controller.command.impl.showpage.ShowMainPageCommand;
-import com.epam.jwd.dao.entity.user.User;
 import com.epam.jwd.dao.entity.user.UserRole;
 
 import java.util.Arrays;
