@@ -48,6 +48,8 @@ public class SqlQuery {
     // library card table
     public static final String ADD_LIBRARY_CARD = "INSERT INTO library_cards(date_of_issue, " +
             "expiration_date) VALUES(?,?)";
+    public static final String FIND_LIBRARY_CARD_BY_ID = "SELECT id, date_of_issue, " +
+            "expiration_date FROM library_card WHERE id = ?";
 
     // order table
     public static final String ADD_ORDER = "INSERT INTO orders(id_order_status, id_account, " +
