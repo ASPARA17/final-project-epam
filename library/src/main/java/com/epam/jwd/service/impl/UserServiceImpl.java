@@ -8,6 +8,7 @@ import com.epam.jwd.service.api.UserService;
 import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.converter.impl.UserConverter;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.exception.IncorrectRegisterParametersException;
 import com.epam.jwd.service.exception.LoginNotUniqueException;
 import com.epam.jwd.service.exception.PasswordNotConfirmedException;
 import com.epam.jwd.service.exception.ServiceException;
@@ -41,6 +42,25 @@ public class UserServiceImpl implements UserService {
             }
         }
         return  localInstance;
+    }
+
+    @Override
+    public Optional<UserDto> signInUser(String login, String password) throws ServiceException, IncorrectRegisterParametersException {
+        Optional<UserDto> userDtoOptional;
+        try {
+            Optional<User> signInUser = userDao.findByLogin(login);
+            String userPassword = userDao.findPasswordByLogin(login);
+            if (password.equals(userPassword) && signInUser.isPresent()) {
+                UserDto userDto = converter.convert(signInUser.get());
+                userDtoOptional = Optional.of(userDto);
+            } else {
+                // TODO: add msg
+                throw new IncorrectRegisterParametersException();
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return userDtoOptional;
     }
 
     @Override
