@@ -42,6 +42,21 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Optional<AccountDto> findByUserId(Integer userId) throws ServiceException {
+        Optional<AccountDto> accountDtoOptional = Optional.empty();
+        try {
+            Optional<Account> account = accountDao.findAccountByUserId(userId);
+            if (account.isPresent()) {
+                AccountDto accountDto = converter.convert(account.get());
+                accountDtoOptional = Optional.of(accountDto);
+            }
+        } catch (DaoException e) {
+            throw new ServiceException();
+        }
+        return accountDtoOptional;
+    }
+
+    @Override
     public AccountDto create(AccountDto accountDto) throws ServiceException {
         validator.validate(accountDto);
         Account createdAccount = converter.convert(accountDto);
