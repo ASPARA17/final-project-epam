@@ -34,7 +34,7 @@ public class SqlQuery {
 
     // account table
     public static final String ADD_ACCOUNT = "INSERT INTO accounts(id_user, first_name, " +
-            "second_name) VALUES(?,?,?)";
+            "second_name, phone) VALUES(?,?,?,?)";
     public static final String UPDATE_PHONE_BY_ID = "UPDATE accounts SET phone = ? WHERE id = ?";
     public static final String FIND_ALL_ACCOUNTS = "SELECT id, id_user, first_name, second_name, " +
             "phone, id_subscription FROM accounts";
