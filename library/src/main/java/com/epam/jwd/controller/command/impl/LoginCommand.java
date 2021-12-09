@@ -1,8 +1,10 @@
 package com.epam.jwd.controller.command.impl;
 
-import com.epam.jwd.controller.command.Command;
-import com.epam.jwd.controller.command.CommandRequest;
-import com.epam.jwd.controller.command.CommandResponse;
+import com.epam.jwd.controller.command.RequestParameterName;
+import com.epam.jwd.controller.command.api.Command;
+import com.epam.jwd.controller.command.api.CommandRequest;
+import com.epam.jwd.controller.command.api.CommandResponse;
+import com.epam.jwd.controller.command.PagePath;
 import com.epam.jwd.service.api.AccountService;
 import com.epam.jwd.service.api.UserService;
 import com.epam.jwd.service.dto.userdto.AccountDto;
@@ -19,17 +21,11 @@ public class LoginCommand implements Command {
     private final UserService userService = UserServiceImpl.getInstance();
     private final AccountService accountService = AccountServiceImpl.getInstance();
     private static final Command instance = new LoginCommand();
-    private static final String LOGIN_PAGE_PATH = "WEB-INF/jsp/login.jsp";
-    private static final String USER_HOME_PAGE_PATH = "WEB-INF/jsp/";
-    private static final String LOGIN = "login";
-    private static final String PASSWORD = "password";
     private static final String ERROR_ATTRIB_NAME = "error";
     private static final String INVALID_CREDENTIALS_MSG = "Wrong login or password";
     private static final String USER_NAME_SESSION_ATTRIB_NAME = "userName";
     public static final String USER_ROLE_SESSION_ATTRIB_NAME = "userRole";
     private static final String SPACE = " ";
-
-
 
     private LoginCommand() {
     }
@@ -40,9 +36,10 @@ public class LoginCommand implements Command {
 
     private static final CommandResponse LOGIN_SUCCESS_RESPONSE = new CommandResponse() {
         @Override
-        public String getPath() {
-            return USER_HOME_PAGE_PATH;
-        }
+//        public String getPath() {
+//            return PagePath.USER_HOME_PAGE_PATH;
+//        }
+        public String getPath() { return PagePath.MAIN_PAGE_PATH;}
 
         @Override
         public boolean isRedirect() {
@@ -53,7 +50,7 @@ public class LoginCommand implements Command {
     private static final CommandResponse LOGIN_ERROR_RESPONSE = new CommandResponse() {
         @Override
         public String getPath() {
-            return LOGIN_PAGE_PATH;
+            return PagePath.LOGIN_PAGE_PATH;
         }
 
         @Override
@@ -62,13 +59,22 @@ public class LoginCommand implements Command {
         }
     };
 
+    private static final CommandResponse SERVER_ERROR_RESPONSE = new CommandResponse() {
+        @Override
+        public String getPath() {
+            return PagePath.ERROR_500;
+        }
 
-
+        @Override
+        public boolean isRedirect() {
+            return true;
+        }
+    };
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        final String login = request.getParameter(LOGIN);
-        final String password = request.getParameter(PASSWORD);
+        final String login = request.getParameter(RequestParameterName.LOGIN);
+        final String password = request.getParameter(RequestParameterName.PASSWORD);
         try {
             Optional<UserDto> currentUser = userService.signInUser(login, password);
             if (currentUser.isPresent()) {
@@ -76,28 +82,26 @@ public class LoginCommand implements Command {
                 Optional<AccountDto> currentAccount = accountService.findByUserId(user.getId());
                 if (currentAccount.isPresent()) {
                     AccountDto account = currentAccount.get();
-                    addUserInfoToSession(request, user, account);
+                    return addUserInfoToSession(request, user, account);
                 }
             }
         } catch (ServiceException e) {
-            e.printStackTrace();
+            return SERVER_ERROR_RESPONSE;
         } catch (IncorrectRegisterParametersException e) {
             return prepareErrorPage(request);
         }
-
-
-        return null;
+        return SERVER_ERROR_RESPONSE;
     }
 
-    private CommandResponse addUserInfoToSession(CommandRequest request, UserDto user,
-                                                 AccountDto account) {
-        request.getCurrentSession().ifPresent(HttpSession::invalidate);
-        final HttpSession session = request.createSession();
-        session.setAttribute(USER_NAME_SESSION_ATTRIB_NAME, user.getRole());
-        session.setAttribute(USER_ROLE_SESSION_ATTRIB_NAME, account);
-        session.setAttribute("", account.getFirstName() + SPACE + account.getSecondName());
-        return LOGIN_SUCCESS_RESPONSE;
-    }
+        private CommandResponse addUserInfoToSession(CommandRequest request, UserDto user,
+                                                     AccountDto account) {
+            request.getCurrentSession().ifPresent(HttpSession::invalidate);
+            final HttpSession session = request.createSession();
+            session.setAttribute(USER_NAME_SESSION_ATTRIB_NAME, user.getRole());
+            session.setAttribute(USER_ROLE_SESSION_ATTRIB_NAME, account);
+            session.setAttribute("", account.getFirstName() + SPACE + account.getSecondName());
+            return LOGIN_SUCCESS_RESPONSE;
+        }
 
     private CommandResponse prepareErrorPage(CommandRequest request) {
         request.setAttribute(ERROR_ATTRIB_NAME, INVALID_CREDENTIALS_MSG);

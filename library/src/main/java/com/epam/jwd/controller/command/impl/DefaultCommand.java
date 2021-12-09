@@ -1,8 +1,8 @@
 package com.epam.jwd.controller.command.impl;
 
-import com.epam.jwd.controller.command.Command;
-import com.epam.jwd.controller.command.CommandRequest;
-import com.epam.jwd.controller.command.CommandResponse;
+import com.epam.jwd.controller.command.api.Command;
+import com.epam.jwd.controller.command.api.CommandRequest;
+import com.epam.jwd.controller.command.api.CommandResponse;
 
 // TODO: add parameters
 public class DefaultCommand implements Command {
