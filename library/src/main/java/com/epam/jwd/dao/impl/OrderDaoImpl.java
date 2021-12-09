@@ -6,19 +6,17 @@ import com.epam.jwd.dao.connection.impl.ConnectionPoolImpl;
 import com.epam.jwd.dao.entity.order.Order;
 import com.epam.jwd.dao.exception.DaoException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 public class OrderDaoImpl implements OrderDao {
     private static volatile OrderDaoImpl instance;
-    private ConnectionPool pool = ConnectionPoolImpl.getInstance();
+    private ConnectionPool pool;
 
     private OrderDaoImpl() {
+        this.pool = ConnectionPoolImpl.getInstance();
     }
 
     public static OrderDaoImpl getInstance() {
@@ -37,12 +35,14 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public Order add(Order order) throws DaoException {
         try (Connection connection = pool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(SqlQuery.ADD_ORDER)) {
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.ADD_ORDER,
+                     Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, order.getOrderStatus().getStatusId());
             statement.setInt(2, order.getAccountId());
             statement.setInt(3, order.getBookId());
             statement.setDate(4, order.getDateOfIssue());
             statement.setBoolean(5, order.isSubscription());
+            statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 order.setId(resultSet.getInt(1));

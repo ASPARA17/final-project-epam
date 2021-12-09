@@ -4,22 +4,19 @@ import com.epam.jwd.dao.api.AccountDao;
 import com.epam.jwd.dao.connection.api.ConnectionPool;
 import com.epam.jwd.dao.connection.impl.ConnectionPoolImpl;
 import com.epam.jwd.dao.entity.user.Account;
-import com.epam.jwd.dao.entity.user.LibraryCard;
 import com.epam.jwd.dao.exception.DaoException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class AccountDaoImpl implements AccountDao {
     private static volatile AccountDaoImpl instance;
-    private ConnectionPool pool = ConnectionPoolImpl.getInstance();
+    private ConnectionPool pool;
 
     private AccountDaoImpl() {
+        this.pool = ConnectionPoolImpl.getInstance();
     }
 
     public static AccountDaoImpl getInstance() {
@@ -38,17 +35,22 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public Account add(Account account) throws DaoException {
         try (Connection connection = pool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(SqlQuery.ADD_ACCOUNT)) {
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.ADD_ACCOUNT,
+                     Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, account.getUserId());
             statement.setString(2, account.getFirstName());
             statement.setString(3, account.getSecondName());
+            statement.setString(4, account.getPhone());
+            statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 account.setId(resultSet.getInt(1));
             }
         } catch (SQLException e) {
+            System.out.println("SQL EXP FROM ADD accountDAOIML");
             throw new DaoException(e);
         }
+        System.out.println(account.toString());
         return account;
     }
 

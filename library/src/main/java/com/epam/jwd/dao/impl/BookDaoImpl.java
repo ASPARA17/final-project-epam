@@ -7,19 +7,17 @@ import com.epam.jwd.dao.entity.book.Book;
 import com.epam.jwd.dao.entity.book.Genre;
 import com.epam.jwd.dao.exception.DaoException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class BookDaoImpl implements BookDao {
     private static volatile BookDaoImpl instance;
-    private ConnectionPool pool = ConnectionPoolImpl.getInstance();
+    private ConnectionPool pool;
 
     private BookDaoImpl() {
+        this.pool = ConnectionPoolImpl.getInstance();
     }
 
     public static BookDaoImpl getInstance() {
@@ -38,7 +36,8 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Book add(Book book) throws DaoException {
         try (Connection connection = pool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(SqlQuery.ADD_BOOK)) {
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.ADD_BOOK,
+                     Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, book.getGenre().getGenreId());
             statement.setString(2, book.getAuthor());
             statement.setString(3, book.getName());
@@ -46,6 +45,7 @@ public class BookDaoImpl implements BookDao {
             statement.setInt(5, book.getYearPublishing());
             statement.setInt(6, book.getNumberOfPage());
             statement.setInt(7, book.getQuantity());
+            statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 book.setId(resultSet.getInt(1));

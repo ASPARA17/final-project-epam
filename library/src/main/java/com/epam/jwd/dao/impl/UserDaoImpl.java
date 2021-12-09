@@ -11,16 +11,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
-    // TODO: why singleton
     private static volatile UserDaoImpl instance;
-    private ConnectionPool pool = ConnectionPoolImpl.getInstance();
+    private ConnectionPool pool;
 
     private UserDaoImpl() {
+        this.pool = ConnectionPoolImpl.getInstance();
     }
 
     public static UserDaoImpl getInstance() {
@@ -39,7 +40,8 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) throws DaoException {
         try (Connection connection = pool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(SqlQuery.ADD_USER)) {
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.ADD_USER,
+                     Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setInt(3, user.getRole().getRoleId());
@@ -49,6 +51,7 @@ public class UserDaoImpl implements UserDao {
                 user.setId(resultSet.getInt(1));
             }
         } catch (SQLException e) {
+            System.out.println("SQL EXP FROM ADD USERDAOIML");
             throw new DaoException(e);
         }
         return user;

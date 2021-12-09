@@ -6,20 +6,17 @@ import com.epam.jwd.dao.connection.impl.ConnectionPoolImpl;
 import com.epam.jwd.dao.entity.user.LibraryCard;
 import com.epam.jwd.dao.exception.DaoException;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 public class LibraryCardDaoImpl implements BaseDao<LibraryCard, Integer> {
     private static volatile LibraryCardDaoImpl instance;
-    private ConnectionPool pool = ConnectionPoolImpl.getInstance();
+    private ConnectionPool pool;
 
     private LibraryCardDaoImpl() {
+        this.pool = ConnectionPoolImpl.getInstance();
     }
 
     public static LibraryCardDaoImpl getInstance() {
@@ -37,9 +34,11 @@ public class LibraryCardDaoImpl implements BaseDao<LibraryCard, Integer> {
     @Override
     public LibraryCard add(LibraryCard libraryCard) throws DaoException {
         try (Connection connection = pool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(SqlQuery.ADD_LIBRARY_CARD)) {
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.ADD_LIBRARY_CARD,
+                     Statement.RETURN_GENERATED_KEYS)) {
             statement.setDate(1, libraryCard.getDateOfIssue());
             statement.setDate(2, libraryCard.getExpirationDate());
+            statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 libraryCard.setId(resultSet.getInt(1));
