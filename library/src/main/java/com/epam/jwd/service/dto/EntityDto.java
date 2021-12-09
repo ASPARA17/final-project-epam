@@ -17,4 +17,9 @@ public class EntityDto<T> {
     public void setId(T id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "EntityDto{" + "id=" + id + '}';
+    }
 }

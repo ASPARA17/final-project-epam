@@ -2,6 +2,8 @@ package com.epam.jwd.dao.entity.user;
 
 import com.epam.jwd.dao.entity.Entity;
 
+import java.util.Objects;
+
 public class Account extends Entity<Integer> {
     private Integer userId;
     private String firstName;
@@ -61,6 +63,26 @@ public class Account extends Entity<Integer> {
 
     public void setSubscriptionId(Integer subscriptionId) {
         this.subscriptionId = subscriptionId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return userId.equals(account.userId) && firstName.equals(account.firstName) && secondName.equals(account.secondName) && phone.equals(account.phone) && Objects.equals(subscriptionId, account.subscriptionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, firstName, secondName, phone, subscriptionId);
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" + "userId=" + userId + ", firstName='" + firstName + '\'' + ", " +
+                "secondName='" + secondName + '\'' + ", phone='" + phone + '\'' + ", " +
+                "subscriptionId=" + subscriptionId + "} " + super.toString();
     }
 
     public static class AccountBuilder {

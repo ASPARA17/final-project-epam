@@ -70,9 +70,7 @@ public class UserDto extends EntityDto<Integer> {
 
     @Override
     public String toString() {
-        return "UserDto{" +
-                "login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role + '}';
+        return "UserDto{" + "login='" + login + '\'' + ", password='" + password + '\'' + ", " +
+                "role=" + role + "} " + super.toString();
     }
 }

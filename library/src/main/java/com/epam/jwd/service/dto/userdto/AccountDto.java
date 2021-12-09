@@ -2,6 +2,8 @@ package com.epam.jwd.service.dto.userdto;
 
 import com.epam.jwd.service.dto.EntityDto;
 
+import java.util.Objects;
+
 public class AccountDto extends EntityDto<Integer> {
     private Integer userId;
     private String firstName;
@@ -22,6 +24,16 @@ public class AccountDto extends EntityDto<Integer> {
         this.phone = phone;
         this.subscriptionId = subscriptionId;
     }
+
+    public AccountDto(Integer userId, String firstName, String secondName, String phone,
+                      Integer subscriptionId) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.phone = phone;
+        this.subscriptionId = subscriptionId;
+    }
+
 
     public Integer getUserId() {
         return userId;
@@ -61,6 +73,26 @@ public class AccountDto extends EntityDto<Integer> {
 
     public void setSubscriptionId(Integer subscriptionId) {
         this.subscriptionId = subscriptionId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccountDto that = (AccountDto) o;
+        return userId.equals(that.userId) && firstName.equals(that.firstName) && secondName.equals(that.secondName) && phone.equals(that.phone) && Objects.equals(subscriptionId, that.subscriptionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, firstName, secondName, phone, subscriptionId);
+    }
+
+    @Override
+    public String toString() {
+        return "AccountDto{" + "userId=" + userId + ", firstName='" + firstName + '\'' + ", " +
+                "secondName='" + secondName + '\'' + ", phone='" + phone + '\'' + ", " +
+                "subscriptionId=" + subscriptionId + "} " + super.toString();
     }
 
     public static class AccountDtoBuilder {
