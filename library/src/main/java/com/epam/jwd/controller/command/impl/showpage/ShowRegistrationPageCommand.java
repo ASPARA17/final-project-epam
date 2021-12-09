@@ -1,24 +1,24 @@
 package com.epam.jwd.controller.command.impl.showpage;
 
+import com.epam.jwd.controller.command.PagePath;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.CommandRequest;
 import com.epam.jwd.controller.command.api.CommandResponse;
 
-public class ShowMainPageCommand implements Command {
-    private static final Command instance = new ShowMainPageCommand();
-    private static final String MAIN_PAGE_PATH = "WEB-INF/jsp/main.jsp";
+public class ShowRegistrationPageCommand implements Command {
+    private static final Command instance = new ShowRegistrationPageCommand();
 
-    private ShowMainPageCommand() {
+    private ShowRegistrationPageCommand() {
     }
 
     public static Command getInstance() {
         return instance;
     }
 
-    private static final CommandResponse SHOW_MAIN_PAGE = new CommandResponse() {
+    private static final CommandResponse REGISTRATION_PAGE_RESPONSE = new CommandResponse() {
         @Override
         public String getPath() {
-            return MAIN_PAGE_PATH;
+            return PagePath.REGISTRATION_PAGE_PATH;
         }
 
         @Override
@@ -29,6 +29,6 @@ public class ShowMainPageCommand implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        return SHOW_MAIN_PAGE;
+        return REGISTRATION_PAGE_RESPONSE;
     }
 }
