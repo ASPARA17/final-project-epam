@@ -62,6 +62,7 @@ public class AccountServiceImpl implements AccountService {
         Account createdAccount = converter.convert(accountDto);
         try {
             accountDto = converter.convert(accountDao.add(createdAccount));
+            System.out.println("hi from accservimpl");
         } catch (DaoException e) {
             throw new ServiceException();
         }
