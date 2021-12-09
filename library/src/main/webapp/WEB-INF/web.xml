@@ -15,4 +15,14 @@
     </taglib>
   </jsp-config>
 
+  <servlet>
+    <servlet-name>MyServlet</servlet-name>
+    <servlet-class>com.epam.jwd.controller.ApplicationController</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>MyServlet</servlet-name>
+    <url-pattern>/library</url-pattern>
+  </servlet-mapping>
+
 </web-app>
