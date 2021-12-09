@@ -1,8 +1,9 @@
 package com.epam.jwd.controller;
 
-import com.epam.jwd.controller.command.Command;
-import com.epam.jwd.controller.command.CommandRequest;
-import com.epam.jwd.controller.command.CommandResponse;
+import com.epam.jwd.controller.command.api.Command;
+import com.epam.jwd.controller.command.api.CommandRequest;
+import com.epam.jwd.controller.command.api.CommandResponse;
+import com.epam.jwd.dao.connection.impl.ConnectionPoolImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,6 +19,8 @@ import java.util.Optional;
 public class ApplicationController extends HttpServlet {
     private static final String COMMAND_PARAM = "command";
 
+    public ApplicationController() { super();}
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         process(req, resp);
@@ -30,8 +33,9 @@ public class ApplicationController extends HttpServlet {
 
     private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final String commandName = req.getParameter(COMMAND_PARAM);
-        final Command command = Command.of(commandName);
+        final Command command = Command.withName(commandName);
         final CommandResponse response = command.execute(new CommandRequest() {
+            private static final String REFERER = "referer";
             @Override
             public HttpSession createSession() {
                 return req.getSession(true);
@@ -59,6 +63,16 @@ public class ApplicationController extends HttpServlet {
             public void setAttribute(String name, Object value) {
                 req.setAttribute(name, value);
             }
+
+            @Override
+            public String getHeader() {
+                return req.getHeader(REFERER);
+            }
+
+            @Override
+            public String getContextPath() {
+                return req.getContextPath();
+            }
         });
 
         if (response.isRedirect()) {
@@ -67,5 +81,11 @@ public class ApplicationController extends HttpServlet {
             final RequestDispatcher dispatcher = req.getRequestDispatcher(response.getPath());
             dispatcher.forward(req, resp);
         }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        ConnectionPoolImpl.getInstance().destroy();
     }
 }
