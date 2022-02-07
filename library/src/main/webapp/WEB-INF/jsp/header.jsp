@@ -17,10 +17,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.min.css" >
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header.css">
 </head>
 <body>
 
+<div class="container d-flex h-100 p-3 mx-auto flex-column">
         <div class="masthead mb-auto ">
             <div class="inner">
                 <h3 class="masthead-brand"><fmt:message key="header.library_name"/></h3>
@@ -34,18 +37,18 @@
                                 <fmt:message key="header.about_library"/></a>
                             <a class="nav-link" href="library?command=SHOW_ALL_BOOKS">
                                 <fmt:message key="header.catalog"/></a>
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="library?command=SHOW_USER_ORDERS">
                                 <fmt:message key="header.orders"/></a>
                         </c:if>
                         <c:if test="${userRole == 'ADMIN'}">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="library?command=SHOW_ALL_BOOKS">
                                 <fmt:message key="header.books"/></a>
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="library?command=SHOW_ALL_USERS">
                                 <fmt:message key="header.users"/></a>
                             <a class="nav-link" href="#">
                                 <fmt:message key="header.orders"/></a>
                         </c:if>
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="library?command=LOGOUT">
                             <fmt:message key="header.log_out"/></a>
                     </c:if>
 
@@ -97,6 +100,7 @@
                 </nav>
             </div>
         </div>
+</div>
 </body>
 <script src="${pageContext.request.contextPath}/js/main.js"></script>
 </html>

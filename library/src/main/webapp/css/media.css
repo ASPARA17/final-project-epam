@@ -1,0 +1,137 @@
+@media (max-width: 1360px) {
+    .booking-section .booking-section__inner {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .booking-form {
+        margin-bottom: 50px;
+    }
+
+    .rooms {
+        width: 100%;
+    }
+
+    .booking-form {
+        width: 100%;
+    }
+}
+
+@media (max-width: 900px) {
+    .default-table-wrapper {
+        overflow: hidden;
+        overflow-x: scroll;
+    }
+
+    .default-table {
+        width: 900px;
+    }
+}
+
+@media (max-width: 768px) {
+    .advantages-grid .advantages-grid__inner {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .advantages-grid .advantages-grid__item {
+        margin-bottom: 45px;
+        width: 100%;
+    }
+
+    .burger {
+        display: block;
+    }
+
+    .layout-header .layout-header__menu {
+        display: none;
+    }
+
+    .hotel-info {
+        padding: 10px 15px;
+    }
+
+    .hotel-info .hotel-info__title {
+        font-size: 34px;
+    }
+
+    .hotel-info .hotel-info__subtitle {
+        font-size: 18px;
+    }
+
+    .hotel-info .hotel-info__desc {
+        font-size: 14px;
+    }
+
+    .logo__subtitle {
+        display: none;
+    }
+
+    .booking-section {
+        padding: 104px 15px;
+    }
+
+    .booking-section .booking-section__inner {
+        padding-top: 40px;
+    }
+
+    .booking-form {
+        padding: 0;
+    }
+
+    .booking-form h2 {
+        font-size: 28px;
+        line-height: 34px;
+    }
+
+    .booking-form p {
+        font-size: 16px;
+        line-height: 21px;
+    }
+
+    .form-grid {
+        flex-direction: column;
+    }
+
+    .form-grid .form__item {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .rooms {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .rooms h2 {
+        margin-bottom: 15px;
+        font-size: 28px;
+        line-height: 32px;
+        text-align: center;
+    }
+
+    .rooms .rooms__header {
+        flex-direction: column;
+    }
+
+    .rooms-table th,
+    .rooms-table td {
+        font-size: 16px;
+        padding: 5px;
+        font-size: 14px;
+    }
+
+    .booking-section .booking-section__inner {
+        margin: 0;
+    }
+
+    .rooms-table .rooms-table__button {
+        font-size: 11px;
+        padding: 10px 5px;
+    }
+
+    .add-rooms-form .form-group {
+        margin-bottom: 20px;
+    }
+}

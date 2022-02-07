@@ -4676,8 +4676,10 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     padding: .5rem .75rem;
     margin-left: -1px;
     line-height: 1.25;
-    color: #fed136;
-    background-color: #fff;
+   /* color: #fed136;
+    background-color: #fff;*/
+    color: #fff;
+    background-color: #333;
     border: 1px solid #dee2e6
 }
 

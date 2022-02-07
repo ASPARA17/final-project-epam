@@ -503,8 +503,8 @@ img {
 }
 
 .booking-section .booking-section__inner {
-    padding-top: 80px;
-    display: flex;
+    /*padding-top: 80px;*/
+    /* display: flex; */
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
@@ -537,6 +537,13 @@ img {
     background: #000000ad;
     padding: 30px 20px;
     box-shadow: 0 2px 20px 5px #0000008c;
+
+    height: 300px;
+ /*   width:400px;*/
+/*
+    margin-left: 35%;
+    margin-right: 50%;
+*/
 }
 
 .   form-group {
@@ -562,7 +569,7 @@ img {
 }
 
 .form-grid {
-    display: flex;
+    /*display: flex;*/
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
@@ -595,7 +602,8 @@ img {
 
 .rooms {
     position: relative;
-    width: 50%;
+    width: 88%;
+    left: 200px;
     border-radius: 5px;
     background: #000000ad;
     padding: 20px 25px 60px 25px;
@@ -678,7 +686,8 @@ img {
 .rooms-table td {
     padding: 7px 0;
     text-align: center;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
+    text-transform: none;
     font-size: 18px;
     border-bottom: 2px solid #fff;
     color: #ffffff;
@@ -716,7 +725,7 @@ img {
     text-align: center;
 }
 
-.pagination .pagination__link {
+.   pagination .pagination__link {
     display: inline-block;
     padding: 5px;
     margin: 0 5px;
@@ -726,6 +735,77 @@ img {
     text-decoration: none;
     color: #ffffff;
     transition: border-color .3s;
+}
+
+
+/* Orders */
+
+.orders {
+    position: initial;
+    width: 100%;
+    border-radius: 5px;
+    background: #000000ad;
+    padding: 20px 25px 60px 25px;
+    box-shadow: 0 2px 20px 5px #0000008c;
+    min-height: 600px;
+}
+
+.orders h2 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #d8b450;
+}
+
+.orders .orders__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.orders .orders__label {
+    font-size: 18px;
+    font-weight: 700;
+    display: inline-block;
+    text-transform: uppercase;
+    vertical-align: middle;
+    padding-right: 15px;
+    color: #ffffff;
+}
+
+.orders .orders__sort-link {
+    position: relative;
+    display: inline-block;
+    padding-right: 10px;
+    margin-right: 10px;
+    margin-left: -4px;
+    font-size: 16px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    text-decoration: none;
+    color: #fff;
+    transition: color .3s;
+}
+
+.orders .orders__sort-link:hover {
+    color: #d8b450;
+}
+
+.orders .orders__sort-link:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    display: inline-block;
+    width: 2px;
+    height: 100%;
+    background-color: #fff;
+}
+
+.orders .orders__sort-link:last-child:after {
+    display: none;
 }
 
 .pagination .pagination__link:hover {
@@ -832,6 +912,7 @@ img {
 
 .add-rooms-form .form-group .form-control {
     margin-bottom: 0;
+    width: 350px;
 }
 
 .add-rooms-form .form-group {
@@ -959,4 +1040,16 @@ img {
 
 .notification .notification__link:hover {
     background-color: #c5a448;
+}
+
+.pages {
+    margin-top: 10px;
+    margin-left: 50%;
+    margin-right: 50%;
+}
+
+.pages-orders {
+    margin-top: 10px;
+    margin-left: 40%;
+    margin-right: 50%;
 }

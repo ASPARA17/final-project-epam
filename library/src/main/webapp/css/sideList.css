@@ -1,0 +1,42 @@
+/* Фиксированный боковых навигационных ссылок, полной высоты */
+.sidenav {
+  height: 100%;
+  width: 200px;
+  position: absolute;
+  z-index: 1;
+  top: 65px;
+  left: 0;
+  background: #000000ad;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Стиль боковых навигационных ссылок и раскрывающейся кнопки */
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-family: 'Lato', sans-serif;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+  border: none;
+  background: none;
+  width:100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+/* При наведении курсора мыши */
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+/* Основное содержание */
+.main {
+  margin-left: 200px; /* То же, что и ширина боковой навигации */
+  font-size: 20px; /* Увеличенный текст для включения прокрутки */
+  padding: 0px 10px;
+}
+
+
