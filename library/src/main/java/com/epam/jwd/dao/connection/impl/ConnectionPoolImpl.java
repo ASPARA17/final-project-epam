@@ -1,6 +1,9 @@
 package com.epam.jwd.dao.connection.impl;
 
 import com.epam.jwd.dao.connection.api.ConnectionPool;
+import com.epam.jwd.dao.exception.DaoException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -8,41 +11,42 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Properties;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public final class ConnectionPoolImpl implements ConnectionPool {
+    private static final Logger log = LogManager.getLogger(ConnectionPoolImpl.class);
     private final String DB_PROPERTIES = "db.properties";
     private final String DB_URL = "url";
     private final String DB_DRIVER = "driver";
     private final int POOL_SIZE = 5;
 
-    // TODO: to know about queue, which queue to use
-    private final BlockingQueue<ProxyConnection> freeConnection = new LinkedBlockingQueue<>();
-    private final BlockingQueue<ProxyConnection> busyConnection = new LinkedBlockingQueue<>();
+    String INTERRUPT_EXCEPTION = "Current thread was interrupted";
+    String CONNECTION_EXCEPTION = "Connection failed";
 
-    // TODO: need synchronized or lock
-    private static volatile ConnectionPoolImpl instance;
+    private static ConnectionPool instance = new ConnectionPoolImpl();
+
+    private final BlockingQueue<ProxyConnection> freeConnection;
+    private final BlockingQueue<ProxyConnection> busyConnection;
     private boolean initialized = false;
 
-    private ConnectionPoolImpl() {}
+    private ConnectionPoolImpl() {
+        this.freeConnection = new ArrayBlockingQueue<>(POOL_SIZE);
+        this.busyConnection = new ArrayBlockingQueue<>(POOL_SIZE);
+    }
 
-    public static ConnectionPoolImpl getInstance(){
-        ConnectionPoolImpl localInstance = instance;
-        if (instance == null){
-            synchronized (ConnectionPoolImpl.class) {
-                localInstance = instance;
-                if (instance == null) {
-                    instance.init();
-                    instance = localInstance = new ConnectionPoolImpl();
-                }
+    public static ConnectionPool getInstance(){
+        synchronized (ConnectionPool.class) {
+            if (instance == null) {
+                instance = new ConnectionPoolImpl();
+                return instance;
             }
         }
-        return localInstance;
+        return instance;
     }
 
     @Override
-    public void init() {
+    public void init() throws DaoException {
         if (!initialized) {
             initializePool();
             initialized = true;
@@ -50,39 +54,35 @@ public final class ConnectionPoolImpl implements ConnectionPool {
     }
 
     @Override
-    public void destroy() {
-        if (initialized) {
-            closeConnections(freeConnection);
-            freeConnection.clear();
-            closeConnections(busyConnection);
-            busyConnection.clear();
-            initialized = false;
-        }
+    public void destroy() throws DaoException {
+        closeConnections(freeConnection);
+        closeConnections(busyConnection);
     }
 
     @Override
     public Connection takeConnection() {
-        ProxyConnection connection = null;
         try {
-            connection = freeConnection.take();
-            busyConnection.add(connection);
+            final ProxyConnection connection = freeConnection.take();
+            busyConnection.put(connection);
+            return connection;
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            // TODO: add logger
+            log.error(INTERRUPT_EXCEPTION + e);
         }
-        return connection;
+        return null;
     }
 
     @Override
     public void returnConnection(Connection connection) {
-        if (busyConnection.remove(connection)) {
-            freeConnection.add((ProxyConnection) connection);
-        } else {
-            // TODO: add logger
+        try {
+            freeConnection.put(busyConnection.take());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            log.error(INTERRUPT_EXCEPTION + e);
         }
     }
 
-    private void initializePool() {
+    private void initializePool() throws DaoException {
         ClassLoader classLoader = this.getClass().getClassLoader();
         Properties properties = new Properties();
         try {
@@ -94,27 +94,41 @@ public final class ConnectionPoolImpl implements ConnectionPool {
             for (int i = 0; i < POOL_SIZE; i++) {
                 createConnection(dbUrl, properties);
             }
-            // TODO: ask about many exception
-        } catch (IOException | ClassNotFoundException | SQLException e) {
-            // TODO: add logger and exception
+
+        } catch (IOException | ClassNotFoundException e) {
+            log.error(CONNECTION_EXCEPTION + e);
+            throw new DaoException(CONNECTION_EXCEPTION + e);
         }
     }
 
-    private void createConnection(String dbUrl, Properties properties) throws SQLException{
-        Connection connection = DriverManager.getConnection(dbUrl, properties);
-        ProxyConnection proxyConnection = new ProxyConnection(connection, this);
-        freeConnection.add(proxyConnection);
+    private void createConnection(String dbUrl, Properties properties) throws DaoException{
+        try {
+            final Connection connection = DriverManager.getConnection(dbUrl, properties);
+            final ProxyConnection proxyConnection = new ProxyConnection(connection, this);
+            freeConnection.put(proxyConnection);
+            log.info("crete connection");
+        } catch (SQLException e) {
+            log.error(CONNECTION_EXCEPTION + e);
+            throw new DaoException(CONNECTION_EXCEPTION + e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            log.error(INTERRUPT_EXCEPTION + e);
+        }
+
     }
 
-    private void closeConnections(Collection<ProxyConnection> connections) {
-        connections.forEach(this::closeConnection);
+    private void closeConnections(Collection<ProxyConnection> connections) throws DaoException {
+        for (ProxyConnection connection : connections) {
+            closeConnection(connection);
+        }
     }
 
-    private void closeConnection(ProxyConnection connection) {
+    private void closeConnection(ProxyConnection connection) throws DaoException {
         try {
             connection.reallyClose();
         } catch (SQLException e) {
-            // TODO: add logger
+            log.error(CONNECTION_EXCEPTION + e);
+            throw new DaoException(CONNECTION_EXCEPTION + e);
         }
     }
 

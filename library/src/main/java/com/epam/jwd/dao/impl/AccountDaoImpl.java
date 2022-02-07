@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class AccountDaoImpl implements AccountDao {
-    private static volatile AccountDaoImpl instance;
+    private static AccountDaoImpl instance = new AccountDaoImpl();
     private ConnectionPool pool;
 
     private AccountDaoImpl() {
@@ -20,16 +20,7 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     public static AccountDaoImpl getInstance() {
-        AccountDaoImpl localInstance = instance;
-        if (instance == null) {
-            synchronized (AccountDaoImpl.class) {
-                localInstance = instance;
-                if (instance == null) {
-                    instance = localInstance = new AccountDaoImpl();
-                }
-            }
-        }
-        return  localInstance;
+        return instance;
     }
 
     @Override
@@ -47,10 +38,8 @@ public class AccountDaoImpl implements AccountDao {
                 account.setId(resultSet.getInt(1));
             }
         } catch (SQLException e) {
-            System.out.println("SQL EXP FROM ADD accountDAOIML");
             throw new DaoException(e);
         }
-        System.out.println(account.toString());
         return account;
     }
 
@@ -139,5 +128,22 @@ public class AccountDaoImpl implements AccountDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    public List<Account> findAccountsToPage(int page, int totalUsersOnPage) throws DaoException{
+        List<Account> allAccountsToPage = new ArrayList<>();
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.FIND_ALL_ACCOUNTS_ON_PAGE)) {
+            statement.setInt(1, page - 1);
+            statement.setInt(2, totalUsersOnPage);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                allAccountsToPage.add(createAccount(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return allAccountsToPage;
     }
 }

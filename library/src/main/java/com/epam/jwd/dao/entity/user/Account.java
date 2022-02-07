@@ -93,9 +93,6 @@ public class Account extends Entity<Integer> {
         private String phone;
         private Integer subscriptionId;
 
-        public AccountBuilder() {
-        }
-
         public AccountBuilder withId(Integer id) {
             this.id = id;
             return this;
@@ -134,6 +131,24 @@ public class Account extends Entity<Integer> {
             account.setPhone(this.phone);
             account.setSubscriptionId(this.subscriptionId);
             return account;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            AccountBuilder that = (AccountBuilder) o;
+            return Objects.equals(id, that.id) && Objects.equals(userId, that.userId) && Objects.equals(firstName, that.firstName) && Objects.equals(secondName, that.secondName) && Objects.equals(phone, that.phone) && Objects.equals(subscriptionId, that.subscriptionId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, userId, firstName, secondName, phone, subscriptionId);
+        }
+
+        @Override
+        public String toString() {
+            return "AccountBuilder{" + "id=" + id + ", userId=" + userId + ", firstName='" + firstName + '\'' + ", secondName='" + secondName + '\'' + ", phone='" + phone + '\'' + ", subscriptionId=" + subscriptionId + '}';
         }
     }
 

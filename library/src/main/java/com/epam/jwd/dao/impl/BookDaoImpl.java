@@ -6,6 +6,8 @@ import com.epam.jwd.dao.connection.impl.ConnectionPoolImpl;
 import com.epam.jwd.dao.entity.book.Book;
 import com.epam.jwd.dao.entity.book.Genre;
 import com.epam.jwd.dao.exception.DaoException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,24 +15,18 @@ import java.util.List;
 import java.util.Optional;
 
 public class BookDaoImpl implements BookDao {
-    private static volatile BookDaoImpl instance;
+    private static BookDaoImpl instance = new BookDaoImpl();
     private ConnectionPool pool;
+
+    private static final Logger log = LogManager.getLogger(BookDaoImpl.class);
 
     private BookDaoImpl() {
         this.pool = ConnectionPoolImpl.getInstance();
     }
 
+
     public static BookDaoImpl getInstance() {
-        BookDaoImpl localInstance = instance;
-        if (instance == null) {
-            synchronized (BookDaoImpl.class) {
-                localInstance = instance;
-                if (instance == null) {
-                    instance = localInstance = new BookDaoImpl();
-                }
-            }
-        }
-        return  localInstance;
+        return instance;
     }
 
     @Override
@@ -72,15 +68,13 @@ public class BookDaoImpl implements BookDao {
         List<Book> allBooks = new ArrayList<>();
         try (Connection connection = pool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(SqlQuery.FIND_ALL_BOOKS)) {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                allBooks.add(createBook(resultSet));
-            }
+            allBooks = findBooks(statement);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
         return allBooks;
     }
+
 
     @Override
     public Optional<Book> findById(Integer id) throws DaoException {
@@ -127,11 +121,11 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public List<Book> findByGenre(int genreId) throws DaoException {
+    public List<Book> findByGenre(String genreName) throws DaoException {
         List<Book> bookList = new ArrayList<>();
         try (Connection connection = pool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(SqlQuery.FIND_BOOK_BY_GENRE)) {
-            statement.setInt(1, genreId);
+            statement.setString(1, genreName);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 bookList.add(createBook(resultSet));
@@ -156,6 +150,31 @@ public class BookDaoImpl implements BookDao {
             throw new DaoException(e);
         }
         return bookList;
+    }
+
+    @Override
+    public List<Book> findBooksToPage(int page, int totalBookOnPage) throws DaoException{
+        List<Book> booksOnPage;
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.FIND_ALL_BOOKS_ON_PAGE)) {
+            statement.setInt(1, page - 1);
+            statement.setInt(2, totalBookOnPage);
+            booksOnPage = findBooks(statement);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        log.info(booksOnPage);
+        return booksOnPage;
+    }
+
+    private List<Book> findBooks(PreparedStatement statement) throws SQLException {
+        List<Book> allBooks = new ArrayList<>();
+        try (statement; ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                allBooks.add(createBook(resultSet));
+            }
+        }
+        return allBooks;
     }
 
     private Book createBook(ResultSet resultSet) throws SQLException{

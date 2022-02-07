@@ -2,6 +2,8 @@ package com.epam.jwd.dao.entity.book;
 
 import com.epam.jwd.dao.entity.Entity;
 
+import java.util.Objects;
+
 public class Book extends Entity<Integer> {
     private Genre genre;
     private String author;
@@ -15,17 +17,17 @@ public class Book extends Entity<Integer> {
         super(id);
     }
 
-    public Book(Integer id, Genre genre, String author, String name, String publishingHouse,
-                int yearPublishing, int numberOfPage, int quantity) {
-        super(id);
-        this.genre = genre;
-        this.author = author;
-        this.name = name;
-        this.publishingHouse = publishingHouse;
-        this.yearPublishing = yearPublishing;
-        this.numberOfPage = numberOfPage;
-        this.quantity = quantity;
-    }
+//    public Book(Integer id, Genre genre, String author, String name, String publishingHouse,
+//                int yearPublishing, int numberOfPage, int quantity) {
+//        super(id);
+//        this.genre = genre;
+//        this.author = author;
+//        this.name = name;
+//        this.publishingHouse = publishingHouse;
+//        this.yearPublishing = yearPublishing;
+//        this.numberOfPage = numberOfPage;
+//        this.quantity = quantity;
+//    }
 
     public Genre getGenre() {
         return genre;
@@ -83,6 +85,24 @@ public class Book extends Entity<Integer> {
         this.quantity = quantity;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return yearPublishing == book.yearPublishing && numberOfPage == book.numberOfPage && quantity == book.quantity && genre == book.genre && Objects.equals(author, book.author) && Objects.equals(name, book.name) && Objects.equals(publishingHouse, book.publishingHouse);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(genre, author, name, publishingHouse, yearPublishing, numberOfPage, quantity);
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" + "genre=" + genre + ", author='" + author + '\'' + ", name='" + name + '\'' + ", publishingHouse='" + publishingHouse + '\'' + ", yearPublishing=" + yearPublishing + ", numberOfPage=" + numberOfPage + ", quantity=" + quantity + "} " + super.toString();
+    }
+
     public static class BookBuilder {
         private Integer id;
         private Genre genre;
@@ -92,9 +112,6 @@ public class Book extends Entity<Integer> {
         private int yearPublishing;
         private int numberOfPage;
         private int quantity;
-
-        public BookBuilder() {
-        }
 
         public BookBuilder withId(Integer id) {
             this.id = id;
@@ -146,6 +163,24 @@ public class Book extends Entity<Integer> {
             book.setNumberOfPage(this.numberOfPage);
             book.setQuantity(this.quantity);
             return book;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            BookBuilder that = (BookBuilder) o;
+            return yearPublishing == that.yearPublishing && numberOfPage == that.numberOfPage && quantity == that.quantity && Objects.equals(id, that.id) && genre == that.genre && Objects.equals(author, that.author) && Objects.equals(name, that.name) && Objects.equals(publishingHouse, that.publishingHouse);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, genre, author, name, publishingHouse, yearPublishing, numberOfPage, quantity);
+        }
+
+        @Override
+        public String toString() {
+            return "BookBuilder{" + "id=" + id + ", genre=" + genre + ", author='" + author + '\'' + ", name='" + name + '\'' + ", publishingHouse='" + publishingHouse + '\'' + ", yearPublishing=" + yearPublishing + ", numberOfPage=" + numberOfPage + ", quantity=" + quantity + '}';
         }
     }
 }

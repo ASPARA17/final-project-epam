@@ -5,7 +5,7 @@ import java.util.Arrays;
 public enum OrderStatus {
     WAITING(1),
     ACTIVE(2),
-    REJECTED(3);
+    CANCELED(3);
 
     private final int statusId;
 

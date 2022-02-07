@@ -5,7 +5,7 @@ import com.epam.jwd.dao.exception.DaoException;
 import java.sql.Connection;
 
 public interface ConnectionPool {
-    void init();
+    void init() throws DaoException;
     void destroy() throws DaoException;
     Connection takeConnection();
     void returnConnection(Connection connection);

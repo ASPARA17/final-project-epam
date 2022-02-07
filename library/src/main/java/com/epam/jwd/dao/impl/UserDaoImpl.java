@@ -17,24 +17,21 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
-    private static volatile UserDaoImpl instance;
-    private ConnectionPool pool;
+    private static UserDao instance;
+    private final ConnectionPool pool;
 
     private UserDaoImpl() {
         this.pool = ConnectionPoolImpl.getInstance();
     }
 
-    public static UserDaoImpl getInstance() {
-        UserDaoImpl localInstance = instance;
-        if (instance == null) {
-            synchronized (UserDaoImpl.class) {
-                localInstance = instance;
-                if (instance == null) {
-                    instance = localInstance = new UserDaoImpl();
-                }
+    public static UserDao getInstance() {
+        synchronized (UserDaoImpl.class) {
+            if (instance == null) {
+                instance = new UserDaoImpl();
+                return instance;
             }
         }
-        return  localInstance;
+        return instance;
     }
 
     @Override
@@ -51,7 +48,6 @@ public class UserDaoImpl implements UserDao {
                 user.setId(resultSet.getInt(1));
             }
         } catch (SQLException e) {
-            System.out.println("SQL EXP FROM ADD USERDAOIML");
             throw new DaoException(e);
         }
         return user;
@@ -71,8 +67,8 @@ public class UserDaoImpl implements UserDao {
             statement.setInt(1, UserRole.USER.getRoleId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String login = resultSet.getString("login");
-                String password = resultSet.getString("password");
+                String login = resultSet.getString(2);
+                String password = resultSet.getString(3);
                 User user = new User(login, password);
                 allUsers.add(user);
             }
@@ -90,8 +86,8 @@ public class UserDaoImpl implements UserDao {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                String login = resultSet.getString("login");
-                String password = resultSet.getString("password");
+                String login = resultSet.getString(2);
+                String password = resultSet.getString(3);
                 user = Optional.of(new User(login, password));
             }
         } catch (SQLException e) {
@@ -109,7 +105,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                password = resultSet.getString("password");
+                password = resultSet.getString(3);
             }
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -133,13 +129,16 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> findByLogin(String login) throws DaoException {
         Optional<User> user = Optional.empty();
         try (Connection connection = pool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(SqlQuery.FIND_USER_BY_LOGIN)) {
+             PreparedStatement statement =
+                     connection.prepareStatement(SqlQuery.FIND_USER_BY_LOGIN);) {
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                String userLogin = resultSet.getString("login");
-                String password = resultSet.getString("password");
-                user = Optional.of(new User(userLogin, password));
+                int id = resultSet.getInt(1);
+                String userLogin = resultSet.getString(2);
+                String password = resultSet.getString(3);
+                int roleId = resultSet.getInt(4);
+                user = Optional.of(new User(id, userLogin, password, roleId));
             }
         } catch (SQLException e) {
             throw new DaoException(e);
