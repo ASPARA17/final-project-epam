@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <property name="pattern_console"> %msg%n</property>
+        <property name="pattern_file">%d{HH:mm:ss.SSS} [%t] %-5level %-10logger{1} %msg%n</property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern_console}"/>
+        </Console>
+        <RollingFile name="DebugRollingFile1" filename="logs/log.log"  filePattern="logs/log-%d{yyyy-MM-dd-hh-mm-ss}.log">
+            <PatternLayout pattern="${pattern_file}"/>
+            <Policies>
+                <OnStartupTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.epam.jwd" level="debug" additivity="false">
+            <AppenderRef ref="DebugRollingFile1" />
+            <AppenderRef ref="Console" />
+        </Logger>
+        <Root level="info" >
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>
