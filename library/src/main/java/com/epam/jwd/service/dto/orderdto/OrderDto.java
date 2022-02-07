@@ -2,13 +2,15 @@ package com.epam.jwd.service.dto.orderdto;
 
 import com.epam.jwd.dao.entity.order.OrderStatus;
 import com.epam.jwd.service.dto.EntityDto;
+import com.epam.jwd.service.dto.bookdto.BookDto;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class OrderDto extends EntityDto<Integer> {
     private OrderStatus orderStatus;
     private Integer accountId;
-    private Integer bookId;
+    private BookDto book;
     private Date dateOfIssue;
     private Date returnDate;
     private boolean subscription;
@@ -17,12 +19,12 @@ public class OrderDto extends EntityDto<Integer> {
         super(id);
     }
 
-    public OrderDto(Integer id, OrderStatus orderStatus, Integer accountId, Integer bookId,
+    public OrderDto(Integer id, OrderStatus orderStatus, Integer accountId, BookDto book,
                  Date dateOfIssue, Date returnDate, boolean subscription) {
         super(id);
         this.orderStatus = orderStatus;
         this.accountId = accountId;
-        this.bookId = bookId;
+        this.book = book;
         this.dateOfIssue = dateOfIssue;
         this.returnDate = returnDate;
         this.subscription = subscription;
@@ -44,12 +46,12 @@ public class OrderDto extends EntityDto<Integer> {
         this.accountId = accountId;
     }
 
-    public Integer getBookId() {
-        return bookId;
+    public BookDto getBook() {
+        return book;
     }
 
-    public void setBookId(Integer bookId) {
-        this.bookId = bookId;
+    public void setBook(BookDto book) {
+        this.book = book;
     }
 
     public Date getDateOfIssue() {
@@ -76,17 +78,39 @@ public class OrderDto extends EntityDto<Integer> {
         this.subscription = subscription;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderDto orderDto = (OrderDto) o;
+        return subscription == orderDto.subscription
+                && orderStatus == orderDto.orderStatus
+                && Objects.equals(accountId, orderDto.accountId)
+                && Objects.equals(book, orderDto.book)
+                && Objects.equals(dateOfIssue, orderDto.dateOfIssue)
+                && Objects.equals(returnDate, orderDto.returnDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderStatus, accountId, book, dateOfIssue, returnDate, subscription);
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDto{" + "orderStatus=" + orderStatus + ", accountId=" + accountId + ", " +
+                "book=" + book + ", dateOfIssue=" + dateOfIssue + ", returnDate=" + returnDate +
+                ", subscription=" + subscription + "} " + super.toString();
+    }
+
     public static class OrderDtoBuilder {
         private Integer id;
         private OrderStatus orderStatus;
         private Integer accountId;
-        private Integer bookId;
+        private BookDto book;
         private Date dateOfIssue;
         private Date returnDate;
         private boolean subscription;
-
-        public OrderDtoBuilder() {
-        }
 
         public OrderDtoBuilder withId(Integer id) {
             this.id = id;
@@ -103,8 +127,8 @@ public class OrderDto extends EntityDto<Integer> {
             return this;
         }
 
-        public OrderDtoBuilder withBookId(Integer bookId) {
-            this.bookId = bookId;
+        public OrderDtoBuilder withBook(BookDto book) {
+            this.book = book;
             return this;
         }
 
@@ -127,11 +151,30 @@ public class OrderDto extends EntityDto<Integer> {
             OrderDto orderDto = new OrderDto(this.id);
             orderDto.setOrderStatus(this.orderStatus);
             orderDto.setAccountId(this.accountId);
-            orderDto.setBookId(this.bookId);
+            orderDto.setBook(this.book);
             orderDto.setDateOfIssue(this.dateOfIssue);
             orderDto.setReturnDate(this.returnDate);
             orderDto.setSubscription(this.subscription);
             return orderDto;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            OrderDtoBuilder that = (OrderDtoBuilder) o;
+            return subscription == that.subscription && Objects.equals(id, that.id) && orderStatus == that.orderStatus && Objects.equals(accountId, that.accountId) && Objects.equals(book, that.book) && Objects.equals(dateOfIssue, that.dateOfIssue) && Objects.equals(returnDate, that.returnDate);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, orderStatus, accountId, book, dateOfIssue, returnDate, subscription);
+        }
+
+        @Override
+        public String toString() {
+            return "OrderDtoBuilder{" + "id=" + id + ", orderStatus=" + orderStatus + ", " +
+                    "accountId=" + accountId + ", book=" + book + ", dateOfIssue=" + dateOfIssue + ", returnDate=" + returnDate + ", subscription=" + subscription + '}';
         }
     }
 }

@@ -11,6 +11,8 @@ import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.validator.AccountValidator;
 import com.epam.jwd.service.validator.Validator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,9 @@ public class AccountServiceImpl implements AccountService {
     private final AccountDao accountDao;
     private final Converter<Account, AccountDto, Integer> converter;
     private final Validator<AccountDto, Integer> validator;
-    private static volatile AccountServiceImpl instance;
+    private static AccountServiceImpl instance = new AccountServiceImpl();
+
+    private static final Logger log = LogManager.getLogger(AccountServiceImpl.class);
 
     private AccountServiceImpl() {
         this.accountDao = AccountDaoImpl.getInstance();
@@ -29,16 +33,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     public static AccountServiceImpl getInstance() {
-        AccountServiceImpl localInstance = instance;
-        if (instance == null) {
-            synchronized (AccountServiceImpl.class) {
-                localInstance = instance;
-                if (instance == null) {
-                    instance = localInstance = new AccountServiceImpl();
-                }
-            }
-        }
-        return  localInstance;
+        return instance;
     }
 
     @Override
@@ -62,7 +57,6 @@ public class AccountServiceImpl implements AccountService {
         Account createdAccount = converter.convert(accountDto);
         try {
             accountDto = converter.convert(accountDao.add(createdAccount));
-            System.out.println("hi from accservimpl");
         } catch (DaoException e) {
             throw new ServiceException();
         }
@@ -95,5 +89,19 @@ public class AccountServiceImpl implements AccountService {
             throw new ServiceException();
         }
         return accountDtoOptional;
+    }
+
+    @Override
+    public List<AccountDto> findUsersOnPage(int page, int totalUsersOnPage) throws ServiceException {
+        List<AccountDto> accountDto = new ArrayList<>();
+        try {
+            for (Account account : accountDao.findAccountsToPage(page, totalUsersOnPage)) {
+                accountDto.add(converter.convert(account));
+            }
+        } catch (DaoException e) {
+            log.error(e);
+            throw new ServiceException();
+        }
+        return accountDto;
     }
 }

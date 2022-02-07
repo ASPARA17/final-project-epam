@@ -3,6 +3,8 @@ package com.epam.jwd.service.validator;
 import com.epam.jwd.service.dto.bookdto.BookDto;
 import com.epam.jwd.service.exception.ServiceException;
 
+//todo validator
+
 public class BookValidator implements Validator<BookDto, Integer> {
     private static final int MIN_NUMBER_OF_PAGE = 1;
     private static final int MAX_NUMBER_OF_PAGE = 2000;
@@ -10,7 +12,6 @@ public class BookValidator implements Validator<BookDto, Integer> {
     private static final int MAX_QUANTITY = 50;
     private static final String QUANTITY_REGEX = "^\\d+$";
     private static final String NUMBER_OF_PAGE_REGEX = "^\\d+$";
-    // TODO: to process negative digital such as BC
     private static final String YEAR_PUBLISHING_REGEX = "^\\d+$";
     private static final String PUBLISHING_HOUSE_REGEX = "^[a-zA-Z\\s]{3,40}$";
     private static final String NAME_BOOK_REGEX = "^.{1,100}$";

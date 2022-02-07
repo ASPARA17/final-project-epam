@@ -17,32 +17,51 @@ public class DateValidator {
     private static final int HIGH_BORDER_MONTH = 12;
     private static final int HIGH_BORDER_DAY = 31;
 
+//    public boolean checkDate(String dateOfIssue, String returnDate) {
+//        boolean isCorrect = false;
+//        Date currentDay = DateUtil.takeCurrentDateFormat();
+//        if (isEmptyOrNull(dateOfIssue)
+//                && isEmptyOrNull(returnDate)
+//                && isStringMatches(dateOfIssue, DATE_REGEX)
+//                && isStringMatches(returnDate, DATE_REGEX)) {
+//            if (validateDateValues(dateOfIssue)
+//                    && validateDateValues(returnDate)) {
+//                Optional<Date> dateOfIssueFormatOptional = DateUtil.parseStringToDateFormat(dateOfIssue);
+//                Optional<Date> returnDateFormatOptional = DateUtil.parseStringToDateFormat(returnDate);
+//                if (dateOfIssueFormatOptional.isPresent()
+//                        && returnDateFormatOptional.isPresent()) {
+//                    Date dateOfIssueFormat = dateOfIssueFormatOptional.get();
+//                    Date returnDateFormat = returnDateFormatOptional.get();
+//                    if (compareDates(currentDay, dateOfIssueFormat, returnDateFormat)) {
+//                        isCorrect = true;
+//                    }
+//                }
+//            }
+//        }
+//        return isCorrect;
+//    }
+
     public boolean checkDate(String dateOfIssue, String returnDate) {
         boolean isCorrect = false;
         Date currentDay = DateUtil.takeCurrentDateFormat();
         if (isEmptyOrNull(dateOfIssue)
                 && isEmptyOrNull(returnDate)
                 && isStringMatches(dateOfIssue, DATE_REGEX)
-                && isStringMatches(returnDate, DATE_REGEX)) {
-            if (validateDateValues(dateOfIssue)
-                    && validateDateValues(returnDate)) {
-                Optional<Date> dateOfIssueFormatOptional = DateUtil.parseStringToDateFormat(dateOfIssue);
-                Optional<Date> returnDateFormatOptional = DateUtil.parseStringToDateFormat(returnDate);
-                if (dateOfIssueFormatOptional.isPresent()
-                        && returnDateFormatOptional.isPresent()) {
-                    Date dateOfIssueFormat = dateOfIssueFormatOptional.get();
-                    Date returnDateFormat = returnDateFormatOptional.get();
-                    if (compareDates(currentDay, dateOfIssueFormat, returnDateFormat)) {
-                        isCorrect = true;
+                && isStringMatches(returnDate, DATE_REGEX)
+                && validateDateValues(dateOfIssue)
+                && validateDateValues(returnDate)) {
+                    Optional<Date> dateOfIssueFormatOptional = DateUtil.parseStringToDateFormat(dateOfIssue);
+                    Optional<Date> returnDateFormatOptional = DateUtil.parseStringToDateFormat(returnDate);
+                    if (dateOfIssueFormatOptional.isPresent()
+                            && returnDateFormatOptional.isPresent()) {
+                        Date dateOfIssueFormat = dateOfIssueFormatOptional.get();
+                        Date returnDateFormat = returnDateFormatOptional.get();
+                        if (compareDates(currentDay, dateOfIssueFormat, returnDateFormat)) {
+                            isCorrect = true;
+                        }
                     }
-                }
-            }
         }
         return isCorrect;
-    }
-
-    private boolean isEmptyOrNullAndStringMatches(String string, String regex) {
-        return isEmptyOrNull(string) && isStringMatches(string, regex);
     }
 
     private boolean isDayCorrect(int day) {

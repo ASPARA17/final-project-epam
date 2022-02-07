@@ -5,7 +5,7 @@ import com.epam.jwd.service.dto.EntityDto;
 import java.util.Objects;
 
 public class AccountDto extends EntityDto<Integer> {
-    private Integer userId;
+    private UserDto user;
     private String firstName;
     private String secondName;
     private String phone;
@@ -15,19 +15,19 @@ public class AccountDto extends EntityDto<Integer> {
         super(id);
     }
 
-    public AccountDto(Integer id, Integer userId, String firstName, String secondName, String phone,
+    public AccountDto(Integer id, UserDto user, String firstName, String secondName, String phone,
                    Integer subscriptionId) {
         super(id);
-        this.userId = userId;
+        this.user = user;
         this.firstName = firstName;
         this.secondName = secondName;
         this.phone = phone;
         this.subscriptionId = subscriptionId;
     }
 
-    public AccountDto(Integer userId, String firstName, String secondName, String phone,
+    public AccountDto(UserDto user, String firstName, String secondName, String phone,
                       Integer subscriptionId) {
-        this.userId = userId;
+        this.user = user;
         this.firstName = firstName;
         this.secondName = secondName;
         this.phone = phone;
@@ -35,12 +35,12 @@ public class AccountDto extends EntityDto<Integer> {
     }
 
 
-    public Integer getUserId() {
-        return userId;
+    public UserDto getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(UserDto user) {
+        this.user = user;
     }
 
     public String getFirstName() {
@@ -80,39 +80,36 @@ public class AccountDto extends EntityDto<Integer> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AccountDto that = (AccountDto) o;
-        return userId.equals(that.userId) && firstName.equals(that.firstName) && secondName.equals(that.secondName) && phone.equals(that.phone) && Objects.equals(subscriptionId, that.subscriptionId);
+        return Objects.equals(user, that.user) && Objects.equals(firstName, that.firstName) && Objects.equals(secondName, that.secondName) && Objects.equals(phone, that.phone) && Objects.equals(subscriptionId, that.subscriptionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, firstName, secondName, phone, subscriptionId);
+        return Objects.hash(user, firstName, secondName, phone, subscriptionId);
     }
 
     @Override
     public String toString() {
-        return "AccountDto{" + "userId=" + userId + ", firstName='" + firstName + '\'' + ", " +
+        return "AccountDto{" + "user=" + user + ", firstName='" + firstName + '\'' + ", " +
                 "secondName='" + secondName + '\'' + ", phone='" + phone + '\'' + ", " +
                 "subscriptionId=" + subscriptionId + "} " + super.toString();
     }
 
     public static class AccountDtoBuilder {
         private Integer id;
-        private Integer userId;
+        private UserDto user;
         private String firstName;
         private String secondName;
         private String phone;
         private Integer subscriptionId;
-
-        public AccountDtoBuilder() {
-        }
 
         public AccountDtoBuilder withId(Integer id) {
             this.id = id;
             return this;
         }
 
-        public AccountDtoBuilder withUserId(Integer userId) {
-            this.userId = userId;
+        public AccountDtoBuilder withUser(UserDto user) {
+            this.user = user;
             return this;
         }
 
@@ -138,12 +135,30 @@ public class AccountDto extends EntityDto<Integer> {
 
         public AccountDto build() {
             AccountDto accountDto = new AccountDto(this.id);
-            accountDto.setUserId(this.userId);
+            accountDto.setUser(this.user);
             accountDto.setFirstName(this.firstName);
             accountDto.setSecondName(this.secondName);
             accountDto.setPhone(this.phone);
             accountDto.setSubscriptionId(this.subscriptionId);
             return accountDto;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            AccountDtoBuilder that = (AccountDtoBuilder) o;
+            return Objects.equals(id, that.id) && Objects.equals(user, that.user) && Objects.equals(firstName, that.firstName) && Objects.equals(secondName, that.secondName) && Objects.equals(phone, that.phone) && Objects.equals(subscriptionId, that.subscriptionId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, user, firstName, secondName, phone, subscriptionId);
+        }
+
+        @Override
+        public String toString() {
+            return "AccountDtoBuilder{" + "id=" + id + ", user=" + user + ", firstName='" + firstName + '\'' + ", secondName='" + secondName + '\'' + ", phone='" + phone + '\'' + ", subscriptionId=" + subscriptionId + '}';
         }
     }
 }

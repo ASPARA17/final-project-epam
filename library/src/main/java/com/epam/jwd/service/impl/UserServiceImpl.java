@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final Converter<User, UserDto, Integer> converter;
     private final Validator<UserDto, Integer> validator;
-    private static volatile UserServiceImpl instance;
+    private static UserServiceImpl instance = new UserServiceImpl();
 
     private UserServiceImpl() {
         this.userDao = UserDaoImpl.getInstance();
@@ -32,16 +32,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public static UserServiceImpl getInstance() {
-        UserServiceImpl localInstance = instance;
-        if (instance == null) {
-            synchronized (UserServiceImpl.class) {
-                localInstance = instance;
-                if (instance == null) {
-                    instance = localInstance = new UserServiceImpl();
-                }
-            }
-        }
-        return  localInstance;
+        return instance;
     }
 
     @Override
@@ -68,7 +59,7 @@ public class UserServiceImpl implements UserService {
         validator.validate(userDto);
         User createdUser = converter.convert(userDto);
         try {
-            checkLoginUnique(createdUser.getLogin());
+            // TODO add method checkLoginUnique
             userDto = converter.convert(userDao.add(createdUser));
         } catch (DaoException e) {
             throw new ServiceException();

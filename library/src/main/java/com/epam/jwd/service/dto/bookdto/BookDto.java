@@ -3,6 +3,8 @@ package com.epam.jwd.service.dto.bookdto;
 import com.epam.jwd.dao.entity.book.Genre;
 import com.epam.jwd.service.dto.EntityDto;
 
+import java.util.Objects;
+
 public class BookDto extends EntityDto<Integer> {
     private Genre genre;
     private String author;
@@ -16,17 +18,17 @@ public class BookDto extends EntityDto<Integer> {
         super(id);
     }
 
-    public BookDto(Integer id, Genre genre, String author, String name, String publishingHouse,
-                int yearPublishing, int numberOfPage, int quantity) {
-        super(id);
-        this.genre = genre;
-        this.author = author;
-        this.name = name;
-        this.publishingHouse = publishingHouse;
-        this.yearPublishing = yearPublishing;
-        this.numberOfPage = numberOfPage;
-        this.quantity = quantity;
-    }
+//    public BookDto(Integer id, Genre genre, String author, String name, String publishingHouse,
+//                int yearPublishing, int numberOfPage, int quantity) {
+//        super(id);
+//        this.genre = genre;
+//        this.author = author;
+//        this.name = name;
+//        this.publishingHouse = publishingHouse;
+//        this.yearPublishing = yearPublishing;
+//        this.numberOfPage = numberOfPage;
+//        this.quantity = quantity;
+//    }
 
     public Genre getGenre() {
         return genre;
@@ -84,6 +86,24 @@ public class BookDto extends EntityDto<Integer> {
         this.quantity = quantity;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookDto bookDto = (BookDto) o;
+        return yearPublishing == bookDto.yearPublishing && numberOfPage == bookDto.numberOfPage && quantity == bookDto.quantity && genre == bookDto.genre && Objects.equals(author, bookDto.author) && Objects.equals(name, bookDto.name) && Objects.equals(publishingHouse, bookDto.publishingHouse);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(genre, author, name, publishingHouse, yearPublishing, numberOfPage, quantity);
+    }
+
+    @Override
+    public String toString() {
+        return "BookDto{" + "genre=" + genre + ", author='" + author + '\'' + ", name='" + name + '\'' + ", publishingHouse='" + publishingHouse + '\'' + ", yearPublishing=" + yearPublishing + ", numberOfPage=" + numberOfPage + ", quantity=" + quantity + "} " + super.toString();
+    }
+
     public static class BookDtoBuilder {
         private Integer id;
         private Genre genre;
@@ -93,9 +113,6 @@ public class BookDto extends EntityDto<Integer> {
         private int yearPublishing;
         private int numberOfPage;
         private int quantity;
-
-        public BookDtoBuilder() {
-        }
 
         public BookDtoBuilder withId(Integer id) {
             this.id = id;
@@ -147,6 +164,24 @@ public class BookDto extends EntityDto<Integer> {
             bookDto.setNumberOfPage(this.numberOfPage);
             bookDto.setQuantity(this.quantity);
             return bookDto;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            BookDtoBuilder that = (BookDtoBuilder) o;
+            return yearPublishing == that.yearPublishing && numberOfPage == that.numberOfPage && quantity == that.quantity && Objects.equals(id, that.id) && genre == that.genre && Objects.equals(author, that.author) && Objects.equals(name, that.name) && Objects.equals(publishingHouse, that.publishingHouse);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, genre, author, name, publishingHouse, yearPublishing, numberOfPage, quantity);
+        }
+
+        @Override
+        public String toString() {
+            return "BookDtoBuilder{" + "id=" + id + ", genre=" + genre + ", author='" + author + '\'' + ", name='" + name + '\'' + ", publishingHouse='" + publishingHouse + '\'' + ", yearPublishing=" + yearPublishing + ", numberOfPage=" + numberOfPage + ", quantity=" + quantity + '}';
         }
     }
 
