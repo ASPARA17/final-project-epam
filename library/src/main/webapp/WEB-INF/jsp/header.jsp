@@ -45,7 +45,7 @@
                                 <fmt:message key="header.books"/></a>
                             <a class="nav-link" href="library?command=SHOW_ALL_USERS">
                                 <fmt:message key="header.users"/></a>
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="library?command=SHOW_ALL_ORDERS">
                                 <fmt:message key="header.orders"/></a>
                         </c:if>
                         <a class="nav-link" href="library?command=LOGOUT">
