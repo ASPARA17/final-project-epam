@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class LibraryCardDaoImpl implements BaseDao<LibraryCard, Integer> {
-    private static volatile LibraryCardDaoImpl instance;
+    private static LibraryCardDaoImpl instance = new LibraryCardDaoImpl();
     private ConnectionPool pool;
 
     private LibraryCardDaoImpl() {
@@ -20,16 +20,7 @@ public class LibraryCardDaoImpl implements BaseDao<LibraryCard, Integer> {
     }
 
     public static LibraryCardDaoImpl getInstance() {
-        LibraryCardDaoImpl localInstance = instance;
-        if (instance == null) {
-            synchronized (LibraryCardDaoImpl.class) {
-                localInstance = instance;
-                if (instance == null) {
-                    instance = localInstance = new LibraryCardDaoImpl();
-                }
-            }
-        }
-        return  localInstance;
+        return instance;
     }
     @Override
     public LibraryCard add(LibraryCard libraryCard) throws DaoException {
