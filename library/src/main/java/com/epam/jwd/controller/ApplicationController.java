@@ -3,7 +3,11 @@ package com.epam.jwd.controller;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.CommandRequest;
 import com.epam.jwd.controller.command.api.CommandResponse;
+import com.epam.jwd.dao.connection.api.ConnectionPool;
 import com.epam.jwd.dao.connection.impl.ConnectionPoolImpl;
+import com.epam.jwd.dao.exception.DaoException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,7 +21,13 @@ import java.util.Optional;
 
 @WebServlet(urlPatterns = "/controller")
 public class ApplicationController extends HttpServlet {
-    private static final String COMMAND_PARAM = "command";
+    private static final Logger log = LogManager.getLogger(ApplicationController.class);
+
+    private final ConnectionPool connectionPool = ConnectionPoolImpl.getInstance();
+
+    public static final String COMMAND_PARAM = "command";
+    private static final String INIT_ERROR_MESSAGE = "Can't initialize the connectionPool";
+    private static final String DESTROY_ERROR_MESSAGE = "Can't shutdown the connectionPool";
 
     public ApplicationController() { super();}
 
@@ -78,14 +88,28 @@ public class ApplicationController extends HttpServlet {
         if (response.isRedirect()) {
             resp.sendRedirect(response.getPath());
         } else {
-            final RequestDispatcher dispatcher = req.getRequestDispatcher(response.getPath());
+            RequestDispatcher dispatcher = req.getRequestDispatcher(response.getPath());
             dispatcher.forward(req, resp);
+        }
+    }
+
+
+    @Override
+    public void init() {
+        try {
+            connectionPool.init();
+        } catch (DaoException e) {
+            log.error(INIT_ERROR_MESSAGE, e);
         }
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        ConnectionPoolImpl.getInstance().destroy();
+        try {
+            connectionPool.destroy();
+        } catch (DaoException e) {
+            log.error(DESTROY_ERROR_MESSAGE, e);
+        }
     }
 }

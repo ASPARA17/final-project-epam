@@ -6,9 +6,13 @@ public class PagePath {
     public static final String USER_HOME_PAGE_PATH = "WEB-INF/jsp/";
     public static final String DEFAULT_PAGE_PATH = "WEB-INF/jsp/main.jsp";
     public static final String ERROR_500 = "WEB-INF/jsp/error500.jsp";
+    public static final String ERROR_404 = "WEB-INF/jsp/error404.jsp";
     public static final String ABOUT_LIBRARY_PAGE = "WEB-INF/jsp/aboutLibrary.jsp";
     public static final String CATALOG_PAGE_PATH = "WEB-INF/jsp/catalog.jsp";
     public static final String REGISTRATION_PAGE_PATH = "WEB-INF/jsp/registration.jsp";
+    public static final String USER_ORDERS_PAGE = "WEB-INF/jsp/userOrders.jsp";
+    public static final String ALL_USERS_PAGE = "WEB-INF/jsp/allUsers.jsp";
+    public static final String ADD_BOOK_PAGE = "WEB-INF/jsp/addBook.jsp";
 
     private PagePath() {
     }

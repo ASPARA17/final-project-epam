@@ -15,10 +15,10 @@ public class ShowErrorPageCommand implements Command {
         return instance;
     }
 
-    private static final CommandResponse ERROR_500_RESPONSE = new CommandResponse() {
+    private static final CommandResponse ERROR_RESPONSE = new CommandResponse() {
         @Override
         public String getPath() {
-            return PagePath.ERROR_500;
+            return PagePath.ERROR_404;
         }
 
         @Override
@@ -29,6 +29,6 @@ public class ShowErrorPageCommand implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        return ERROR_500_RESPONSE;
+        return ERROR_RESPONSE;
     }
 }

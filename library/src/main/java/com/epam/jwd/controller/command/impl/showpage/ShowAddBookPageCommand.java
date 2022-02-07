@@ -4,21 +4,24 @@ import com.epam.jwd.controller.command.PagePath;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.CommandRequest;
 import com.epam.jwd.controller.command.api.CommandResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class ShowAllBooksCommand implements Command {
-    private static final Command instance = new ShowAllBooksCommand();
+public class ShowAddBookPageCommand implements Command {
+    private static final Command instance = new ShowAddBookPageCommand();
+    private static final Logger log = LogManager.getLogger(ShowAddBookPageCommand.class);
 
-    private ShowAllBooksCommand() {
+    private ShowAddBookPageCommand() {
     }
 
     public static Command getInstance() {
         return instance;
     }
 
-    private static final CommandResponse SHOW_ALL_BOOKS = new CommandResponse() {
+    private static final CommandResponse ADD_BOOKS_PAGE = new CommandResponse() {
         @Override
         public String getPath() {
-            return PagePath.CATALOG_PAGE_PATH;
+            return PagePath.ADD_BOOK_PAGE   ;
         }
 
         @Override
@@ -29,6 +32,6 @@ public class ShowAllBooksCommand implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        return SHOW_ALL_BOOKS;
+        return ADD_BOOKS_PAGE;
     }
 }

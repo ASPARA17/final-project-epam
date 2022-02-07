@@ -21,11 +21,13 @@ public class LoginCommand implements Command {
     private final UserService userService = UserServiceImpl.getInstance();
     private final AccountService accountService = AccountServiceImpl.getInstance();
     private static final Command instance = new LoginCommand();
+
     private static final String ERROR_ATTRIB_NAME = "error";
     private static final String INVALID_CREDENTIALS_MSG = "Wrong login or password";
-    private static final String USER_NAME_SESSION_ATTRIB_NAME = "userName";
-    public static final String USER_ROLE_SESSION_ATTRIB_NAME = "userRole";
+    private static final String USER_ACCOUNT_SESSION_ATTRIB_NAME = "account";
     private static final String SPACE = " ";
+
+    public static final String USER_ROLE_SESSION_ATTRIB_NAME = "userRole";
 
     private LoginCommand() {
     }
@@ -34,12 +36,10 @@ public class LoginCommand implements Command {
         return instance;
     }
 
-    private static final CommandResponse LOGIN_SUCCESS_RESPONSE = new CommandResponse() {
+    private static final CommandResponse LOGIN_SUCCESS_RESPONSE = new CommandResponse
+            () {
         @Override
-//        public String getPath() {
-//            return PagePath.USER_HOME_PAGE_PATH;
-//        }
-        public String getPath() { return PagePath.MAIN_PAGE_PATH;}
+        public String getPath() { return "/library?command=SHOW_MAIN_PAGE";}
 
         @Override
         public boolean isRedirect() {
@@ -62,7 +62,7 @@ public class LoginCommand implements Command {
     private static final CommandResponse SERVER_ERROR_RESPONSE = new CommandResponse() {
         @Override
         public String getPath() {
-            return PagePath.ERROR_500;
+            return PagePath.ERROR_404;
         }
 
         @Override
@@ -90,16 +90,18 @@ public class LoginCommand implements Command {
         } catch (IncorrectRegisterParametersException e) {
             return prepareErrorPage(request);
         }
-        return SERVER_ERROR_RESPONSE;
+        return LOGIN_ERROR_RESPONSE;
     }
 
         private CommandResponse addUserInfoToSession(CommandRequest request, UserDto user,
                                                      AccountDto account) {
             request.getCurrentSession().ifPresent(HttpSession::invalidate);
             final HttpSession session = request.createSession();
-            session.setAttribute(USER_NAME_SESSION_ATTRIB_NAME, user.getRole());
-            session.setAttribute(USER_ROLE_SESSION_ATTRIB_NAME, account);
-            session.setAttribute("", account.getFirstName() + SPACE + account.getSecondName());
+            session.setAttribute("user", user);
+            session.setAttribute(USER_ROLE_SESSION_ATTRIB_NAME, user.getRole());
+            session.setAttribute(USER_ACCOUNT_SESSION_ATTRIB_NAME, account);
+            session.setAttribute("fullName",
+                    account.getFirstName() + SPACE + account.getSecondName());
             return LOGIN_SUCCESS_RESPONSE;
         }
 
