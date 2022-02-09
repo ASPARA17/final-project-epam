@@ -12,5 +12,6 @@ public interface OrderDao extends BaseDao<Order, Integer>{
     List<Order> findAllByAccountId(Integer id) throws DaoException;
     void updateReturnDateById(Date returnDate, Integer id) throws DaoException;
     List<Order> findOrdersToPageByAccountId(int page, int totalOrdersOnPage, Integer accountId) throws DaoException;
+    List<Order> findAllToPage(int page, int totalOrdersOnPage) throws DaoException;
 
 }

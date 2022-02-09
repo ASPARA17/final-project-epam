@@ -35,6 +35,8 @@ public class SqlQuery {
             "publishing_house, year_publishing, number_of_page, quantity FROM books WHERE author=?";
     public static final String FIND_ALL_BOOKS_ON_PAGE = "SELECT id, id_genre, author, name, " +
             "publishing_house, year_publishing, number_of_page, quantity FROM books LIMIT ?,?";
+    public static final String UPDATE_BOOK = "UPDATE books SET id_genre=?, author=?, name=?, " +
+            "publishing_house=?, year_publishing=?, number_of_page=?, quantity=? WHERE id=?";
 
     // account table
     public static final String ADD_ACCOUNT = "INSERT INTO accounts(id_user, first_name, " +
@@ -77,6 +79,9 @@ public class SqlQuery {
     public static final String FIND_ALL_ON_PAGE_BY_ACCOUNT_ID = "SELECT id, id_order_status, " +
             "id_account, id_book, date_of_issue, return_date, subscription FROM orders WHERE " +
             "id_account = ? ORDER BY date_of_issue DESC, id DESC LIMIT ?,?";
+    public static final String FIND_ALL_ORDERS_ON_PAGE = "SELECT id, id_order_status, id_account," +
+            "id_book, date_of_issue, return_date, subscription FROM orders ORDER BY date_of_issue" +
+            " DESC, id DESC LIMIT ?,?";
 
 
 }

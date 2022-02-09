@@ -48,6 +48,7 @@ public class UserDaoImpl implements UserDao {
                 user.setId(resultSet.getInt(1));
             }
         } catch (SQLException e) {
+            System.out.println("SQL EXP FROM ADD USERDAOIML");
             throw new DaoException(e);
         }
         return user;
@@ -67,8 +68,8 @@ public class UserDaoImpl implements UserDao {
             statement.setInt(1, UserRole.USER.getRoleId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String login = resultSet.getString(2);
-                String password = resultSet.getString(3);
+                String login = resultSet.getString("login");
+                String password = resultSet.getString("password");
                 User user = new User(login, password);
                 allUsers.add(user);
             }
@@ -86,8 +87,8 @@ public class UserDaoImpl implements UserDao {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                String login = resultSet.getString(2);
-                String password = resultSet.getString(3);
+                String login = resultSet.getString("login");
+                String password = resultSet.getString("password");
                 user = Optional.of(new User(login, password));
             }
         } catch (SQLException e) {
@@ -105,7 +106,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                password = resultSet.getString(3);
+                password = resultSet.getString("password");
             }
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -128,16 +129,16 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByLogin(String login) throws DaoException {
         Optional<User> user = Optional.empty();
-        try (Connection connection = pool.takeConnection();
-             PreparedStatement statement =
-                     connection.prepareStatement(SqlQuery.FIND_USER_BY_LOGIN);) {
+        PreparedStatement statement;
+        try (Connection connection = pool.takeConnection()) {
+            statement = connection.prepareStatement(SqlQuery.FIND_USER_BY_LOGIN);
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                int id = resultSet.getInt(1);
-                String userLogin = resultSet.getString(2);
-                String password = resultSet.getString(3);
-                int roleId = resultSet.getInt(4);
+                int id = resultSet.getInt("id");
+                String userLogin = resultSet.getString("login");
+                String password = resultSet.getString("password");
+                int roleId = resultSet.getInt("id_role");
                 user = Optional.of(new User(id, userLogin, password, roleId));
             }
         } catch (SQLException e) {

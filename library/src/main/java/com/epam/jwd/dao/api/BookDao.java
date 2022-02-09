@@ -11,4 +11,5 @@ public interface BookDao extends BaseDao<Book, Integer> {
     List<Book> findByGenre(String genreName) throws DaoException;
     List<Book> findByAuthor(String author) throws DaoException;
     List<Book> findBooksToPage(int page, int totalBookOnPage) throws DaoException;
+    void updateBookById(Book book, Integer bookId) throws DaoException;
 }

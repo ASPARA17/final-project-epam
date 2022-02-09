@@ -75,7 +75,6 @@ public class BookDaoImpl implements BookDao {
         return allBooks;
     }
 
-
     @Override
     public Optional<Book> findById(Integer id) throws DaoException {
         Optional<Book> book = Optional.empty();
@@ -165,6 +164,25 @@ public class BookDaoImpl implements BookDao {
         }
         log.info(booksOnPage);
         return booksOnPage;
+    }
+
+    @Override
+    public void updateBookById(Book book, Integer bookId) throws DaoException {
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.UPDATE_BOOK)) {
+            statement.setInt(1, book.getGenre().getGenreId());
+            statement.setString(2, book.getAuthor());
+            statement.setString(3, book.getName());
+            statement.setString(4, book.getPublishingHouse());
+            statement.setInt(5, book.getYearPublishing());
+            statement.setInt(6, book.getNumberOfPage());
+            statement.setInt(7, book.getQuantity());
+            statement.setInt(8, bookId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            log.error(e);
+            throw new DaoException(e);
+        }
     }
 
     private List<Book> findBooks(PreparedStatement statement) throws SQLException {

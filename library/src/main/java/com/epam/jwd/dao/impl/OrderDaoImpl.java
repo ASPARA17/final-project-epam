@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class OrderDaoImpl implements OrderDao {
-    private static OrderDaoImpl instance = new OrderDaoImpl();
+    private static OrderDao instance = new OrderDaoImpl();
     private ConnectionPool pool;
 
     private static final Logger log = LogManager.getLogger(OrderDaoImpl.class);
@@ -24,7 +24,7 @@ public class OrderDaoImpl implements OrderDao {
         this.pool = ConnectionPoolImpl.getInstance();
     }
 
-    public static OrderDaoImpl getInstance() {
+    public static OrderDao getInstance() {
         return instance;
     }
 
@@ -158,6 +158,23 @@ public class OrderDaoImpl implements OrderDao {
             throw new DaoException(e);
         }
         return orderList;
+    }
+
+    @Override
+    public List<Order> findAllToPage(int page, int totalOrdersOnPage) throws DaoException {
+        List<Order> allOrdersOnPage = new ArrayList<>();
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.FIND_ALL_ORDERS_ON_PAGE)) {
+            statement.setInt(1, page - 1);
+            statement.setInt(2, totalOrdersOnPage);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                allOrdersOnPage.add(createOrder(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return allOrdersOnPage;
     }
 
     private Order createOrder(ResultSet resultSet) throws SQLException{
