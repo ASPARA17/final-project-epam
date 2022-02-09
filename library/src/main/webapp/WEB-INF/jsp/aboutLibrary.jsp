@@ -1,12 +1,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <title>Library</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/addBook.css">
-
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header.css">
 </head>
 <body>
 <div class="layout">
@@ -22,6 +23,12 @@
 <%--            <a href="#contact">Контакт</a>--%>
 <%--            <a href="#contact">Поиск</a>--%>
 <%--        </div>--%>
+
+    <p>There are several browsers available, such as <a href="https://www.mozilla.org/en-US/firefox/">Mozilla
+        Firefox</a>, <a href="https://www.google.com/chrome/index.html">Google Chrome</a>, and
+        <a href="https://www.microsoft.com/en-us/windows/microsoft-edge">Microsoft Edge</a>.</p>
+
+
         <div id="login">
         <div class="container">
             <div id="login-row" class="row justify-content-center align-items-center">
@@ -81,7 +88,6 @@
                                 <fmt:message key="sign_in_page.sign_in"/>
                                 >
                             </div>
-                            <span class="error" style="+color:#ff340a">${errorMessage}</span>
 
                             <div id="register-link" class="text-right">
                                 <br/>
@@ -97,5 +103,6 @@
     </div>
     </div>
 </div>
+
 </body>
 </html>

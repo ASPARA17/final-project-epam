@@ -13,7 +13,7 @@
 </c:choose>
 <fmt:setBundle basename="language"/>
 <head>
-    <title><fmt:message key="admin_users.title"/></title>
+    <title><fmt:message key="users.title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
@@ -26,7 +26,7 @@
             <div class="booking-section__inner">
                 <div class="orders">
                     <div class="orders__header">
-                        <h2>Users</h2>
+                        <h2><fmt:message key="users.users"/></h2>
                     </div>
                     <table class="rooms-table">
                         <c:choose>
@@ -37,12 +37,11 @@
                             </c:when>
                             <c:when test="${not empty allUsers}">
                                 <tr>
-                                    <th>Login</th>
-                                    <th>First name</th>
-                                    <th>Second name</th>
-                                    <th>Phone</th>
-                                    <th>Subscription</th>
-                                    <th></th>
+                                    <th><fmt:message key="users.login"/></th>
+                                    <th><fmt:message key="users.first_name"/></th>
+                                    <th><fmt:message key="users.second_name"/></th>
+                                    <th><fmt:message key="users.phone"/></th>
+                                    <th><fmt:message key="users.subscription"/></th>
                                 </tr>
                                 <c:forEach items="${sessionScope.allUsers}" var="user">
                                     <tr>
@@ -51,12 +50,6 @@
                                         <td>${user.secondName}</td>
                                         <td>${user.phone}</td>
                                         <td>${user.subscriptionId}</td>
-                                        <td class="rooms-table__action">
-                                            <a href="#"
-                                               class="rooms-table__button">
-                                                Delete|Block
-                                            </a>
-                                        </td>
                                     </tr>
                                 </c:forEach>
                             </c:when>
@@ -88,6 +81,7 @@
         </div>
 
     </div>
+    <c:import url="footer.jsp"/>
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

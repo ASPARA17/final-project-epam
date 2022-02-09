@@ -17,23 +17,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title><fmt:message key="sign_in_page.title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/sign_in.css">
-<%--    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">--%>
-<%--    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>--%>
-<%--    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--%>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-
     <div class="layout">
         <c:import url="header.jsp"/>
-        <div class="layout-body" style="background-image: url(${pageContext.request.contextPath}/images/sigIn.jpg);background-size: cover;">
+        <div class="layout-body"
+             style="background-image: url(${pageContext.request.contextPath}/images/sigIn.jpg);background-size: cover;">
+
             <c:choose>
                 <c:when test="${not empty requestScope.successRegister}">
                     <p>${requestScope.error}</p>
-                    <a href="${pageContext.request.contextPath}/controller?command=show_login">Try again</a>
+                    <a href="${pageContext.request.contextPath}/controller?command=SHOW_LOGIN_PAGE">Try again</a>
                 </c:when>
                 <c:otherwise>
                     <c:if test="${sessionScope.successRegister == true}">
@@ -48,6 +46,17 @@
                     </c:if>
                 </c:otherwise>
             </c:choose>
+            <c:choose>
+                <c:when test="${not empty requestScope.wrongData}">
+                    <div class = "container p-3">
+                        <div class="alert alert-danger alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <fmt:message key="alert.wrong_data_login"/>
+                        </div>
+                    </div>
+                </c:when>
+            </c:choose>
+
             <div id="login">
                 <div class="container">
                     <div id="login-row" class="row justify-content-center align-items-center">
@@ -69,11 +78,9 @@
                                         <fmt:message key="sign_in_page.sign_in"/>
                                         >
                                     </div>
-                                    <span class="error" style="+color:#ff340a">${errorMessage}</span>
-
                                     <div id="register-link" class="text-right">
                                         <br/>
-                                        <a href="library?command=SHOW_REGISTER_PAGE" class="text-light">
+                                        <a href="library?command=SHOW_REGISTRATION_PAGE" class="text-light">
                                             <fmt:message key="sign_in_page.register_here"/>
                                         </a>
                                     </div>
@@ -84,6 +91,9 @@
                 </div>
             </div>
         </div>
+        <c:import url="footer.jsp"/>
+    </div>
+
 </body>
 
 </html>

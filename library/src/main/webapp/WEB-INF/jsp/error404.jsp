@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/media.css">
-    <title>ERROR PAGE</title>
+    <title><fmt:message key="error404.title"/></title>
 </head>
 
 <body>
@@ -31,13 +31,14 @@
     <div class="layout-body"
          style="background-image: url(${pageContext.request.contextPath}/images/main.jpg);">
         <div class="notification">
-            <h3 class="notification__title">ERROR 404</h3>
+            <h3 class="notification__title"><fmt:message key="error404.error"/></h3>
             <p class="notification__text">
-                Request is failed! <br/>
-                The page you requested was not found, and it may have been deleted, renamed, or unavailable.
+                <fmt:message key="error404.message_title"/> <br/>
+                <fmt:message key="error404.message"/>
             </p>
         </div>
     </div>
+    <c:import url="footer.jsp"/>
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

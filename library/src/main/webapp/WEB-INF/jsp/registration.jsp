@@ -89,21 +89,6 @@
                                         </div>
                                     </div>
                                 </div>
-        <%--                        <div class="someDiv">--%>
-        <%--                            <input type="hidden" name="command" value="REGISTRATION"/>--%>
-        <%--                            <input type="submit" class="btn btn-info btn-block" value=--%>
-        <%--                            <fmt:message key="registration_page.registration"/>>--%>
-        <%--                            <p class="message">--%>
-        <%--                                <fmt:message key="registration_page.return_to_sign_in"/>--%>
-        <%--                                <a href="library?command=SHOW_LOGIN_PAGE">--%>
-        <%--                                    <fmt:message key="registration_page.sign_in"/>--%>
-        <%--                                </a>--%>
-        <%--                            </p>--%>
-        <%--                        </div>--%>
-
-        <%--                        <input type="submit" class="btn btn-info btn-block"--%>
-        <%--                               value=<fmt:message key="registration_page.registration"/>>--%>
-
                                 <div class="controls">
                                     <button class="btn btn-success"><fmt:message key="registration_page.registration"/></button>
                                 </div>
@@ -114,6 +99,7 @@
             </div>
         </div>
     </div>
+    <c:import url="footer.jsp"/>
 </div>
 </body>
 </html>

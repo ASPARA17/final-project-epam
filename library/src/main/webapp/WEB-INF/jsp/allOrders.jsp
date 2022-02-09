@@ -11,10 +11,9 @@
         <fmt:setLocale value="en"/>
     </c:when>
 </c:choose>
-
 <fmt:setBundle basename="language"/>
 <head>
-    <title>Orders</title>
+    <title><fmt:message key="orders.title_orders"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
@@ -42,12 +41,30 @@
                     </c:if>
                 </c:otherwise>
             </c:choose>
+            <c:choose>
+                <c:when test="${not empty requestScope.successConfirmOrder}">
+                    <p>${requestScope.error}</p>
+                    <a href="${pageContext.request.contextPath}/controller?command=SHOW_ALL_ORDERS">Try again</a>
+                </c:when>
+                <c:otherwise>
+                    <c:if test="${sessionScope.successConfirmOrder == true}">
+                        <div class = "container p-3">
+                            <div class="alert alert-success alert-dismissible">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <fmt:message key="alert.success_confirm_order_start"/> №${sessionScope.orderId}
+                                <fmt:message key="alert.success_confirm_order_end"/>
+                            </div>
+                            <%session.setAttribute("successConfirmOrder", false);%>
+                        </div>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
 
             <div class="booking-section">
                 <div class="booking-section__inner">
                     <div class="orders">
                         <div class="orders__header">
-                            <h2>Orders</h2>
+                            <h2><fmt:message key="orders.orders"/></h2>
                         </div>
                         <table class="rooms-table">
                             <c:choose>
@@ -59,13 +76,13 @@
                                 <c:when test="${not empty allOrders}">
                                     <tr>
                                         <th>№</th>
-                                        <th>Login</th>
-                                        <th>Name book</th>
-                                        <th>Author</th>
-                                        <th>Order date</th>
-                                        <th>Return date</th>
-                                        <th>Subscription</th>
-                                        <th>Status</th>
+                                        <th><fmt:message key="orders.login"/></th>
+                                        <th><fmt:message key="orders.name_book"/></th>
+                                        <th><fmt:message key="orders.author"/></th>
+                                        <th><fmt:message key="orders.order_date"/></th>
+                                        <th><fmt:message key="orders.return_date"/></th>
+                                        <th><fmt:message key="orders.subscription"/></th>
+                                        <th><fmt:message key="orders.status"/></th>
                                         <th></th>
                                     </tr>
                                     <c:forEach items="${sessionScope.allOrders}" var="order">
@@ -82,13 +99,17 @@
                                                 <c:if test="${order.orderStatus eq 'WAITING'}">
                                                     <a href="library?command=CANCEL_ORDER&orderId=${order.id}"
                                                        class="rooms-table__button">
-                                                        <fmt:message key="user_orders.cancel_button"/>
+                                                        <fmt:message key="orders.cancel_button"/>
+                                                    </a>
+                                                    <a href="library?command=CONFIRM_ORDER&orderId=${order.id}"
+                                                       class="rooms-table__button">
+                                                        <fmt:message key="orders.confirm_button"/>
                                                     </a>
                                                 </c:if>
                                                 <c:if test="${order.orderStatus eq 'ACTIVE'}">
                                                     <a href="library?command=RETURN_BOOK&orderId=${order.id}"
                                                        class="rooms-table__button">
-                                                        Return
+                                                        <fmt:message key="orders.return_button"/>
                                                     </a>
                                                 </c:if>
                                             </td>
@@ -122,6 +143,7 @@
                 </div>
             </div>
         </div>
+    <c:import url="footer.jsp"/>
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

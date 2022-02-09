@@ -14,18 +14,15 @@
 <fmt:setBundle basename="language"/>
 <html>
 <head>
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header.css">
 </head>
 <body>
-
-        <div class="mastfoot mt-auto">
-            <div class="inner">
-                <p><fmt:message key="footer.text"/></p>
-            </div>
+    <div class="text-center p-3" style="background-color: #000000ad;">
+        <div class="footerClass">
+            <fmt:message key="footer.text"/>
         </div>
-
-<%--        <div class="layout-footer">--%>
-<%--            <div class="container_log">--%>
-<%--                <div class="layout-footer__copyright"><fmt:message key="footer.text"/></div>--%>
-<%--            </div>--%>
+    </div>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
 <c:choose>
@@ -28,24 +28,53 @@
             <div class="inner">
                 <h3 class="masthead-brand"><fmt:message key="header.library_name"/></h3>
                 <nav class="nav nav-masthead justify-content-center">
-                    <a class="nav-link active" href="library?command=SHOW_MAIN_PAGE">
+
+                    <a class="nav-link"
+                            <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_MAIN_PAGE')}">
+                                style="color: #fff; border-bottom-color: #fff"
+                            </c:if>
+                       href="library?command=SHOW_MAIN_PAGE">
                         <fmt:message key="header.home"/></a>
 
                     <c:if test="${not empty user}">
                         <c:if test="${userRole == 'USER'}">
-                            <a class="nav-link" href="library?command=SHOW_ABOUT_LIBRARY">
+                            <a class="nav-link"
+                                    <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_ABOUT_LIBRARY')}">
+                                        style="color: #fff; border-bottom-color: #fff"
+                                    </c:if>
+                               href="library?command=SHOW_ABOUT_LIBRARY">
                                 <fmt:message key="header.about_library"/></a>
-                            <a class="nav-link" href="library?command=SHOW_ALL_BOOKS">
+                            <a class="nav-link"
+                                    <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_ALL_BOOKS')}">
+                                        style="color: #fff; border-bottom-color: #fff"
+                                    </c:if>
+                               href="library?command=SHOW_ALL_BOOKS">
                                 <fmt:message key="header.catalog"/></a>
-                            <a class="nav-link" href="library?command=SHOW_USER_ORDERS">
+                            <a class="nav-link"
+                                    <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_USER_ORDERS')}">
+                                        style="color: #fff; border-bottom-color: #fff"
+                                    </c:if>
+                               href="library?command=SHOW_USER_ORDERS">
                                 <fmt:message key="header.orders"/></a>
                         </c:if>
                         <c:if test="${userRole == 'ADMIN'}">
-                            <a class="nav-link" href="library?command=SHOW_ALL_BOOKS">
+                            <a class="nav-link"
+                                    <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_ALL_BOOKS')}">
+                                        style="color: #fff; border-bottom-color: #fff"
+                                    </c:if>
+                               href="library?command=SHOW_ALL_BOOKS">
                                 <fmt:message key="header.books"/></a>
-                            <a class="nav-link" href="library?command=SHOW_ALL_USERS">
+                            <a class="nav-link"
+                                    <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_ALL_USERS')}">
+                                        style="color: #fff; border-bottom-color: #fff"
+                                    </c:if>
+                               href="library?command=SHOW_ALL_USERS">
                                 <fmt:message key="header.users"/></a>
-                            <a class="nav-link" href="library?command=SHOW_ALL_ORDERS">
+                            <a class="nav-link"
+                                    <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_ALL_ORDERS')}">
+                                        style="color: #fff; border-bottom-color: #fff"
+                                    </c:if>
+                               href="library?command=SHOW_ALL_ORDERS">
                                 <fmt:message key="header.orders"/></a>
                         </c:if>
                         <a class="nav-link" href="library?command=LOGOUT">
@@ -53,13 +82,23 @@
                     </c:if>
 
                     <c:if test="${empty user}">
-                        <a class="nav-link" href="library?command=SHOW_ABOUT_LIBRARY">
+                        <a class="nav-link"
+                                <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_ABOUT_LIBRARY')}">
+                                    style="color: #fff; border-bottom-color: #fff"
+                                </c:if>
+                           href="library?command=SHOW_ABOUT_LIBRARY">
                             <fmt:message key="header.about_library"/></a>
-                        <a class="nav-link" href="library?command=SHOW_ALL_BOOKS">
-                            <fmt:message key="header.catalog"/></a>
-                        <a class="nav-link" href="library?command=SHOW_LOGIN_PAGE">
+                        <a class="nav-link"
+                                <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_LOGIN_PAGE')}">
+                                    style="color: #fff; border-bottom-color: #fff"
+                                </c:if>
+                           href="library?command=SHOW_LOGIN_PAGE">
                             <fmt:message key="header.sign_in"/></a>
-                        <a class="nav-link" href="library?command=SHOW_REGISTRATION_PAGE">
+                        <a class="nav-link"
+                                <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_REGISTRATION_PAGE')}">
+                                    style="color: #fff; border-bottom-color: #fff"
+                                </c:if>
+                           href="library?command=SHOW_REGISTRATION_PAGE">
                             <fmt:message key="header.register"/></a>
                     </c:if>
 
