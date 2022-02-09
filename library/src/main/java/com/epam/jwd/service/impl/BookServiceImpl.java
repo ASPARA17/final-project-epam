@@ -135,4 +135,14 @@ public class BookServiceImpl implements BookService {
             throw new ServiceException();
         }
     }
+
+    @Override
+    public void editBook(BookDto book, Integer bookId) throws ServiceException {
+        try {
+            bookDao.updateBookById(converter.convert(book), bookId);
+        } catch (DaoException e) {
+            log.error(e);
+            throw new ServiceException();
+        }
+    }
 }

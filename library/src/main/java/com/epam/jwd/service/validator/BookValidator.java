@@ -12,8 +12,8 @@ public class BookValidator implements Validator<BookDto, Integer> {
     private static final int MAX_QUANTITY = 50;
     private static final String QUANTITY_REGEX = "^\\d+$";
     private static final String NUMBER_OF_PAGE_REGEX = "^\\d+$";
-    private static final String YEAR_PUBLISHING_REGEX = "^\\d+$";
-    private static final String PUBLISHING_HOUSE_REGEX = "^[a-zA-Z\\s]{3,40}$";
+    private static final String YEAR_PUBLISHING_REGEX = "^[\\d+]{1,4}$";
+    private static final String PUBLISHING_HOUSE_REGEX = "^[a-zA-Z&\\-\\/,\\.\\s]{3,40}$";
     private static final String NAME_BOOK_REGEX = "^.{1,100}$";
     private static final String AUTHOR_REGEX = "^[a-zA-Z\\s]{3,40}$";
 

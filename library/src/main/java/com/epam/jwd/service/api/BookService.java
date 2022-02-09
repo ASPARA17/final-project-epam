@@ -11,5 +11,6 @@ public interface BookService extends Service<BookDto, Integer> {
     List<BookDto> sortByParameter(List<BookDto> books, String sortParam);
     List<BookDto> findBooksByGenre(String genreName) throws ServiceException;
     void updateQuantityById(int quantity, Integer bookId) throws ServiceException;
+    void editBook(BookDto book, Integer bookId) throws ServiceException;
 
 }

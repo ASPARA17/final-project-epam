@@ -10,6 +10,7 @@ import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.converter.impl.OrderConverter;
 import com.epam.jwd.service.dto.orderdto.OrderDto;
 import com.epam.jwd.service.exception.ServiceException;
+import com.epam.jwd.service.validator.DateUtil;
 import com.epam.jwd.service.validator.DateValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -109,6 +110,44 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void cancelOrder(Integer orderId) throws ServiceException {
         Integer statusId = OrderStatus.CANCELED.getStatusId();
+        try {
+            orderDao.updateStatusById(statusId, orderId);
+        } catch (DaoException e) {
+            log.error(e);
+            throw new ServiceException();
+        }
+    }
+
+    @Override
+    public List<OrderDto> findAllOrdersToPage(int page, int totalOrdersOnPage) throws ServiceException {
+        List<OrderDto> orderDtoOnPage = new ArrayList<>();
+        try {
+            for (Order order : orderDao.findAllToPage(page, totalOrdersOnPage)) {
+                orderDtoOnPage.add(converter.convert(order));
+            }
+        } catch (DaoException e) {
+            throw new ServiceException();
+        }
+        return orderDtoOnPage;
+    }
+
+    @Override
+    public void returnBook(Integer orderId) throws ServiceException {
+        java.util.Date returnDateUtil = DateUtil.takeCurrentDateFormat();
+        java.sql.Date returnDate = new java.sql.Date(returnDateUtil.getTime());
+        Integer statusId = OrderStatus.COMPLETED.getStatusId();
+        try {
+            orderDao.updateReturnDateById(returnDate,orderId);
+            orderDao.updateStatusById(statusId, orderId);
+        } catch (DaoException e) {
+            log.error(e);
+            throw new ServiceException();
+        }
+    }
+
+    @Override
+    public void confirmOrder(Integer orderId) throws ServiceException {
+        Integer statusId = OrderStatus.ACTIVE.getStatusId();
         try {
             orderDao.updateStatusById(statusId, orderId);
         } catch (DaoException e) {

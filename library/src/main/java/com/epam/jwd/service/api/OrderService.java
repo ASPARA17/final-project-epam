@@ -10,5 +10,8 @@ public interface OrderService extends Service<OrderDto, Integer> {
     List<OrderDto> findAllByAccountId(Integer accountId) throws ServiceException;
     List<OrderDto> findOrdersToPageByAccountId(int page, int totalOrdersOnPage,
                                                Integer accountId) throws ServiceException;
-    void cancelOrder(Integer id) throws ServiceException;
+    void cancelOrder(Integer orderId) throws ServiceException;
+    List<OrderDto> findAllOrdersToPage(int page, int totalOrdersOnPage) throws ServiceException;
+    void returnBook(Integer orderId) throws ServiceException;
+    void confirmOrder(Integer orderId) throws ServiceException;
 }
