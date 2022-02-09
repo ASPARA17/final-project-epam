@@ -26,6 +26,8 @@ public class RequestParameterName {
     public static final String BOOK_PAGES = "pages";
     public static final String BOOK_QUANTITY = "quantity";
 
+    public static final String ALL_ORDERS = "allOrders";
+
     private RequestParameterName() {
     }
 }

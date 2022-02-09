@@ -22,13 +22,18 @@ public enum CommandsName {
     REGISTRATION(RegistrationCommand.getInstance(), GUEST),
     SHOW_REGISTRATION_PAGE(ShowRegistrationPageCommand.getInstance(), GUEST),
     MAKE_ORDER(MakeOrderCommand.getInstance(), USER),
-    SORT_BOOKS(SortBooksCommand.getInstance(), USER),
-    FILTER_BOOKS(FilterBooksCommand.getInstance(), USER),
+    SORT_BOOKS(SortBooksCommand.getInstance(), USER, ADMIN),
+    FILTER_BOOKS(FilterBooksCommand.getInstance(), USER, ADMIN),
     SHOW_USER_ORDERS(ShowUserOrdersCommand.getInstance(), USER),
     CANCEL_ORDER(CancelOrderCommand.getInstance(), USER, ADMIN),
     SHOW_ALL_USERS(ShowAllUsersCommand.getInstance(), ADMIN),
     SHOW_ADD_BOOK_PAGE(ShowAddBookPageCommand.getInstance(), ADMIN),
+    SHOW_ALL_ORDERS(ShowAllOrdersCommand.getInstance(), ADMIN),
     ADD_BOOK(AddBookCommand.getInstance(), ADMIN),
+    RETURN_BOOK(ReturnBookCommand.getInstance(), ADMIN),
+    CONFIRM_ORDER(ConfirmOrderCommand.getInstance(), ADMIN),
+    SHOW_EDIT_BOOK_PAGE(ShowEditBookPageCommand.getInstance(), ADMIN),
+    EDIT_BOOK(EditBookCommand.getInstance(), ADMIN),
     DEFAULT(DefaultCommand.getInstance());
 
 

@@ -79,7 +79,6 @@ public class MakeOrderCommand implements Command {
 
         //todo make subscription
         boolean subscription;
-        Integer accountId = currentAccount.getId();
         String bookId = request.getParameter(BOOK_ID);
 
         // TODO subscription replace boolean->Integer
@@ -91,7 +90,7 @@ public class MakeOrderCommand implements Command {
             if (foundBook.isPresent()) {
                 BookDto orderBook = foundBook.get();
 
-                OrderDto order = createOrder(accountId, orderBook, dateOfIssue,
+                OrderDto order = createOrder(currentAccount, orderBook, dateOfIssue,
                         subscription);
 
                 // TODO think about transaction
@@ -113,10 +112,10 @@ public class MakeOrderCommand implements Command {
         return SHOW_CATALOG;
     }
 
-    private OrderDto createOrder(Integer accountId, BookDto book, Date dateOfIssue,
+    private OrderDto createOrder(AccountDto account, BookDto book, Date dateOfIssue,
                                  boolean subscription) {
         return new OrderDto.OrderDtoBuilder()
-                .withAccountId(accountId)
+                .withAccount(account)
                 .withBook(book)
                 .withDateOfIssue(dateOfIssue)
                 .withSubscription(subscription)

@@ -13,6 +13,8 @@ public class PagePath {
     public static final String USER_ORDERS_PAGE = "WEB-INF/jsp/userOrders.jsp";
     public static final String ALL_USERS_PAGE = "WEB-INF/jsp/allUsers.jsp";
     public static final String ADD_BOOK_PAGE = "WEB-INF/jsp/addBook.jsp";
+    public static final String ALL_ORDERS_PAGE = "WEB-INF/jsp/allOrders.jsp";
+    public static final String EDIT_BOOK_PAGE = "WEB-INF/jsp/editBook.jsp";
 
     private PagePath() {
     }

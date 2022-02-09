@@ -6,7 +6,6 @@ import com.epam.jwd.controller.command.api.CommandRequest;
 import com.epam.jwd.controller.command.api.CommandResponse;
 import com.epam.jwd.controller.command.PagePath;
 import com.epam.jwd.service.api.AccountService;
-import com.epam.jwd.service.api.UserService;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.IncorrectRegisterParametersException;
@@ -18,11 +17,11 @@ import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 public class LoginCommand implements Command {
-    private final UserService userService = UserServiceImpl.getInstance();
+    private final UserServiceImpl userService = UserServiceImpl.getInstance();
     private final AccountService accountService = AccountServiceImpl.getInstance();
     private static final Command instance = new LoginCommand();
 
-    private static final String ERROR_ATTRIB_NAME = "error";
+    private static final String ERROR_ATTRIB_NAME = "wrongData";
     private static final String INVALID_CREDENTIALS_MSG = "Wrong login or password";
     private static final String USER_ACCOUNT_SESSION_ATTRIB_NAME = "account";
     private static final String SPACE = " ";
@@ -36,8 +35,7 @@ public class LoginCommand implements Command {
         return instance;
     }
 
-    private static final CommandResponse LOGIN_SUCCESS_RESPONSE = new CommandResponse
-            () {
+    private static final CommandResponse LOGIN_SUCCESS_RESPONSE = new CommandResponse() {
         @Override
         public String getPath() { return "/library?command=SHOW_MAIN_PAGE";}
 
