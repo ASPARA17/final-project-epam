@@ -11,4 +11,6 @@ public interface AccountDao extends BaseDao<Account, Integer> {
     void updatePhoneById(String phone, Integer id) throws DaoException;
     void updateSubscriptionIdByAccountId(Integer subscriptionId, Integer accountId) throws DaoException;
     List<Account> findAccountsToPage(int page, int totalUsersOnPage) throws DaoException;
+    void updateAccount (String firstName, String secondName, String phone,
+                        Integer subscriptionId, Integer accountId) throws DaoException;
 }

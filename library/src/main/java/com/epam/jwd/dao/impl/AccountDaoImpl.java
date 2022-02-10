@@ -146,4 +146,21 @@ public class AccountDaoImpl implements AccountDao {
         }
         return allAccountsToPage;
     }
+
+    @Override
+    public void updateAccount(String firstName, String secondName, String phone,
+                              Integer subscriptionId, Integer accountId) throws DaoException {
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(SqlQuery.UPDATE_ACCOUNT)) {
+            statement.setString(1, firstName);
+            statement.setString(2, secondName);
+            statement.setString(3, phone);
+            statement.setInt(4, subscriptionId);
+            statement.setInt(5, accountId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+
+    }
 }

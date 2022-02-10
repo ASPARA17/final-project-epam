@@ -53,6 +53,8 @@ public class SqlQuery {
     public static final String FIND_ALL_ACCOUNTS_ON_PAGE = "SELECT id, id_user, first_name, second_name, " +
             "phone, id_subscription FROM accounts WHERE id_user IN (SELECT id FROM users WHERE " +
             "id_role = 2) LIMIT ?,?";
+    public static final String UPDATE_ACCOUNT = "UPDATE accounts SET first_name=?, second_name=?, " +
+            "phone=?, id_subscription=? WHERE id=?";
 
     // library card table
     public static final String ADD_LIBRARY_CARD = "INSERT INTO library_cards(date_of_issue, " +
