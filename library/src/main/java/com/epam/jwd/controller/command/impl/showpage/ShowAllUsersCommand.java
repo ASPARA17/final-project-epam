@@ -21,7 +21,7 @@ public class ShowAllUsersCommand implements Command {
     private static final Logger log = LogManager.getLogger(ShowAllUsersCommand.class);
 
     private static final String PAGE_ATTRIBUTE = "page";
-    private static final Integer TOTAL_ORDER_ON_PAGE = 7;
+    private static final Integer TOTAL_ORDER_ON_PAGE = 10;
     private static final Integer START_PAGE = 1;
 
     private ShowAllUsersCommand() {

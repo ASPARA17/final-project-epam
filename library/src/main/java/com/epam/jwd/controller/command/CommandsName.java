@@ -34,6 +34,8 @@ public enum CommandsName {
     CONFIRM_ORDER(ConfirmOrderCommand.getInstance(), ADMIN),
     SHOW_EDIT_BOOK_PAGE(ShowEditBookPageCommand.getInstance(), ADMIN),
     EDIT_BOOK(EditBookCommand.getInstance(), ADMIN),
+    SHOW_EDIT_ACCOUNT_PAGE(ShowEditAccountPageCommand.getInstance(), USER),
+    EDIT_ACCOUNT(EditAccountCommand.getInstance(), USER),
     DEFAULT(DefaultCommand.getInstance());
 
 

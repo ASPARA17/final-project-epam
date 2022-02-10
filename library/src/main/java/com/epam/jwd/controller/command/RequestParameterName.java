@@ -28,6 +28,11 @@ public class RequestParameterName {
 
     public static final String ALL_ORDERS = "allOrders";
 
+    public static final String ACCOUNT_NAME = "firstName";
+    public static final String ACCOUNT_SECOND_NAME = "secondName";
+    public static final String ACCOUNT_PHONE = "phone";
+    public static final String ACCOUNT_SUBSCRIPTION = "subscriptionId";
+
     private RequestParameterName() {
     }
 }

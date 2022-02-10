@@ -83,7 +83,7 @@ public class MakeOrderCommand implements Command {
 
         // TODO subscription replace boolean->Integer
 
-        subscription = currentAccount.getSubscriptionId() != null;
+        subscription = currentAccount.getSubscriptionId() != 0;
 
         try {
             Optional<BookDto> foundBook = bookService.findById(Integer.parseInt(bookId));

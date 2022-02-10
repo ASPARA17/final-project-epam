@@ -15,6 +15,7 @@ public class PagePath {
     public static final String ADD_BOOK_PAGE = "WEB-INF/jsp/addBook.jsp";
     public static final String ALL_ORDERS_PAGE = "WEB-INF/jsp/allOrders.jsp";
     public static final String EDIT_BOOK_PAGE = "WEB-INF/jsp/editBook.jsp";
+    public static final String EDIT_ACCOUNT_PAGE = "WEB-INF/jsp/editAccount.jsp";
 
     private PagePath() {
     }
