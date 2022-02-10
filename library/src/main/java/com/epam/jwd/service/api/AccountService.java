@@ -10,4 +10,6 @@ public interface AccountService extends Service<AccountDto, Integer> {
     AccountDto create(AccountDto accountDto) throws ServiceException;
     Optional<AccountDto> findByUserId(Integer userId) throws ServiceException;
     List<AccountDto> findUsersOnPage(int page, int totalUsersOnPage) throws ServiceException;
+    void editAccount(String firstName, String secondName, String phone, Integer subscriptionId,
+                     Integer accountId) throws ServiceException;
 }

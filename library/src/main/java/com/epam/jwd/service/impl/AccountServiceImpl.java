@@ -104,4 +104,16 @@ public class AccountServiceImpl implements AccountService {
         }
         return accountDto;
     }
+
+    @Override
+    public void editAccount(String firstName, String secondName, String phone,
+                            Integer subscriptionId, Integer accountId) throws ServiceException {
+        try {
+            accountDao.updateAccount(firstName, secondName, phone, subscriptionId, accountId);
+        } catch (DaoException e) {
+            log.error(e);
+            throw new ServiceException();
+        }
+
+    }
 }

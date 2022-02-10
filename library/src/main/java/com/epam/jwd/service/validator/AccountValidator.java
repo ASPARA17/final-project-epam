@@ -6,8 +6,8 @@ import com.epam.jwd.service.exception.ServiceException;
 public class AccountValidator implements Validator<AccountDto, Integer> {
     private static final String FIRST_NAME_REGEX = "^[a-zA-Z]{3,20}$";
     private static final String SECOND_NAME_REGEX = "^[a-zA-Z]{3,20}$";
-    private static final String PHONE_REGEX = "^\\+375(\\s+)?\\(?(25|29|33|44)\\)?(\\s+)" +
-            "?[0-9]{3}-?[0-9]{2}-?[0-9]{2}$";
+    private static final String PHONE_REGEX = "^\\+375(25|44|29|33)\\d{7}$";
+    private static final String SUBSCRIPTION_ID = "(^[\\d+]{6}$)||(^0$)";
 
     @Override
     public boolean validate(AccountDto entity) throws ServiceException {
