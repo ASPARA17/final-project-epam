@@ -129,6 +129,10 @@
                                     <input type="hidden" name="command" value="ADD_BOOK"/>
                                     <input type="submit" class="btn btn-primary btn-md" value=<fmt:message key="add_book.add_button"/>
                                     >
+                                    <a href="library?command=SHOW_ALL_BOOKS"
+                                       class="btn btn-secondary">
+                                        <fmt:message key="add_book.cancel_button"/>
+                                    </a>
                                 </div>
                             </form>
                         </div>

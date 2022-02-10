@@ -56,6 +56,31 @@
                                     </c:if>
                                href="library?command=SHOW_USER_ORDERS">
                                 <fmt:message key="header.orders"/></a>
+
+                            <div class="language-select">
+                                <div class="language-select__current">
+                            <span class="user-name-select__label">
+                                ${sessionScope.account.firstName} ${sessionScope.account.secondName}
+                            </span>
+                                    <span class="language-select__arrow"></span>
+                                </div>
+                                <div class="language-select__dropdown">
+                                    <ul class="menu">
+                                        <li>
+                                            <a class="nav-link"
+                                                    <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_EDIT_ACCOUNT_PAGE')}">
+                                                        style="color: #fff; border-bottom-color: #fff"
+                                                    </c:if>
+                                               href="library?command=SHOW_EDIT_ACCOUNT_PAGE">
+                                                <span><fmt:message key="header.settings"/></span></a>
+                                        </li>
+                                        <li>
+                                            <a class="nav-link" href="library?command=LOGOUT">
+                                                <span><fmt:message key="header.log_out"/></span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </c:if>
                         <c:if test="${userRole == 'ADMIN'}">
                             <a class="nav-link"
@@ -76,9 +101,9 @@
                                     </c:if>
                                href="library?command=SHOW_ALL_ORDERS">
                                 <fmt:message key="header.orders"/></a>
+                            <a class="nav-link" href="library?command=LOGOUT">
+                                <fmt:message key="header.log_out"/></a>
                         </c:if>
-                        <a class="nav-link" href="library?command=LOGOUT">
-                            <fmt:message key="header.log_out"/></a>
                     </c:if>
 
                     <c:if test="${empty user}">
@@ -102,7 +127,7 @@
                             <fmt:message key="header.register"/></a>
                     </c:if>
 
-                    <div class="language-select">
+                    <div class="language-select"  style="border-left: 2px solid #fff; padding-left: 5px;">
                         <div class="language-select__current">
                             <span class="language-select__label">
                                  <c:choose>
@@ -132,10 +157,6 @@
                             </ul>
                         </div>
                     </div>
-
-
-
-
                 </nav>
             </div>
         </div>

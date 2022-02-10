@@ -145,7 +145,6 @@
                                     </c:when>
                                 </c:choose>
                             </table>
-    <%--                    </form>--%>
                     </div>
                 </div>
                 <div class="pages">
