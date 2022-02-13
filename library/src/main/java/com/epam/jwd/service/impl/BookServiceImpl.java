@@ -28,8 +28,8 @@ public class BookServiceImpl implements BookService {
     private final BookValidator validator;
     private static BookServiceImpl instance = new BookServiceImpl();
     private static final Logger log = LogManager.getLogger(BookServiceImpl.class);
-    private final String NAME_SORT_PARAM = "name";
-    private final String QUANTITY_SORT_PARAM = "quantity";
+    private static final String NAME_SORT_PARAM = "name";
+    private static final String QUANTITY_SORT_PARAM = "quantity";
 
     private BookServiceImpl() {
         this.bookDao = BookDaoImpl.getInstance();
