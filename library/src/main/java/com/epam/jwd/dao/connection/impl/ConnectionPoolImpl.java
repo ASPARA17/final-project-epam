@@ -14,15 +14,15 @@ import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import static com.epam.jwd.dao.exception.ExceptionMessage.CONNECTION_EXCEPTION;
+import static com.epam.jwd.dao.exception.ExceptionMessage.INTERRUPT_EXCEPTION;
+
 public final class ConnectionPoolImpl implements ConnectionPool {
     private static final Logger log = LogManager.getLogger(ConnectionPoolImpl.class);
-    private final String DB_PROPERTIES = "db.properties";
-    private final String DB_URL = "url";
-    private final String DB_DRIVER = "driver";
-    private final int POOL_SIZE = 5;
-
-    String INTERRUPT_EXCEPTION = "Current thread was interrupted";
-    String CONNECTION_EXCEPTION = "Connection failed";
+    private static final String DB_PROPERTIES = "db.properties";
+    private static final String DB_URL = "url";
+    private static final String DB_DRIVER = "driver";
+    private static final int POOL_SIZE = 5;
 
     private static ConnectionPool instance = new ConnectionPoolImpl();
 
@@ -67,7 +67,7 @@ public final class ConnectionPoolImpl implements ConnectionPool {
             return connection;
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            log.error(INTERRUPT_EXCEPTION + e);
+            log.error(INTERRUPT_EXCEPTION, e);
         }
         return null;
     }
@@ -78,7 +78,7 @@ public final class ConnectionPoolImpl implements ConnectionPool {
             freeConnection.put(busyConnection.take());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            log.error(INTERRUPT_EXCEPTION + e);
+            log.error(INTERRUPT_EXCEPTION, e);
         }
     }
 
@@ -96,8 +96,8 @@ public final class ConnectionPoolImpl implements ConnectionPool {
             }
 
         } catch (IOException | ClassNotFoundException e) {
-            log.error(CONNECTION_EXCEPTION + e);
-            throw new DaoException(CONNECTION_EXCEPTION + e);
+            log.error(CONNECTION_EXCEPTION, e);
+            throw new DaoException(CONNECTION_EXCEPTION, e);
         }
     }
 
@@ -108,11 +108,11 @@ public final class ConnectionPoolImpl implements ConnectionPool {
             freeConnection.put(proxyConnection);
             log.info("crete connection");
         } catch (SQLException e) {
-            log.error(CONNECTION_EXCEPTION + e);
-            throw new DaoException(CONNECTION_EXCEPTION + e);
+            log.error(CONNECTION_EXCEPTION, e);
+            throw new DaoException(CONNECTION_EXCEPTION, e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            log.error(INTERRUPT_EXCEPTION + e);
+            log.error(INTERRUPT_EXCEPTION, e);
         }
 
     }
@@ -127,8 +127,8 @@ public final class ConnectionPoolImpl implements ConnectionPool {
         try {
             connection.reallyClose();
         } catch (SQLException e) {
-            log.error(CONNECTION_EXCEPTION + e);
-            throw new DaoException(CONNECTION_EXCEPTION + e);
+            log.error(CONNECTION_EXCEPTION, e);
+            throw new DaoException(CONNECTION_EXCEPTION, e);
         }
     }
 
