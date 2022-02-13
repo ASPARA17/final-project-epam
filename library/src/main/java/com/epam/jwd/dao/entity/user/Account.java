@@ -9,14 +9,14 @@ public class Account extends Entity<Integer> {
     private String firstName;
     private String secondName;
     private String phone;
-    private Integer subscriptionId;
+    private String subscriptionId;
 
     public Account(Integer id) {
         super(id);
     }
 
     public Account(Integer id, Integer userId, String firstName, String secondName, String phone,
-                   Integer subscriptionId) {
+                   String subscriptionId) {
         super(id);
         this.userId = userId;
         this.firstName = firstName;
@@ -57,11 +57,11 @@ public class Account extends Entity<Integer> {
         this.phone = phone;
     }
 
-    public Integer getSubscriptionId() {
+    public String getSubscriptionId() {
         return subscriptionId;
     }
 
-    public void setSubscriptionId(Integer subscriptionId) {
+    public void setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
     }
 
@@ -91,7 +91,7 @@ public class Account extends Entity<Integer> {
         private String firstName;
         private String secondName;
         private String phone;
-        private Integer subscriptionId;
+        private String subscriptionId;
 
         public AccountBuilder withId(Integer id) {
             this.id = id;
@@ -118,7 +118,7 @@ public class Account extends Entity<Integer> {
             return this;
         }
 
-        public AccountBuilder withSubscriptionId(Integer subscriptionId) {
+        public AccountBuilder withSubscriptionId(String subscriptionId) {
             this.subscriptionId = subscriptionId;
             return this;
         }
