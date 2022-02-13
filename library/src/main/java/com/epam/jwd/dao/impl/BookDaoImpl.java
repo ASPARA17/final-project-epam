@@ -14,10 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.epam.jwd.dao.exception.ExceptionMessage.*;
+
 public class BookDaoImpl implements BookDao {
     private static BookDaoImpl instance = new BookDaoImpl();
     private ConnectionPool pool;
-
     private static final Logger log = LogManager.getLogger(BookDaoImpl.class);
 
     private BookDaoImpl() {
@@ -47,7 +48,8 @@ public class BookDaoImpl implements BookDao {
                 book.setId(resultSet.getInt(1));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(CREATE_EXCEPTION, e);
+            throw new DaoException(CREATE_EXCEPTION, e);
         }
         return book;
     }
@@ -59,18 +61,20 @@ public class BookDaoImpl implements BookDao {
             statement.setInt(1, book.getId());
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(DELETE_EXCEPTION, e);
+            throw new DaoException(DELETE_EXCEPTION, e);
         }
     }
 
     @Override
     public List<Book> findAll() throws DaoException {
-        List<Book> allBooks = new ArrayList<>();
+        List<Book> allBooks;
         try (Connection connection = pool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(SqlQuery.FIND_ALL_BOOKS)) {
             allBooks = findBooks(statement);
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_ALL_EXCEPTION, e);
+            throw new DaoException(FIND_ALL_EXCEPTION, e);
         }
         return allBooks;
     }
@@ -86,7 +90,8 @@ public class BookDaoImpl implements BookDao {
                 book = Optional.of(createBook(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_BY_ID_EXCEPTION, e);
+            throw new DaoException(FIND_BY_ID_EXCEPTION, e);
         }
         return book;
     }
@@ -102,7 +107,8 @@ public class BookDaoImpl implements BookDao {
                 bookList.add(createBook(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_BY_ID_EXCEPTION, e);
+            throw new DaoException(FIND_BY_ID_EXCEPTION, e);
         }
         return bookList;
     }
@@ -115,7 +121,8 @@ public class BookDaoImpl implements BookDao {
             statement.setInt(2, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(UPDATE_EXCEPTION, e);
+            throw new DaoException(UPDATE_EXCEPTION, e);
         }
     }
 
@@ -130,7 +137,8 @@ public class BookDaoImpl implements BookDao {
                 bookList.add(createBook(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_BY_ID_EXCEPTION, e);
+            throw new DaoException(FIND_BY_ID_EXCEPTION, e);
         }
         return bookList;
     }
@@ -146,7 +154,8 @@ public class BookDaoImpl implements BookDao {
                 bookList.add(createBook(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_BY_ID_EXCEPTION, e);
+            throw new DaoException(FIND_BY_ID_EXCEPTION, e);
         }
         return bookList;
     }
@@ -160,9 +169,9 @@ public class BookDaoImpl implements BookDao {
             statement.setInt(2, totalBookOnPage);
             booksOnPage = findBooks(statement);
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_ALL_EXCEPTION, e);
+            throw new DaoException(FIND_ALL_EXCEPTION, e);
         }
-        log.info(booksOnPage);
         return booksOnPage;
     }
 
@@ -180,8 +189,8 @@ public class BookDaoImpl implements BookDao {
             statement.setInt(8, bookId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            log.error(e);
-            throw new DaoException(e);
+            log.error(UPDATE_EXCEPTION, e);
+            throw new DaoException(UPDATE_EXCEPTION, e);
         }
     }
 

@@ -5,15 +5,20 @@ import com.epam.jwd.dao.connection.api.ConnectionPool;
 import com.epam.jwd.dao.connection.impl.ConnectionPoolImpl;
 import com.epam.jwd.dao.entity.user.Account;
 import com.epam.jwd.dao.exception.DaoException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.epam.jwd.dao.exception.ExceptionMessage.*;
+
 public class AccountDaoImpl implements AccountDao {
     private static AccountDaoImpl instance = new AccountDaoImpl();
     private ConnectionPool pool;
+    private static final Logger log = LogManager.getLogger(AccountDaoImpl.class);
 
     private AccountDaoImpl() {
         this.pool = ConnectionPoolImpl.getInstance();
@@ -32,13 +37,15 @@ public class AccountDaoImpl implements AccountDao {
             statement.setString(2, account.getFirstName());
             statement.setString(3, account.getSecondName());
             statement.setString(4, account.getPhone());
+            statement.setString(5, account.getSubscriptionId());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 account.setId(resultSet.getInt(1));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(CREATE_EXCEPTION, e);
+            throw new DaoException(CREATE_EXCEPTION, e);
         }
         return account;
     }
@@ -58,7 +65,8 @@ public class AccountDaoImpl implements AccountDao {
                 allAccounts.add(createAccount(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_ALL_EXCEPTION, e);
+            throw new DaoException(FIND_ALL_EXCEPTION, e);
         }
         return allAccounts;
     }
@@ -74,7 +82,8 @@ public class AccountDaoImpl implements AccountDao {
                 account = Optional.of(createAccount(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_BY_ID_EXCEPTION, e);
+            throw new DaoException(FIND_BY_ID_EXCEPTION, e);
         }
         return account;
     }
@@ -86,7 +95,7 @@ public class AccountDaoImpl implements AccountDao {
                 .withFirstName(resultSet.getString(3))
                 .withSecondName(resultSet.getString(4))
                 .withPhone(resultSet.getString(5))
-                .withSubscriptionId(resultSet.getInt(6))
+                .withSubscriptionId(resultSet.getString(6))
                 .build();
     }
 
@@ -101,7 +110,8 @@ public class AccountDaoImpl implements AccountDao {
                 account = Optional.of(createAccount(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_BY_ID_EXCEPTION, e);
+            throw new DaoException(FIND_BY_ID_EXCEPTION, e);
         }
         return account;
     }
@@ -114,7 +124,8 @@ public class AccountDaoImpl implements AccountDao {
             statement.setInt(2, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(UPDATE_EXCEPTION, e);
+            throw new DaoException(UPDATE_EXCEPTION, e);
         }
     }
 
@@ -126,7 +137,8 @@ public class AccountDaoImpl implements AccountDao {
             statement.setInt(2, accountId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(UPDATE_EXCEPTION, e);
+            throw new DaoException(UPDATE_EXCEPTION, e);
         }
     }
 
@@ -142,24 +154,25 @@ public class AccountDaoImpl implements AccountDao {
                 allAccountsToPage.add(createAccount(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_ALL_EXCEPTION, e);
+            throw new DaoException(FIND_ALL_EXCEPTION, e);
         }
         return allAccountsToPage;
     }
 
     @Override
-    public void updateAccount(String firstName, String secondName, String phone,
-                              Integer subscriptionId, Integer accountId) throws DaoException {
+    public void updateAccount(Account account, Integer accountId) throws DaoException {
         try (Connection connection = pool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(SqlQuery.UPDATE_ACCOUNT)) {
-            statement.setString(1, firstName);
-            statement.setString(2, secondName);
-            statement.setString(3, phone);
-            statement.setInt(4, subscriptionId);
+            statement.setString(1, account.getFirstName());
+            statement.setString(2, account.getSecondName());
+            statement.setString(3, account.getPhone());
+            statement.setString(4, account.getSubscriptionId());
             statement.setInt(5, accountId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(UPDATE_EXCEPTION, e);
+            throw new DaoException(UPDATE_EXCEPTION, e);
         }
 
     }

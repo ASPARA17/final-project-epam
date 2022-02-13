@@ -6,6 +6,8 @@ import com.epam.jwd.dao.connection.impl.ConnectionPoolImpl;
 import com.epam.jwd.dao.entity.user.User;
 import com.epam.jwd.dao.entity.user.UserRole;
 import com.epam.jwd.dao.exception.DaoException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,9 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.epam.jwd.dao.exception.ExceptionMessage.*;
+
 public class UserDaoImpl implements UserDao {
     private static UserDao instance;
     private final ConnectionPool pool;
+    private static final Logger log = LogManager.getLogger(UserDaoImpl.class);
 
     private UserDaoImpl() {
         this.pool = ConnectionPoolImpl.getInstance();
@@ -48,8 +53,8 @@ public class UserDaoImpl implements UserDao {
                 user.setId(resultSet.getInt(1));
             }
         } catch (SQLException e) {
-            System.out.println("SQL EXP FROM ADD USERDAOIML");
-            throw new DaoException(e);
+            log.error(CREATE_EXCEPTION, e);
+            throw new DaoException(CREATE_EXCEPTION, e);
         }
         return user;
     }
@@ -74,7 +79,8 @@ public class UserDaoImpl implements UserDao {
                 allUsers.add(user);
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_ALL_EXCEPTION, e);
+            throw new DaoException(FIND_ALL_EXCEPTION, e);
         }
         return allUsers;
     }
@@ -92,7 +98,8 @@ public class UserDaoImpl implements UserDao {
                 user = Optional.of(new User(login, password));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_BY_ID_EXCEPTION, e);
+            throw new DaoException(FIND_BY_ID_EXCEPTION, e);
         }
         return user;
     }
@@ -109,7 +116,8 @@ public class UserDaoImpl implements UserDao {
                 password = resultSet.getString("password");
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_BY_ID_EXCEPTION, e);
+            throw new DaoException(FIND_BY_ID_EXCEPTION, e);
         }
         return password;
     }
@@ -122,16 +130,17 @@ public class UserDaoImpl implements UserDao {
             statement.setString(2, login);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(UPDATE_EXCEPTION, e);
+            throw new DaoException(UPDATE_EXCEPTION, e);
         }
     }
 
     @Override
     public Optional<User> findByLogin(String login) throws DaoException {
         Optional<User> user = Optional.empty();
-        PreparedStatement statement;
-        try (Connection connection = pool.takeConnection()) {
-            statement = connection.prepareStatement(SqlQuery.FIND_USER_BY_LOGIN);
+        try (Connection connection = pool.takeConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(SqlQuery.FIND_USER_BY_LOGIN)) {
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -142,7 +151,8 @@ public class UserDaoImpl implements UserDao {
                 user = Optional.of(new User(id, userLogin, password, roleId));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_BY_ID_EXCEPTION, e);
+            throw new DaoException(FIND_BY_ID_EXCEPTION, e);
         }
         return user;
     }

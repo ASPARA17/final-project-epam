@@ -14,10 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.epam.jwd.dao.exception.ExceptionMessage.*;
+
 public class OrderDaoImpl implements OrderDao {
     private static OrderDao instance = new OrderDaoImpl();
     private ConnectionPool pool;
-
     private static final Logger log = LogManager.getLogger(OrderDaoImpl.class);
 
     private OrderDaoImpl() {
@@ -43,9 +44,9 @@ public class OrderDaoImpl implements OrderDao {
                 order.setId(resultSet.getInt(1));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(CREATE_EXCEPTION, e);
+            throw new DaoException(CREATE_EXCEPTION, e);
         }
-        log.info("dao " + order);
         return order;
     }
 
@@ -64,7 +65,8 @@ public class OrderDaoImpl implements OrderDao {
                 allOrder.add(createOrder(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_ALL_EXCEPTION, e);
+            throw new DaoException(FIND_ALL_EXCEPTION, e);
         }
         return allOrder;
     }
@@ -80,7 +82,8 @@ public class OrderDaoImpl implements OrderDao {
                 order = Optional.of(createOrder(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_BY_ID_EXCEPTION, e);
+            throw new DaoException(FIND_BY_ID_EXCEPTION, e);
         }
         return order;
     }
@@ -96,7 +99,8 @@ public class OrderDaoImpl implements OrderDao {
                 orderList.add(createOrder(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_BY_ID_EXCEPTION, e);
+            throw new DaoException(FIND_BY_ID_EXCEPTION, e);
         }
         return orderList;
     }
@@ -109,7 +113,8 @@ public class OrderDaoImpl implements OrderDao {
             statement.setInt(2, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(UPDATE_EXCEPTION, e);
+            throw new DaoException(UPDATE_EXCEPTION, e);
         }
     }
 
@@ -124,7 +129,8 @@ public class OrderDaoImpl implements OrderDao {
                 orderList.add(createOrder(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_ALL_EXCEPTION, e);
+            throw new DaoException(FIND_ALL_EXCEPTION,e);
         }
         return orderList;
     }
@@ -137,7 +143,8 @@ public class OrderDaoImpl implements OrderDao {
             statement.setInt(2, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(UPDATE_EXCEPTION, e);
+            throw new DaoException(UPDATE_EXCEPTION, e);
         }
     }
 
@@ -155,7 +162,8 @@ public class OrderDaoImpl implements OrderDao {
                 orderList.add(createOrder(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_ALL_EXCEPTION, e);
+            throw new DaoException(FIND_ALL_EXCEPTION, e);
         }
         return orderList;
     }
@@ -172,7 +180,8 @@ public class OrderDaoImpl implements OrderDao {
                 allOrdersOnPage.add(createOrder(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error(FIND_ALL_EXCEPTION, e);
+            throw new DaoException(FIND_ALL_EXCEPTION, e);
         }
         return allOrdersOnPage;
     }
