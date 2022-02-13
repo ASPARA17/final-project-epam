@@ -8,7 +8,7 @@ import java.util.List;
 public interface BookService extends Service<BookDto, Integer> {
     BookDto create(BookDto bookDto) throws ServiceException;
     List<BookDto> findBooksToPage(int page, int totalBookOnPage) throws ServiceException;
-    List<BookDto> sortByParameter(List<BookDto> books, String sortParam);
+    List<BookDto> sortByParameter(List<BookDto> books, String sortParam) throws ServiceException;
     List<BookDto> findBooksByGenre(String genreName) throws ServiceException;
     void updateQuantityById(int quantity, Integer bookId) throws ServiceException;
     void editBook(BookDto book, Integer bookId) throws ServiceException;
