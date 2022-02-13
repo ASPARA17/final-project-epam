@@ -12,7 +12,7 @@
 </c:choose>
 <fmt:setBundle basename="language"/>
 <head>
-    <title><fmt:message key="edit_book.title"/></title>
+    <title><fmt:message key="registration_page.title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/addBook.css">
 </head>
@@ -27,10 +27,10 @@
                 <div id="login-row" class="row justify-content-center align-items-center">
                     <div id="login-column" >
                         <div id="login-box">
-                            <form id="login-form" class="form" action="library" method="post">
-                                <h3 class="text-center text-light">Please Sign Up</h3>
+                            <form id="login-form" class="form" action="library" method="post" style="width: 400px">
+                                <h3 class="text-center text-light"><fmt:message key="registration_page.please_registration"/></h3>
 
-                                <div class="row"    >
+                                <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                         <div class="form-group">
                                             <label for="firstName" class="text-light"><fmt:message key="registration_page.name"/></label><br>
@@ -52,16 +52,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="author" class="text-light"><fmt:message key="add_book.author"/></label><br>
-                                    <input type="text" name="author" id="author" class="form-control"
-                                           value="${sessionScope.author}" required
-                                           pattern="^[a-zA-Z\s]{3,40}$"
-                                           oninvalid="this.setCustomValidity('<fmt:message key="add_book.invalid_author"/>')"
-                                           onchange="this.setCustomValidity('')" value="${bookData['author']}"/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="phone" class="text-light">Phone</label><br>
+                                    <label for="phone" class="text-light"><fmt:message key="registration_page.phone"/></label><br>
                                     <input type="text" name="phone" id="phone" class="form-control"
                                            required pattern="^\+375(25|44|29|33)\d{7}$"
                                            oninvalid="this.setCustomValidity('<fmt:message key="registration_page.invalid_phone"/>')"
@@ -69,10 +60,11 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="subscriptionId" class="text-light">Subscription id</label><br>
+                                    <label for="subscriptionId" class="text-light"><fmt:message key="registration_page.subscription"/></label><br>
+
                                     <input type="text" name="subscriptionId" id="subscriptionId" class="form-control"
-                                           required pattern="(^[\d+]{6}$)||(^0$)"
-                                           oninvalid="this.setCustomValidity('Invalid sub')"
+                                           pattern="^[\d+]{6}$"
+                                           oninvalid="this.setCustomValidity('<fmt:message key="registration_page.invalid_subscription"/>')"
                                            onchange="this.setCustomValidity('')" value="${registrationData['subscriptionId']}"/>
                                 </div>
 
@@ -107,14 +99,10 @@
 
 
                                 <div class="form-group">
-                                    <input type="hidden" name="command" value="EDIT_BOOK"/>
+                                    <input type="hidden" name="command" value="REGISTRATION"/>
                                     <input type="submit" class="btn btn-primary btn-md" value=
-                                    <fmt:message key="edit_book.save_button"/>
+                                    <fmt:message key="registration_page.registration"/>
                                     >
-                                    <a href="library?command=SHOW_ALL_BOOKS"
-                                       class="btn btn-secondary">
-                                        <fmt:message key="add_book.cancel_button"/>
-                                    </a>
                                 </div>
                             </form>
                         </div>

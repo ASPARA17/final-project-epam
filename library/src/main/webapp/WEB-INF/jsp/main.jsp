@@ -21,13 +21,16 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.min.css" >
     <title><fmt:message key="main_page.title"/></title>
 </head>
-
-
-
 <div class="layout">
     <c:import url="header.jsp"/>
     <div class="layout-body" style="background-image: url(${pageContext.request.contextPath}/images/main.jpg);">
-
+        <div class="notification">
+            <h2 class="notification__title"><fmt:message key="main_page.welcome"/></h2>
+            <p class="notification__text">
+                <fmt:message key="main_page.description"/><br/>
+                <fmt:message key="main_page.address"/><br/>
+            </p>
+        </div>
     </div>
     <c:import url="footer.jsp"/>
 </div>

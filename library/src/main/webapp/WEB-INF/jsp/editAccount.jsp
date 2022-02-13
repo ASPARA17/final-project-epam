@@ -30,7 +30,7 @@
             <c:otherwise>
                 <c:if test="${sessionScope.successEditAccount == true}">
                     <div class = "container p-3">
-                        <div class="alert alert-success alert-dismissible">
+                        <div class="alert alert-success alert-dismissible" style="width: 500px; margin:auto">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             <fmt:message key="alert.success_edit_account"/>
                         </div>
@@ -75,11 +75,19 @@
 
                                 <div class="form-group">
                                     <label for="subscriptionId" class="text-light"><fmt:message key="edit_account.subscription"/></label><br>
-                                    <input type="text" name="subscriptionId" id="subscriptionId" class="form-control"
-                                           value="${sessionScope.account.subscriptionId}" required
-                                           pattern="(^[\d+]{6}$)||(^0$)"
-                                           oninvalid="this.setCustomValidity('<fmt:message key="edit_account.invalid_subscription"/>')"
-                                           onchange="this.setCustomValidity('')" value="${userData['subscriptionId']}"/>
+                                    <c:if test="${not empty sessionScope.account.subscriptionId}">
+                                        <input type="text" name="subscriptionId" id="subscriptionId" class="form-control"
+                                               value="${sessionScope.account.subscriptionId}" required
+                                               pattern="(^[\d+]{6}$)||(^0$)"
+                                               oninvalid="this.setCustomValidity('<fmt:message key="edit_account.invalid_subscription"/>')"
+                                               onchange="this.setCustomValidity('')" value="${userData['subscriptionId']}"/>
+                                    </c:if>
+                                    <c:if test="${empty sessionScope.account.subscriptionId}">
+                                        <input type="text" name="subscriptionId" id="subscriptionId" class="form-control"
+                                               pattern="^[\d+]{6}$"
+                                               oninvalid="this.setCustomValidity('<fmt:message key="edit_account.invalid_subscription"/>')"
+                                               onchange="this.setCustomValidity('')" value="${userData['subscriptionId']}"/>
+                                    </c:if>
                                 </div>
 
 

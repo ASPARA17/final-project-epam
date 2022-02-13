@@ -36,7 +36,7 @@
                 <c:otherwise>
                     <c:if test="${sessionScope.successRegister == true}">
                         <div class = "container p-3">
-                            <div class="alert alert-success alert-dismissible">
+                            <div class="alert alert-success alert-dismissible" style="width: 500px; margin:auto">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <fmt:message key="alert.success_registration"/>
 
@@ -49,7 +49,7 @@
             <c:choose>
                 <c:when test="${not empty requestScope.wrongData}">
                     <div class = "container p-3">
-                        <div class="alert alert-danger alert-dismissible">
+                        <div class="alert alert-danger alert-dismissible" style="width: 500px; margin:auto">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             <fmt:message key="alert.wrong_data_login"/>
                         </div>

@@ -32,7 +32,7 @@
                 <c:otherwise>
                     <c:if test="${sessionScope.successMakeOrder == true}">
                         <div class = "container p-3">
-                            <div class="alert alert-success alert-dismissible">
+                            <div class="alert alert-success alert-dismissible" style="width: 500px; margin:auto">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <fmt:message key="alert.success_make_order"/> "${sessionScope.orderNameBook}"!
                             </div>
@@ -49,7 +49,7 @@
                 <c:otherwise>
                     <c:if test="${sessionScope.successEditBook == true}">
                         <div class = "container p-3">
-                            <div class="alert alert-success alert-dismissible">
+                            <div class="alert alert-success alert-dismissible" style="width: 500px; margin:auto">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <fmt:message key="alert.success_edit_book"/>
                             </div>

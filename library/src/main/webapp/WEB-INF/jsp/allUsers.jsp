@@ -49,10 +49,10 @@
                                         <td>${user.firstName}</td>
                                         <td>${user.secondName}</td>
                                         <td>${user.phone}</td>
-                                        <c:if test="${user.subscriptionId == 0}">
+                                        <c:if test="${user.subscriptionId == null}">
                                             <td>-</td>
                                         </c:if>
-                                        <c:if test="${user.subscriptionId != 0}">
+                                        <c:if test="${user.subscriptionId != null}">
                                             <td>${user.subscriptionId}</td>
                                         </c:if>
 

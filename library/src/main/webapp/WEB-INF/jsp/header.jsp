@@ -39,12 +39,6 @@
                     <c:if test="${not empty user}">
                         <c:if test="${userRole == 'USER'}">
                             <a class="nav-link"
-                                    <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_ABOUT_LIBRARY')}">
-                                        style="color: #fff; border-bottom-color: #fff"
-                                    </c:if>
-                               href="library?command=SHOW_ABOUT_LIBRARY">
-                                <fmt:message key="header.about_library"/></a>
-                            <a class="nav-link"
                                     <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_ALL_BOOKS')}">
                                         style="color: #fff; border-bottom-color: #fff"
                                     </c:if>
@@ -107,12 +101,6 @@
                     </c:if>
 
                     <c:if test="${empty user}">
-                        <a class="nav-link"
-                                <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_ABOUT_LIBRARY')}">
-                                    style="color: #fff; border-bottom-color: #fff"
-                                </c:if>
-                           href="library?command=SHOW_ABOUT_LIBRARY">
-                            <fmt:message key="header.about_library"/></a>
                         <a class="nav-link"
                                 <c:if test="${fn:contains(pageContext.request.queryString,'SHOW_LOGIN_PAGE')}">
                                     style="color: #fff; border-bottom-color: #fff"

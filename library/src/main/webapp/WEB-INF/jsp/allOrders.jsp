@@ -31,7 +31,7 @@
                 <c:otherwise>
                     <c:if test="${sessionScope.successReturnBook == true}">
                         <div class = "container p-3">
-                            <div class="alert alert-success alert-dismissible">
+                            <div class="alert alert-success alert-dismissible" style="width: 500px; margin:auto">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <fmt:message key="alert.success_return_book_start"/> №${sessionScope.orderId}
                                 <fmt:message key="alert.success_return_book_end"/>
@@ -49,7 +49,7 @@
                 <c:otherwise>
                     <c:if test="${sessionScope.successConfirmOrder == true}">
                         <div class = "container p-3">
-                            <div class="alert alert-success alert-dismissible">
+                            <div class="alert alert-success alert-dismissible" style="width: 500px; margin:auto">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <fmt:message key="alert.success_confirm_order_start"/> №${sessionScope.orderId}
                                 <fmt:message key="alert.success_confirm_order_end"/>
