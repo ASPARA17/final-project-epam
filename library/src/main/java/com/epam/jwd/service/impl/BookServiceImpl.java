@@ -11,8 +11,7 @@ import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.converter.impl.BookConverter;
 import com.epam.jwd.service.dto.bookdto.BookDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.validator.BookValidator;
-import com.epam.jwd.service.validator.Validator;
+import com.epam.jwd.service.validator.book.BookValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,13 +19,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.epam.jwd.service.exception.ExceptionMessage.*;
+
+// TODO replace BookServiceImpl->BookService may be
 public class BookServiceImpl implements BookService {
     private final BookDao bookDao;
     private final Converter<Book, BookDto, Integer> converter;
-    private final Validator<BookDto, Integer> validator;
+    private final BookValidator validator;
     private static BookServiceImpl instance = new BookServiceImpl();
-
     private static final Logger log = LogManager.getLogger(BookServiceImpl.class);
+    private final String NAME_SORT_PARAM = "name";
+    private final String QUANTITY_SORT_PARAM = "quantity";
 
     private BookServiceImpl() {
         this.bookDao = BookDaoImpl.getInstance();
@@ -34,7 +37,6 @@ public class BookServiceImpl implements BookService {
         this.validator = new BookValidator();
     }
 
-    //todo maybe replace
     public static BookServiceImpl getInstance() {
         return instance;
     }
@@ -46,7 +48,8 @@ public class BookServiceImpl implements BookService {
         try {
             bookDto = converter.convert(bookDao.add(createdBook));
         } catch (DaoException e) {
-            throw new ServiceException();
+            log.error(SERVICE_CREATE_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_CREATE_METHOD_EXCEPTION, e);
         }
         return bookDto;
     }
@@ -59,7 +62,8 @@ public class BookServiceImpl implements BookService {
                 bookDto.add(converter.convert(book));
             }
         } catch (DaoException e) {
-            throw new ServiceException();
+            log.error(SERVICE_FIND_ALL_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_FIND_ALL_METHOD_EXCEPTION, e);
         }
         return bookDto;
     }
@@ -72,8 +76,8 @@ public class BookServiceImpl implements BookService {
                 bookDtoOnPage.add(converter.convert(book));
             }
         } catch (DaoException e) {
-            log.error(e);
-            throw new ServiceException();
+            log.error(SERVICE_FIND_ALL_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_FIND_ALL_METHOD_EXCEPTION, e);
         }
         return bookDtoOnPage;
     }
@@ -88,26 +92,28 @@ public class BookServiceImpl implements BookService {
                 bookDtoOptional = Optional.of(bookDto);
             }
         } catch (DaoException e) {
-            throw new ServiceException();
+            log.error(SERVICE_FIND_BY_ID_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_FIND_BY_ID_METHOD_EXCEPTION, e);
         }
         return bookDtoOptional;
     }
 
     @Override
-    public List<BookDto> sortByParameter(List<BookDto> books, String sortParam) {
+    public List<BookDto> sortByParameter(List<BookDto> books, String sortParam) throws ServiceException {
         BookNameComparator nameComparator = BookNameComparator.getInstance();
         BookQuantityComparator quantityComparator = BookQuantityComparator.getInstance();
 
         List<BookDto> sortedBooks = new ArrayList<>(books);
         switch (sortParam) {
-            case "name":
+            case NAME_SORT_PARAM:
                 sortedBooks.sort(nameComparator);
                 break;
-            case "quantity":
+            case QUANTITY_SORT_PARAM:
                 sortedBooks.sort(quantityComparator);
                 break;
             default:
-                //todo image
+                log.error(SERVICE_SORT_METHOD_EXCEPTION);
+                throw new ServiceException(SERVICE_SORT_METHOD_EXCEPTION);
         }
         return sortedBooks;
     }
@@ -120,29 +126,31 @@ public class BookServiceImpl implements BookService {
                 foundBooks.add(converter.convert(book));
             }
         } catch (DaoException e) {
-            log.error(e);
-            throw new ServiceException();
+            log.error(SERVICE_FIND_BY_ID_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_FIND_BY_ID_METHOD_EXCEPTION, e);
         }
         return foundBooks;
     }
 
     @Override
     public void updateQuantityById(int quantity, Integer bookId) throws ServiceException {
+        validator.isValidateQuantity(Integer.toString(quantity));
         try {
             bookDao.updateQuantityById(quantity, bookId);
         } catch (DaoException e) {
-            log.error(e);
-            throw new ServiceException();
+            log.error(SERVICE_UPDATE_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_UPDATE_METHOD_EXCEPTION, e);
         }
     }
 
     @Override
     public void editBook(BookDto book, Integer bookId) throws ServiceException {
+        validator.validate(book);
         try {
             bookDao.updateBookById(converter.convert(book), bookId);
         } catch (DaoException e) {
-            log.error(e);
-            throw new ServiceException();
+            log.error(SERVICE_UPDATE_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_UPDATE_METHOD_EXCEPTION, e);
         }
     }
 }

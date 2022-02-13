@@ -8,22 +8,25 @@ import com.epam.jwd.service.api.UserService;
 import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.converter.impl.UserConverter;
 import com.epam.jwd.service.dto.userdto.UserDto;
-import com.epam.jwd.service.exception.IncorrectRegisterParametersException;
-import com.epam.jwd.service.exception.LoginNotUniqueException;
-import com.epam.jwd.service.exception.PasswordNotConfirmedException;
-import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.validator.UserValidator;
+import com.epam.jwd.service.exception.*;
+import com.epam.jwd.service.validator.user.UserValidator;
 import com.epam.jwd.service.validator.Validator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.epam.jwd.service.exception.ExceptionMessage.*;
 
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final Converter<User, UserDto, Integer> converter;
     private final Validator<UserDto, Integer> validator;
     private static UserServiceImpl instance = new UserServiceImpl();
+    private static final Logger log = LogManager.getLogger(UserServiceImpl.class);
+
 
     private UserServiceImpl() {
         this.userDao = UserDaoImpl.getInstance();
@@ -36,33 +39,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> signInUser(String login, String password) throws ServiceException, IncorrectRegisterParametersException {
+    public Optional<UserDto> signInUser(String login, String password) throws ServiceException, IncorrectSignInParametersException {
         Optional<UserDto> userDtoOptional;
         try {
             Optional<User> signInUser = userDao.findByLogin(login);
             String userPassword = userDao.findPasswordByLogin(login);
+
             if (password.equals(userPassword) && signInUser.isPresent()) {
                 UserDto userDto = converter.convert(signInUser.get());
                 userDtoOptional = Optional.of(userDto);
             } else {
-                // TODO: add msg
-                throw new IncorrectRegisterParametersException();
+                throw new IncorrectSignInParametersException(INCORRECT_SIGN_IN_PARAM_EXCEPTION);
             }
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            log.error(SERVICE_SIGN_IN_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_SIGN_IN_METHOD_EXCEPTION, e);
         }
         return userDtoOptional;
     }
 
     @Override
-    public UserDto create(UserDto userDto) throws ServiceException, LoginNotUniqueException {
+    public UserDto create(UserDto userDto, String confirmPassword) throws ServiceException,
+            LoginNotUniqueException, PasswordNotConfirmedException {
         validator.validate(userDto);
         User createdUser = converter.convert(userDto);
         try {
-            // TODO add method checkLoginUnique
+            User user = converter.convert(userDto);
+            checkLoginUnique(user.getLogin());
+            verifyPassword(user.getPassword(), confirmPassword);
             userDto = converter.convert(userDao.add(createdUser));
         } catch (DaoException e) {
-            throw new ServiceException();
+            log.error(SERVICE_CREATE_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_CREATE_METHOD_EXCEPTION, e);
         }
         return userDto;
     }
@@ -75,7 +83,8 @@ public class UserServiceImpl implements UserService {
                 usersDto.add(converter.convert(user));
             }
         } catch (DaoException e) {
-            throw new ServiceException();
+            log.error(SERVICE_FIND_ALL_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_FIND_ALL_METHOD_EXCEPTION, e);
         }
         return usersDto;
     }
@@ -90,26 +99,28 @@ public class UserServiceImpl implements UserService {
                userDtoOptional = Optional.of(userDto);
            }
         } catch (DaoException e) {
-            throw new ServiceException();
+            log.error(SERVICE_FIND_BY_ID_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_FIND_BY_ID_METHOD_EXCEPTION, e);
         }
         return userDtoOptional;
     }
 
-    public void verifyPassword(String password, String confirmPassword) throws PasswordNotConfirmedException {
+    private void verifyPassword(String password, String confirmPassword) throws PasswordNotConfirmedException {
         if (!password.equals(confirmPassword)) {
-            // TODO: add msg
-            throw new PasswordNotConfirmedException();
+            throw new PasswordNotConfirmedException(PASSWORD_NOT_CONFIRM_EXCEPTION);
         }
     }
 
     private void checkLoginUnique(String login) throws LoginNotUniqueException, ServiceException {
-        // TODO: add msg
         try {
-            converter.convert(userDao
-                    .findByLogin(login)
-                    .orElseThrow(LoginNotUniqueException::new));
+            Optional<User> foundUser = userDao.findByLogin(login);
+            if (foundUser.isPresent()) {
+                log.error(LOGIN_NOT_UNIQUE_EXCEPTION);
+                throw new LoginNotUniqueException(LOGIN_NOT_UNIQUE_EXCEPTION);
+            }
         } catch (DaoException e) {
-            throw new ServiceException();
+            log.error(CHECK_LOGIN_UNIQUE_METHOD_EXCEPTION, e);
+            throw new ServiceException(CHECK_LOGIN_UNIQUE_METHOD_EXCEPTION, e);
         }
     }
 }

@@ -10,8 +10,8 @@ import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.converter.impl.OrderConverter;
 import com.epam.jwd.service.dto.orderdto.OrderDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.validator.DateUtil;
-import com.epam.jwd.service.validator.DateValidator;
+import com.epam.jwd.service.validator.date.DateUtil;
+import com.epam.jwd.service.validator.date.DateValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

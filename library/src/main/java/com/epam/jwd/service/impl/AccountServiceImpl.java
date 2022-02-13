@@ -9,7 +9,7 @@ import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.converter.impl.AccountConverter;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.validator.AccountValidator;
+import com.epam.jwd.service.validator.user.AccountValidator;
 import com.epam.jwd.service.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +17,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.epam.jwd.service.exception.ExceptionMessage.*;
 
 public class AccountServiceImpl implements AccountService {
     private final AccountDao accountDao;
@@ -46,7 +48,8 @@ public class AccountServiceImpl implements AccountService {
                 accountDtoOptional = Optional.of(accountDto);
             }
         } catch (DaoException e) {
-            throw new ServiceException();
+            log.error(SERVICE_FIND_BY_ID_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_FIND_BY_ID_METHOD_EXCEPTION, e);
         }
         return accountDtoOptional;
     }
@@ -58,7 +61,8 @@ public class AccountServiceImpl implements AccountService {
         try {
             accountDto = converter.convert(accountDao.add(createdAccount));
         } catch (DaoException e) {
-            throw new ServiceException();
+            log.error(SERVICE_CREATE_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_CREATE_METHOD_EXCEPTION, e);
         }
         return accountDto;
     }
@@ -71,7 +75,8 @@ public class AccountServiceImpl implements AccountService {
                 accountDto.add(converter.convert(account));
             }
         } catch (DaoException e) {
-            throw new ServiceException();
+            log.error(SERVICE_FIND_ALL_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_FIND_ALL_METHOD_EXCEPTION, e);
         }
         return accountDto;
     }
@@ -86,7 +91,8 @@ public class AccountServiceImpl implements AccountService {
                 accountDtoOptional = Optional.of(accountDto);
             }
         } catch (DaoException e) {
-            throw new ServiceException();
+            log.error(SERVICE_FIND_BY_ID_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_FIND_BY_ID_METHOD_EXCEPTION, e);
         }
         return accountDtoOptional;
     }
@@ -99,21 +105,20 @@ public class AccountServiceImpl implements AccountService {
                 accountDto.add(converter.convert(account));
             }
         } catch (DaoException e) {
-            log.error(e);
-            throw new ServiceException();
+            log.error(SERVICE_FIND_ALL_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_FIND_ALL_METHOD_EXCEPTION, e);
         }
         return accountDto;
     }
 
     @Override
-    public void editAccount(String firstName, String secondName, String phone,
-                            Integer subscriptionId, Integer accountId) throws ServiceException {
+    public void editAccount(AccountDto accountDto, Integer accountId) throws ServiceException {
+        validator.validate(accountDto);
         try {
-            accountDao.updateAccount(firstName, secondName, phone, subscriptionId, accountId);
+            accountDao.updateAccount(converter.convert(accountDto), accountId);
         } catch (DaoException e) {
-            log.error(e);
-            throw new ServiceException();
+            log.error(SERVICE_UPDATE_METHOD_EXCEPTION, e);
+            throw new ServiceException(SERVICE_UPDATE_METHOD_EXCEPTION, e);
         }
-
     }
 }
