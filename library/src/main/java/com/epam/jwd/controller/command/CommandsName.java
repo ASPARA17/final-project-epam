@@ -15,7 +15,6 @@ public enum CommandsName {
     LOGOUT(LogoutCommand.getInstance(), ADMIN, USER),
     SHOW_LOGIN_PAGE(ShowLoginPageCommand.getInstance(), GUEST),
     SHOW_MAIN_PAGE(ShowMainPageCommand.getInstance()),
-    SHOW_ABOUT_LIBRARY(ShowAboutLibraryCommand.getInstance(), USER, GUEST),
     SHOW_ALL_BOOKS(ShowCatalogCommand.getInstance(), USER, ADMIN),
     CHANGE_LANGUAGE(ChangeLanguageCommand.getInstance()),
     SHOW_ERROR_PAGE(ShowErrorPageCommand.getInstance()),
