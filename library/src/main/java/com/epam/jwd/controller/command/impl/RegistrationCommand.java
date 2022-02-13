@@ -9,11 +9,14 @@ import com.epam.jwd.service.api.AccountService;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.LoginNotUniqueException;
+import com.epam.jwd.service.exception.PasswordNotConfirmedException;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpSession;
+
+import static com.epam.jwd.controller.command.RequestParameterName.*;
 
 public class RegistrationCommand implements Command {
     private final UserServiceImpl userService = UserServiceImpl.getInstance();
@@ -65,27 +68,26 @@ public class RegistrationCommand implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        final String login = request.getParameter("login");
-        final String password = request.getParameter("password");
-        final String confirmPassword = request.getParameter("confirmPassword");
-        final String firstName = request.getParameter("firstName");
-        final String secondName = request.getParameter("secondName");
-        final String phone = request.getParameter("phone");
-        boolean isRegistrationSuccessful = false;
+        String login = request.getParameter(LOGIN);
+        String password = request.getParameter(PASSWORD);
+        String confirmPassword = request.getParameter(CONFIRM_PASSWORD);
+        String firstName = request.getParameter(ACCOUNT_NAME);
+        String secondName = request.getParameter(ACCOUNT_SECOND_NAME);
+        String phone = request.getParameter(ACCOUNT_PHONE);
+        String subscriptionId = request.getParameter(ACCOUNT_SUBSCRIPTION);
+        boolean isRegistrationSuccessful;
 
         try {
             UserDto registerUser = new UserDto(login, password);
             registerUser.setRole(UserRole.USER);
-            //userService.verifyPassword(password, confirmPassword);
-            UserDto user = userService.create(registerUser);
-
-            AccountDto registerAccount = creteAccount(user, firstName, secondName, phone);
+            UserDto user = userService.create(registerUser, confirmPassword);
+            AccountDto registerAccount = creteAccount(user, firstName, secondName, phone, subscriptionId);
             accountService.create(registerAccount);
             isRegistrationSuccessful = true;
 
         } catch (ServiceException e) {
             return SERVER_ERROR_RESPONSE;
-        } catch (LoginNotUniqueException e) {
+        } catch (LoginNotUniqueException | PasswordNotConfirmedException e) {
             request.setAttribute("errorMessage", e.getMessage());
             return REGISTRATION_ERROR_RESPONSE;
         }
@@ -100,12 +102,13 @@ public class RegistrationCommand implements Command {
     }
 
     private AccountDto creteAccount(UserDto user, String firstName, String secondName,
-                                    String phone) {
+                                    String phone, String subscriptionId) {
         return new AccountDto.AccountDtoBuilder()
                         .withUser(user)
                         .withFirstName(firstName)
                         .withSecondName(secondName)
                         .withPhone(phone)
+                        .withSubscriptionId(subscriptionId)
                         .build();
 
     }

@@ -6,7 +6,10 @@ import com.epam.jwd.controller.command.api.CommandRequest;
 import com.epam.jwd.controller.command.api.CommandResponse;
 import com.epam.jwd.service.api.BookService;
 import com.epam.jwd.service.dto.bookdto.BookDto;
+import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.BookServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -17,6 +20,7 @@ import static com.epam.jwd.controller.command.RequestParameterName.BOOK_SORT_PAR
 public class SortBooksCommand implements Command {
     private final BookService bookService = BookServiceImpl.getInstance();
     private static final Command instance = new SortBooksCommand();
+    private static final Logger log = LogManager.getLogger(SortBooksCommand.class);
 
     private SortBooksCommand() {
     }
@@ -63,9 +67,14 @@ public class SortBooksCommand implements Command {
         List<BookDto> allBooks;
 
         allBooks = (List<BookDto>) session.getAttribute(ALL_BOOKS);
+        try {
+            List<BookDto> sortedBooks = bookService.sortByParameter(allBooks, sortParam);
+            session.setAttribute(ALL_BOOKS, sortedBooks);
+        } catch (ServiceException e) {
+            log.error("");
+            return ERROR_CATALOG;
+        }
 
-        List<BookDto> sortedBooks = bookService.sortByParameter(allBooks, sortParam);
-        session.setAttribute(ALL_BOOKS, sortedBooks);
 
         return SHOW_SORTED_BOOKS;
     }

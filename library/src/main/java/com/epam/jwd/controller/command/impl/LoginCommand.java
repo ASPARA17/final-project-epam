@@ -8,7 +8,7 @@ import com.epam.jwd.controller.command.PagePath;
 import com.epam.jwd.service.api.AccountService;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
-import com.epam.jwd.service.exception.IncorrectRegisterParametersException;
+import com.epam.jwd.service.exception.IncorrectSignInParametersException;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.UserServiceImpl;
@@ -85,7 +85,7 @@ public class LoginCommand implements Command {
             }
         } catch (ServiceException e) {
             return SERVER_ERROR_RESPONSE;
-        } catch (IncorrectRegisterParametersException e) {
+        } catch (IncorrectSignInParametersException e) {
             return prepareErrorPage(request);
         }
         return LOGIN_ERROR_RESPONSE;

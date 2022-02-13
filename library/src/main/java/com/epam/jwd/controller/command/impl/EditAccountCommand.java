@@ -22,7 +22,6 @@ public class EditAccountCommand implements Command {
     private static final AccountServiceImpl accountService = AccountServiceImpl.getInstance();
     private static final String EDIT_ACCOUNT_SUCCESS = "successEditAccount";
     private static final String EDIT_PAGE = "/library?command=SHOW_EDIT_ACCOUNT_PAGE";
-    private static final String MAIN_PAGE = "/library?command=SHOW_MAIN_PAGE";
 
     private EditAccountCommand() {
     }
@@ -67,14 +66,12 @@ public class EditAccountCommand implements Command {
         String firstName = request.getParameter(ACCOUNT_NAME);
         String secondName = request.getParameter(ACCOUNT_SECOND_NAME);
         String phone = request.getParameter(ACCOUNT_PHONE);
-        Integer subscriptionId = Integer.parseInt(request.getParameter(ACCOUNT_SUBSCRIPTION));
-
+        String subscriptionId = request.getParameter(ACCOUNT_SUBSCRIPTION);
         AccountDto currentAccount =
                 (AccountDto) session.getAttribute(USER_ACCOUNT_SESSION_ATTRIB_NAME);
-
+        AccountDto editAccount = createAccount(firstName, secondName, phone, subscriptionId);
         try {
-            accountService.editAccount(firstName, secondName, phone, subscriptionId,
-                    currentAccount.getId());
+            accountService.editAccount(editAccount, currentAccount.getId());
             isEditAccountSuccessful = true;
             session.setAttribute(EDIT_ACCOUNT_SUCCESS, isEditAccountSuccessful);
             Optional<AccountDto> foundAccount = accountService.findById(currentAccount.getId());
@@ -90,5 +87,15 @@ public class EditAccountCommand implements Command {
             return ERROR_PAGE;
         }
         return SHOW_EDIT_PAGE;
+    }
+
+    private AccountDto createAccount(String firstName, String secondName, String phone,
+                            String subscriptionId) {
+        return new AccountDto.AccountDtoBuilder()
+                .withFirstName(firstName)
+                .withSecondName(secondName)
+                .withPhone(phone)
+                .withSubscriptionId(subscriptionId)
+                .build();
     }
 }

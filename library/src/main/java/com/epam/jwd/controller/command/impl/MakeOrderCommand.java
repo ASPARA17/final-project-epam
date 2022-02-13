@@ -10,7 +10,7 @@ import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.BookServiceImpl;
 import com.epam.jwd.service.impl.OrderServiceImpl;
-import com.epam.jwd.service.validator.DateUtil;
+import com.epam.jwd.service.validator.date.DateUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -83,7 +83,8 @@ public class MakeOrderCommand implements Command {
 
         // TODO subscription replace boolean->Integer
 
-        subscription = currentAccount.getSubscriptionId() != 0;
+        subscription =
+                currentAccount.getSubscriptionId() != null || currentAccount.getSubscriptionId().isEmpty();
 
         try {
             Optional<BookDto> foundBook = bookService.findById(Integer.parseInt(bookId));
