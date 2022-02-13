@@ -1,4 +1,4 @@
-package com.epam.jwd.service.validator;
+package com.epam.jwd.service.validator.date;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -7,7 +7,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 
+
+// TODO разобраться с этими методами может удалить и с форматом разобраться
 public class DateUtil {
+
     private DateUtil() {
     }
 

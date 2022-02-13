@@ -4,5 +4,5 @@ import com.epam.jwd.service.dto.EntityDto;
 import com.epam.jwd.service.exception.ServiceException;
 
 public interface Validator<T extends EntityDto<K>, K> {
-    boolean validate(T entity) throws ServiceException;
+    void validate(T entity) throws ServiceException;
 }

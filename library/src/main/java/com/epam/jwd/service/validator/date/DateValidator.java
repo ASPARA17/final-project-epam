@@ -1,4 +1,4 @@
-package com.epam.jwd.service.validator;
+package com.epam.jwd.service.validator.date;
 
 import java.util.Date;
 import java.util.Optional;
@@ -16,30 +16,6 @@ public class DateValidator {
     private static final int HIGH_BORDER_YEAR = 2050;
     private static final int HIGH_BORDER_MONTH = 12;
     private static final int HIGH_BORDER_DAY = 31;
-
-//    public boolean checkDate(String dateOfIssue, String returnDate) {
-//        boolean isCorrect = false;
-//        Date currentDay = DateUtil.takeCurrentDateFormat();
-//        if (isEmptyOrNull(dateOfIssue)
-//                && isEmptyOrNull(returnDate)
-//                && isStringMatches(dateOfIssue, DATE_REGEX)
-//                && isStringMatches(returnDate, DATE_REGEX)) {
-//            if (validateDateValues(dateOfIssue)
-//                    && validateDateValues(returnDate)) {
-//                Optional<Date> dateOfIssueFormatOptional = DateUtil.parseStringToDateFormat(dateOfIssue);
-//                Optional<Date> returnDateFormatOptional = DateUtil.parseStringToDateFormat(returnDate);
-//                if (dateOfIssueFormatOptional.isPresent()
-//                        && returnDateFormatOptional.isPresent()) {
-//                    Date dateOfIssueFormat = dateOfIssueFormatOptional.get();
-//                    Date returnDateFormat = returnDateFormatOptional.get();
-//                    if (compareDates(currentDay, dateOfIssueFormat, returnDateFormat)) {
-//                        isCorrect = true;
-//                    }
-//                }
-//            }
-//        }
-//        return isCorrect;
-//    }
 
     public boolean checkDate(String dateOfIssue, String returnDate) {
         boolean isCorrect = false;
@@ -85,14 +61,10 @@ public class DateValidator {
     }
 
     private boolean compareDates(Date currentDate, Date dateOfIssue, Date returnDate) {
-        boolean isCorrect = false;
-        if ((currentDate.before(dateOfIssue)
+        return (currentDate.before(dateOfIssue)
                 || currentDate.equals(dateOfIssue))
                 && currentDate.before(returnDate)
-                && dateOfIssue.before(returnDate)) {
-            isCorrect = true;
-        }
-        return isCorrect;
+                && dateOfIssue.before(returnDate);
     }
 
     private static boolean isStringMatches(String string, String regex) {

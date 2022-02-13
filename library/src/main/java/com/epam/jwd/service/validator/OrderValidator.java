@@ -6,8 +6,7 @@ import com.epam.jwd.service.exception.ServiceException;
 public class OrderValidator implements Validator <OrderDto, Integer> {
 
     @Override
-    public boolean validate(OrderDto entity) throws ServiceException {
-        return false;
+    public void validate(OrderDto entity) throws ServiceException {
     }
 
 }
