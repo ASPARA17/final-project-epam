@@ -9,14 +9,14 @@ public class AccountDto extends EntityDto<Integer> {
     private String firstName;
     private String secondName;
     private String phone;
-    private Integer subscriptionId;
+    private String subscriptionId;
 
     public AccountDto(Integer id) {
         super(id);
     }
 
     public AccountDto(Integer id, UserDto user, String firstName, String secondName, String phone,
-                   Integer subscriptionId) {
+                   String subscriptionId) {
         super(id);
         this.user = user;
         this.firstName = firstName;
@@ -26,7 +26,7 @@ public class AccountDto extends EntityDto<Integer> {
     }
 
     public AccountDto(UserDto user, String firstName, String secondName, String phone,
-                      Integer subscriptionId) {
+                      String subscriptionId) {
         this.user = user;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -67,11 +67,11 @@ public class AccountDto extends EntityDto<Integer> {
         this.phone = phone;
     }
 
-    public Integer getSubscriptionId() {
+    public String getSubscriptionId() {
         return subscriptionId;
     }
 
-    public void setSubscriptionId(Integer subscriptionId) {
+    public void setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
     }
 
@@ -101,7 +101,7 @@ public class AccountDto extends EntityDto<Integer> {
         private String firstName;
         private String secondName;
         private String phone;
-        private Integer subscriptionId;
+        private String subscriptionId;
 
         public AccountDtoBuilder withId(Integer id) {
             this.id = id;
@@ -128,7 +128,7 @@ public class AccountDto extends EntityDto<Integer> {
             return this;
         }
 
-        public AccountDtoBuilder withSubscriptionId(Integer subscriptionId) {
+        public AccountDtoBuilder withSubscriptionId(String subscriptionId) {
             this.subscriptionId = subscriptionId;
             return this;
         }
