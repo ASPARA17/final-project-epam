@@ -38,7 +38,7 @@ public class ChangeLanguageCommand implements Command {
     private static final CommandResponse SERVER_ERROR_RESPONSE = new CommandResponse() {
         @Override
         public String getPath() {
-            return PagePath.ERROR_500;
+            return PagePath.ERROR_404;
         }
 
         @Override

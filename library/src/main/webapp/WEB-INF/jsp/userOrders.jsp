@@ -86,7 +86,12 @@
                                         <td>${order.book.author}</td>
                                         <td>${order.dateOfIssue}</td>
                                         <td>${order.returnDate}</td>
-                                        <td>${order.subscription}</td>
+                                        <c:if test="${order.subscription == true}">
+                                            <td>${order.account.subscriptionId}</td>
+                                        </c:if>
+                                        <c:if test="${order.subscription == false}">
+                                            <td>-</td>
+                                        </c:if>
                                         <td>${order.orderStatus}</td>
                                         <td class="rooms-table__action">
                                             <c:if test="${order.orderStatus eq 'WAITING'}">
