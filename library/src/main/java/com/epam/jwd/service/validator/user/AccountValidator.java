@@ -46,7 +46,6 @@ public class AccountValidator implements Validator<AccountDto, Integer> {
     }
 
     private void isValidateSubscription(String subscriptionId) throws ServiceException {
-        isEmptyOrNull(subscriptionId);
         if (!subscriptionId.matches(SUBSCRIPTION_ID_REGEX)) {
             throw new ServiceException(INVALID_SUBSCRIPTION_ID_EXCEPTION);
         }

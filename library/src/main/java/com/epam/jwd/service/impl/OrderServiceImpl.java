@@ -40,8 +40,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto makeOrder(OrderDto orderDto) throws ServiceException {
-        //todo add validator
-        log.info("service " );
         Order createdOrder = converter.convert(orderDto);
         try {
             orderDto = converter.convert(orderDao.add(createdOrder));

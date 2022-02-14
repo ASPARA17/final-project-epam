@@ -112,13 +112,21 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void editAccount(AccountDto accountDto, Integer accountId) throws ServiceException {
-        validator.validate(accountDto);
+    public void editAccount(String firstName, String secondName, String phone,
+                            String subscriptionId, Integer accountId) throws ServiceException {
+        AccountDto account = new AccountDto.AccountDtoBuilder()
+                .withFirstName(firstName)
+                .withSecondName(secondName)
+                .withPhone(phone)
+                .withSubscriptionId(subscriptionId)
+                .build();
+        validator.validate(account);
         try {
-            accountDao.updateAccount(converter.convert(accountDto), accountId);
+            accountDao.updateAccount(firstName, secondName, phone, subscriptionId, accountId);
         } catch (DaoException e) {
             log.error(SERVICE_UPDATE_METHOD_EXCEPTION, e);
             throw new ServiceException(SERVICE_UPDATE_METHOD_EXCEPTION, e);
         }
     }
+
 }

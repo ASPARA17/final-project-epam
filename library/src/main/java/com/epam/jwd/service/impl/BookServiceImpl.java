@@ -21,7 +21,6 @@ import java.util.Optional;
 
 import static com.epam.jwd.service.exception.ExceptionMessage.*;
 
-// TODO replace BookServiceImpl->BookService may be
 public class BookServiceImpl implements BookService {
     private final BookDao bookDao;
     private final Converter<Book, BookDto, Integer> converter;

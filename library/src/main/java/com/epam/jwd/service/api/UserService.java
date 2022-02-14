@@ -5,7 +5,6 @@ import com.epam.jwd.service.exception.*;
 
 import java.util.Optional;
 
-// TODO: think about importance EntityService
 public interface UserService extends Service<UserDto, Integer> {
     UserDto create(UserDto entity, String confirmPassword) throws ServiceException,
             LoginNotUniqueException, PasswordNotConfirmedException;
