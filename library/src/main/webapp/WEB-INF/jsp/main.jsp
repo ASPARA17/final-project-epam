@@ -24,6 +24,19 @@
 <div class="layout">
     <c:import url="header.jsp"/>
     <div class="layout-body" style="background-image: url(${pageContext.request.contextPath}/images/main.jpg);">
+
+        <c:choose>
+            <c:when test="${not empty sessionScope.error}">
+                <div class = "container p-3">
+                    <div class="alert alert-danger alert-dismissible" style="width: 500px; margin:auto">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            ${error}
+                    </div>
+                    <%session.setAttribute("error", "");%>
+                </div>
+            </c:when>
+        </c:choose>
+
         <div class="notification">
             <h2 class="notification__title"><fmt:message key="main_page.welcome"/></h2>
             <p class="notification__text">

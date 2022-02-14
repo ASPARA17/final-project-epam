@@ -23,6 +23,16 @@
          style="background-image: url(${pageContext.request.contextPath}/images/main.jpg);">
 
         <c:choose>
+            <c:when test="${not empty requestScope.error}">
+                <div class = "container p-3">
+                    <div class="alert alert-danger alert-dismissible" style="width: 500px; margin:auto">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            ${error}
+                    </div>
+                </div>
+            </c:when>
+        </c:choose>
+        <c:choose>
             <c:when test="${not empty requestScope.successAddBook}">
                 <p>${requestScope.error}</p>
                 <a href="${pageContext.request.contextPath}/controller?command=SHOW_ADD_BOOK_PAGE">Try again</a>
@@ -39,6 +49,7 @@
                 </c:if>
             </c:otherwise>
         </c:choose>
+
 
         <div id="login">
             <div class="container">

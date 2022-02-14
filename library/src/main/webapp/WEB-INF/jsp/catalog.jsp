@@ -25,8 +25,28 @@
              style="background-image: url(${pageContext.request.contextPath}/images/main.jpg);">
 
             <c:choose>
+                <c:when test="${not empty sessionScope.error}">
+                    <div class = "container p-3">
+                        <div class="alert alert-danger alert-dismissible" style="width: 500px; margin:auto">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                ${error}
+                        </div>
+                        <%session.setAttribute("error", "");%>
+                    </div>
+                </c:when>
+            </c:choose>
+            <c:choose>
+                <c:when test="${not empty requestScope.error}">
+                    <div class = "container p-3">
+                        <div class="alert alert-danger alert-dismissible" style="width: 500px; margin:auto">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                ${error}
+                        </div>
+                    </div>
+                </c:when>
+            </c:choose>
+            <c:choose>
                 <c:when test="${not empty requestScope.successMakeOrder}">
-                    <p>${requestScope.error}</p>
                     <a href="${pageContext.request.contextPath}/controller?command=SHOW_ALL_BOOKS">Try again</a>
                 </c:when>
                 <c:otherwise>
@@ -43,7 +63,6 @@
             </c:choose>
             <c:choose>
                 <c:when test="${not empty requestScope.successEditBook}">
-                    <p>${requestScope.error}</p>
                     <a href="${pageContext.request.contextPath}/controller?command=SHOW_ALL_BOOKS">Try again</a>
                 </c:when>
                 <c:otherwise>
@@ -58,16 +77,7 @@
                     </c:if>
                 </c:otherwise>
             </c:choose>
-            <c:choose>
-                <c:when test="${not empty requestScope.error}">
-                    <div class = "container p-3">
-                        <div class="alert alert-danger alert-dismissible" style="width: 500px; margin:auto">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                ${error}
-                        </div>
-                    </div>
-                </c:when>
-            </c:choose>
+
 
             <div class="booking-section">
                 <div class="booking-section__inner">

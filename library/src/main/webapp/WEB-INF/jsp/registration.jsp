@@ -100,11 +100,11 @@
                                     </div>
                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                         <div class="form-group">
-                                            <label for="password_confirmation" class="text-light"><fmt:message key="registration_page.password_confirmation"/></label><br>
-                                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control"
+                                            <label for="confirmPassword" class="text-light"><fmt:message key="registration_page.password_confirmation"/></label><br>
+                                            <input type="password" name="confirmPassword" id="confirmPassword" class="form-control"
                                                    required pattern="^.{3,20}$"
                                                    oninvalid="this.setCustomValidity('<fmt:message key="registration_page.invalid_password"/>')"
-                                                   onchange="this.setCustomValidity('')" value="${registrationData['password_confirmation']}"/>
+                                                   onchange="this.setCustomValidity('')" value="${registrationData['confirmPassword']}"/>
                                         </div>
                                     </div>
                                 </div>
