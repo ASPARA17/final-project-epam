@@ -79,8 +79,13 @@ public class MakeOrderCommand implements Command {
         java.util.Date dateOfIssueUtil = DateUtil.takeCurrentDateFormat();
         java.sql.Date dateOfIssue = new java.sql.Date(dateOfIssueUtil.getTime());
         String bookId = request.getParameter(BOOK_ID);
-        boolean subscription =
-                currentAccount.getSubscriptionId() != null || currentAccount.getSubscriptionId().isEmpty();
+
+        boolean subscription = false;
+        if (currentAccount.getSubscriptionId() != null) {
+            if(!currentAccount.getSubscriptionId().equals("")) {
+                subscription = true;
+            }
+        }
 
         try {
             Optional<BookDto> foundBook = bookService.findById(Integer.parseInt(bookId));

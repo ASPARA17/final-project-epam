@@ -85,7 +85,7 @@ public class EditBookCommand implements Command {
 
         } catch (ServiceException e) {
             log.error(ERROR_MESSAGE, e);
-            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
+            session.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
             return SHOW_CATALOG_PAGE;
         }
         return SHOW_CATALOG_PAGE;
