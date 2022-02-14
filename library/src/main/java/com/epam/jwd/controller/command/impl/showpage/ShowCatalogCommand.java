@@ -83,7 +83,6 @@ public class ShowCatalogCommand implements Command {
 
         try {
             List<BookDto> allBooks = bookService.findBooksToPage(page, TOTAL_BOOK_ON_PAGE);
-            log.info(allBooks);
             session.setAttribute(ALL_BOOKS, allBooks);
         } catch (ServiceException e) {
             log.error(ERROR_MESSAGE, e);
