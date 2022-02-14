@@ -20,9 +20,11 @@ import static com.epam.jwd.controller.command.RequestParameterName.GENRE_PARAM;
 
 public class FilterBooksCommand implements Command {
     private static final Logger log = LogManager.getLogger(FilterBooksCommand.class);
-
     private final BookService bookService = BookServiceImpl.getInstance();
     private static final Command instance = new FilterBooksCommand();
+    private static final String ERROR_MESSAGE = "Can't filter books";
+    private static final String EMPTY_MESSAGE = "Books not found";
+    private static final String ERROR_ATTRIBUTE = "error";
 
     private FilterBooksCommand() {
     }
@@ -68,16 +70,16 @@ public class FilterBooksCommand implements Command {
             String genreName = request.getParameter(GENRE_PARAM);
             List<BookDto> foundBooks = bookService.findBooksByGenre(genreName);
             if (foundBooks.isEmpty()) {
-                //TODO msg about error
+                log.error(EMPTY_MESSAGE);
+                request.setAttribute(ERROR_ATTRIBUTE, EMPTY_MESSAGE);
                 return CATALOG;
             }
-
             session.setAttribute(ALL_BOOKS, foundBooks);
         } catch (ServiceException e) {
-            log.error(e);
-            return ERROR;
+            log.error(ERROR_MESSAGE, e);
+            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
+            return CATALOG;
         }
-
         return CATALOG;
     }
 }

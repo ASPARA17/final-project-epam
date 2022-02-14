@@ -19,6 +19,8 @@ public class ConfirmOrderCommand implements Command {
     private static final String ALL_ORDERS_PAGE = "/library?command=SHOW_ALL_ORDERS";
     private static final String CONFIRM_ORDER_SUCCESS = "successConfirmOrder";
     private static final Command instance = new ConfirmOrderCommand();
+    private static final String ERROR_MESSAGE = "Can't confirm order";
+    private static final String ERROR_ATTRIBUTE = "error";
 
     private ConfirmOrderCommand() {
     }
@@ -62,15 +64,15 @@ public class ConfirmOrderCommand implements Command {
 
         boolean isConfirmOrderSuccessful;
         Integer orderId = Integer.parseInt(request.getParameter(ORDER_ID));
-
         try {
             orderService.confirmOrder(orderId);
             isConfirmOrderSuccessful = true;
             session.setAttribute(ORDER_ID, orderId);
             session.setAttribute(CONFIRM_ORDER_SUCCESS, isConfirmOrderSuccessful);
         } catch (ServiceException e) {
-            log.error(e);
-            return ERROR_PAGE;
+            log.error(ERROR_MESSAGE, e);
+            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
+            return SHOW_ORDERS_PAGE;
         }
         return SHOW_ORDERS_PAGE;
     }

@@ -59,6 +59,34 @@
                     </c:if>
                 </c:otherwise>
             </c:choose>
+            <c:choose>
+                <c:when test="${not empty requestScope.error}">
+                    <div class = "container p-3">
+                        <div class="alert alert-danger alert-dismissible" style="width: 500px; margin:auto">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                ${error}
+                        </div>
+                    </div>
+                </c:when>
+            </c:choose>
+            <c:choose>
+                <c:when test="${not empty requestScope.successCancel}">
+                    <p>${requestScope.error}</p>
+                    <a href="${pageContext.request.contextPath}/controller?command=SHOW_USER_ORDERS">Try again</a>
+                </c:when>
+                <c:otherwise>
+                    <c:if test="${sessionScope.successCancel == true}">
+                        <div class = "container p-3">
+                            <div class="alert alert-success alert-dismissible" style="width: 500px; margin:auto">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <fmt:message key="alert.success_cancel_order_start"/> №${sessionScope.orderId},
+                                "${sessionScope.orderNameBook}" <fmt:message key="alert.success_cancel_order_end"/>
+                            </div>
+                            <%session.setAttribute("successCancel", false);%>
+                        </div>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
 
             <div class="booking-section">
                 <div class="booking-section__inner">

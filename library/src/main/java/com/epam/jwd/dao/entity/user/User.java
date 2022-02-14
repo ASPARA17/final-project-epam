@@ -4,14 +4,40 @@ import com.epam.jwd.dao.entity.Entity;
 
 import java.util.Objects;
 
+/**
+ * User entity class which extends Entity with Integer id field
+ * Class describes user of library
+ */
 public class User extends Entity<Integer> {
+    /**
+     * String field with user's login
+     */
     private String login;
+    /**
+     * String filed with user's password
+     */
     private String password;
+    /**
+     * UserRole field with user's role
+     * @see UserRole
+     */
     private UserRole role;
 
+    /**
+     * Constructor without arguments for creating empty User Object
+     * @see User#User(Integer, String, String, int)
+     * @see User#User(String, String)
+     */
     public User() {
     }
 
+    /**
+     * Constructor with all amount of arguments for creating User object with all properties
+     * @param id        user's id
+     * @param login     user's login
+     * @param password  user's password
+     * @param roleId    user's roleId
+     */
     public User(Integer id, String login, String password, int roleId) {
         super(id);
         this.login = login;
@@ -19,16 +45,16 @@ public class User extends Entity<Integer> {
         this.role = UserRole.getRoleById(roleId);
     }
 
-    public User(Integer id, String login, String password) {
-        super(id);
-        this.login = login;
-        this.password = password;
-    }
-
+    /**
+     * Constructor for creating User object with login and password
+     * @param login     user's login
+     * @param password  user's password
+     */
     public User(String login, String password) {
         this.login = login;
         this.password = password;
     }
+
 
     public String getLogin() {
         return login;

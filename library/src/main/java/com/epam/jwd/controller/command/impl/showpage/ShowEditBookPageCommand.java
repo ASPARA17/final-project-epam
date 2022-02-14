@@ -20,6 +20,8 @@ public class ShowEditBookPageCommand implements Command {
     private static final Command instance = new ShowEditBookPageCommand();
     private static final Logger log = LogManager.getLogger(ShowEditBookPageCommand.class);
     private static final BookServiceImpl bookService = BookServiceImpl.getInstance();
+    private static final String ERROR_MESSAGE = "Can't find book";
+    private static final String ERROR_ATTRIBUTE = "error";
 
     private ShowEditBookPageCommand() {
     }
@@ -77,8 +79,8 @@ public class ShowEditBookPageCommand implements Command {
                 session.setAttribute(BOOK_ID, bookId);
             }
         } catch (ServiceException e) {
-            log.error(e);
-            return ERROR_PAGE;
+            log.error(ERROR_MESSAGE, e);
+            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
         }
         return SHOW_EDIT_PAGE;
     }

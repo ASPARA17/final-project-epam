@@ -21,6 +21,8 @@ public class AddBookCommand implements Command {
     private static final String ADD_BOOK_SUCCESS = "successAddBook";
     private static final String ADD_BOOK_PAGE = "/library?command=SHOW_ADD_BOOK_PAGE";
     private final BookServiceImpl bookService = BookServiceImpl.getInstance();
+    private static final String ERROR_MESSAGE = "Can't add book";
+    private static final String ERROR_ATTRIBUTE = "error";
 
     private AddBookCommand() {
     }
@@ -38,6 +40,18 @@ public class AddBookCommand implements Command {
         @Override
         public boolean isRedirect() {
             return true;
+        }
+    };
+
+    private static final CommandResponse FAIL_ADD_PAGE = new CommandResponse() {
+        @Override
+        public String getPath() {
+            return PagePath.ADD_BOOK_PAGE;
+        }
+
+        @Override
+        public boolean isRedirect() {
+            return false;
         }
     };
 
@@ -80,8 +94,9 @@ public class AddBookCommand implements Command {
             isAddBookSuccessful = true;
             session.setAttribute(ADD_BOOK_SUCCESS, isAddBookSuccessful);
         } catch (ServiceException e) {
-            log.error("");
-            return ERROR_PAGE;
+            log.error(ERROR_MESSAGE, e);
+            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
+            return FAIL_ADD_PAGE;
         }
         return SHOW_ADD_BOOK_PAGE;
     }

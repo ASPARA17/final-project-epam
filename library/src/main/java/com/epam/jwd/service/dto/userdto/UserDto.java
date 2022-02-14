@@ -31,6 +31,12 @@ public class UserDto extends EntityDto<Integer> {
         this.password = password;
     }
 
+    public UserDto(String login, String password, UserRole role) {
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
+
     public String getLogin() {
         return login;
     }

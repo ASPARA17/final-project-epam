@@ -5,18 +5,55 @@ import com.epam.jwd.dao.entity.Entity;
 import java.sql.Date;
 import java.util.Objects;
 
+/**
+ * Order entity class which extends Entity with Integer id field
+ * Class describes order of library
+ */
 public class Order extends Entity<Integer> {
+    /**
+     * OrderStatus field with order's status
+     * @see OrderStatus
+     */
     private OrderStatus orderStatus;
+    /**
+     * Integer field with account id which associated with current order
+     */
     private Integer accountId;
+    /**
+     * Integer field with book id which associated with current order
+     */
     private Integer bookId;
+    /**
+     * Date field with order's date of issue
+     */
     private Date dateOfIssue;
+    /**
+     * Date field with order's return date
+     */
     private Date returnDate;
+    /**
+     * boolean field with order's used subscription
+     */
     private boolean subscription;
 
+    /**
+     * Constructor for creating Order object with id
+     * @param id    order's id
+     */
     public Order(Integer id) {
         super(id);
     }
 
+    /**
+     * Constructor with all amount of arguments for creating Order object with all properties
+     * @param id            order's id
+     * @param orderStatus   order's status
+     * @param accountId     account id which associated with current order
+     * @param bookId        book id which associated with current order
+     * @param dateOfIssue   order's date of issue
+     * @param returnDate    order's return date
+     * @param subscription  order's subscription
+     */
     public Order(Integer id, OrderStatus orderStatus, Integer accountId, Integer bookId,
                  Date dateOfIssue, Date returnDate, boolean subscription) {
         super(id);

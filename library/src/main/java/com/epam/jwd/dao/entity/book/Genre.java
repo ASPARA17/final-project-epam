@@ -2,6 +2,9 @@ package com.epam.jwd.dao.entity.book;
 
 import java.util.Arrays;
 
+/**
+ * Enum which describes available genres in library
+ */
 public enum Genre {
     DETECTIVE(1),
     FANTASTIC(2),
@@ -11,6 +14,9 @@ public enum Genre {
     CHILDREN(6),
     EDUCATIONAL(7);
 
+    /**
+     * Integer field which describes genre id
+     */
     private final int genreId;
 
     Genre(int genreId) {

@@ -21,6 +21,8 @@ public class SortBooksCommand implements Command {
     private final BookService bookService = BookServiceImpl.getInstance();
     private static final Command instance = new SortBooksCommand();
     private static final Logger log = LogManager.getLogger(SortBooksCommand.class);
+    private static final String ERROR_MESSAGE = "Can't sort books";
+    private static final String ERROR_ATTRIBUTE = "error";
 
     private SortBooksCommand() {
     }
@@ -53,6 +55,18 @@ public class SortBooksCommand implements Command {
         }
     };
 
+    private static final CommandResponse SHOW_ALL_BOOKS = new CommandResponse() {
+        @Override
+        public String getPath() {
+            return PagePath.CATALOG_PAGE_PATH;
+        }
+
+        @Override
+        public boolean isRedirect() {
+            return false;
+        }
+    };
+
 
     @Override
     public CommandResponse execute(CommandRequest request) {
@@ -71,11 +85,10 @@ public class SortBooksCommand implements Command {
             List<BookDto> sortedBooks = bookService.sortByParameter(allBooks, sortParam);
             session.setAttribute(ALL_BOOKS, sortedBooks);
         } catch (ServiceException e) {
-            log.error("");
-            return ERROR_CATALOG;
+            log.error(ERROR_MESSAGE, e);
+            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
+            return SHOW_ALL_BOOKS;
         }
-
-
         return SHOW_SORTED_BOOKS;
     }
 }

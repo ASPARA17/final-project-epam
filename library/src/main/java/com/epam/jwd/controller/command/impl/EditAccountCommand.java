@@ -22,6 +22,9 @@ public class EditAccountCommand implements Command {
     private static final AccountServiceImpl accountService = AccountServiceImpl.getInstance();
     private static final String EDIT_ACCOUNT_SUCCESS = "successEditAccount";
     private static final String EDIT_PAGE = "/library?command=SHOW_EDIT_ACCOUNT_PAGE";
+    private static final String ERROR_MESSAGE = "Can't edit account";
+    private static final String ERROR_ATTRIBUTE = "error";
+
 
     private EditAccountCommand() {
     }
@@ -79,12 +82,14 @@ public class EditAccountCommand implements Command {
                 AccountDto updateAccount = foundAccount.get();
                 session.setAttribute(USER_ACCOUNT_SESSION_ATTRIB_NAME, updateAccount);
             } else {
-                log.error("");
-                return ERROR_PAGE;
+                log.error(ERROR_MESSAGE);
+                request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
+                return SHOW_EDIT_PAGE;
             }
         } catch (ServiceException e) {
-            log.error(e);
-            return ERROR_PAGE;
+            log.error(ERROR_MESSAGE, e);
+            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
+            return SHOW_EDIT_PAGE;
         }
         return SHOW_EDIT_PAGE;
     }

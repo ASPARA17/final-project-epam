@@ -24,6 +24,8 @@ public class ReturnBookCommand implements Command {
     private static final String ALL_ORDERS_PAGE = "/library?command=SHOW_ALL_ORDERS";
     private static final Command instance = new ReturnBookCommand();
     private static final String RETURN_BOOK_SUCCESS = "successReturnBook";
+    private static final String ERROR_MESSAGE = "Can't return book";
+    private static final String ERROR_ATTRIBUTE = "error";
 
     private ReturnBookCommand() {
     }
@@ -80,12 +82,13 @@ public class ReturnBookCommand implements Command {
                 session.setAttribute(ORDER_ID, orderId);
                 session.setAttribute(RETURN_BOOK_SUCCESS, isReturnBookSuccessful);
             } else {
-                log.error("");
-                return ERROR_PAGE;
+                log.error(ERROR_MESSAGE);
+                request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
             }
         } catch (ServiceException e) {
-            log.error(e);
-            return ERROR_PAGE;
+            log.error(ERROR_MESSAGE, e);
+            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
+            return SHOW_ORDERS_PAGE;
         }
         return SHOW_ORDERS_PAGE;
     }

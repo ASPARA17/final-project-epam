@@ -4,6 +4,7 @@ import com.epam.jwd.controller.command.PagePath;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.CommandRequest;
 import com.epam.jwd.controller.command.api.CommandResponse;
+import com.epam.jwd.dao.entity.user.UserRole;
 import com.epam.jwd.service.dto.bookdto.BookDto;
 import com.epam.jwd.service.dto.orderdto.OrderDto;
 import com.epam.jwd.service.exception.ServiceException;
@@ -18,14 +19,18 @@ import java.util.Optional;
 
 import static com.epam.jwd.controller.command.RequestParameterName.ORDER_ID;
 import static com.epam.jwd.controller.command.RequestParameterName.ORDER_NAME_BOOK;
+import static com.epam.jwd.controller.command.impl.LoginCommand.USER_ROLE_SESSION_ATTRIB_NAME;
 
 public class CancelOrderCommand implements Command {
     private static final Logger log = LogManager.getLogger(CancelOrderCommand.class);
     private final OrderServiceImpl orderService = OrderServiceImpl.getInstance();
     private final BookServiceImpl bookService = BookServiceImpl.getInstance();
-    private static final String ORDERS_PAGE = "/library?command=SHOW_USER_ORDERS";
+    private static final String USER_ORDERS_PAGE = "/library?command=SHOW_USER_ORDERS";
+    private static final String ALL_ORDERS_PAGE = "/library?command=SHOW_ALL_ORDERS";
     private static final Command instance = new CancelOrderCommand();
     private static final String CANCEL_SUCCESS = "successCancel";
+    private static final String ERROR_MESSAGE = "Can't cancel order";
+    private static final String ERROR_ATTRIBUTE = "error";
 
     private CancelOrderCommand() {
     }
@@ -34,10 +39,22 @@ public class CancelOrderCommand implements Command {
         return instance;
     }
 
-    private static final CommandResponse SHOW_ORDERS = new CommandResponse() {
+    private static final CommandResponse SHOW_USER_ORDERS = new CommandResponse() {
         @Override
         public String getPath() {
-            return ORDERS_PAGE;
+            return USER_ORDERS_PAGE;
+        }
+
+        @Override
+        public boolean isRedirect() {
+            return true;
+        }
+    };
+
+    private static final CommandResponse SHOW_ALL_ORDERS = new CommandResponse() {
+        @Override
+        public String getPath() {
+            return ALL_ORDERS_PAGE;
         }
 
         @Override
@@ -69,6 +86,7 @@ public class CancelOrderCommand implements Command {
         }
         boolean isCancelSuccessful;
         String orderId = request.getParameter(ORDER_ID);
+        UserRole userRole = (UserRole) session.getAttribute(USER_ROLE_SESSION_ATTRIB_NAME);
 
         try {
             Optional<OrderDto> foundOrder = orderService.findById(Integer.parseInt(orderId));
@@ -85,19 +103,20 @@ public class CancelOrderCommand implements Command {
 
                 isCancelSuccessful = true;
                 String nameOfBook = book.getName();
-                //todo for notification
                 session.setAttribute(CANCEL_SUCCESS, isCancelSuccessful);
                 session.setAttribute(ORDER_ID, orderId);
                 session.setAttribute(ORDER_NAME_BOOK, nameOfBook);
             } else {
-                log.error("");
-                return ERROR_PAGE;
+                log.error(ERROR_MESSAGE);
+                request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
+                return checkUserRole(userRole);
             }
         } catch (ServiceException e) {
-            log.error(e);
-            return ERROR_PAGE;
+            log.error(ERROR_MESSAGE, e);
+            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
+            return checkUserRole(userRole);
         }
-        return SHOW_ORDERS;
+        return checkUserRole(userRole);
     }
 
     private BookDto findBook(Integer bookId) throws ServiceException {
@@ -105,9 +124,15 @@ public class CancelOrderCommand implements Command {
         Optional<BookDto> foundBook = bookService.findById(bookId);
         if (foundBook.isPresent()) {
             book = foundBook.get();
-        } else {
-            log.error("");
         }
         return book;
+    }
+
+    private CommandResponse checkUserRole(UserRole userRole) {
+        if (userRole == UserRole.ADMIN) {
+            return SHOW_ALL_ORDERS;
+        } else {
+            return SHOW_USER_ORDERS;
+        }
     }
 }

@@ -21,6 +21,8 @@ public class EditBookCommand implements Command {
     private static final BookServiceImpl bookService = BookServiceImpl.getInstance();
     private static final String EDIT_BOOK_SUCCESS = "successEditBook";
     private static final String CATALOG_PAGE = "/library?command=SHOW_ALL_BOOKS";
+    private static final String ERROR_MESSAGE = "Can't edit book";
+    private static final String ERROR_ATTRIBUTE = "error";
 
     private EditBookCommand() {
     }
@@ -82,8 +84,9 @@ public class EditBookCommand implements Command {
             request.setAttribute(BOOK_ID, bookId);
 
         } catch (ServiceException e) {
-            log.error(e);
-            return ERROR_PAGE;
+            log.error(ERROR_MESSAGE, e);
+            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
+            return SHOW_CATALOG_PAGE;
         }
         return SHOW_CATALOG_PAGE;
     }

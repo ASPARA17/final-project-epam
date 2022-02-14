@@ -22,10 +22,11 @@ public class ShowUserOrdersCommand implements Command {
     private final OrderServiceImpl orderService = OrderServiceImpl.getInstance();
     private static final Command instance = new ShowUserOrdersCommand();
     private static final Logger log = LogManager.getLogger(ShowUserOrdersCommand.class);
-
     private static final String PAGE_ATTRIBUTE = "page";
     private static final Integer TOTAL_ORDER_ON_PAGE = 7;
     private static final Integer START_PAGE = 1;
+    private static final String ERROR_MESSAGE = "Can't find user's orders";
+    private static final String ERROR_ATTRIBUTE = "error";
 
     private ShowUserOrdersCommand() {
     }
@@ -92,8 +93,8 @@ public class ShowUserOrdersCommand implements Command {
                     TOTAL_ORDER_ON_PAGE, accountId);
             session.setAttribute(USER_ORDERS, userOrders);
         } catch (ServiceException e) {
-            log.error(e);
-            return ERROR_PAGE;
+            log.error(ERROR_MESSAGE, e);
+            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
         }
         return SHOW_ORDERS;
     }

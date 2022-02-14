@@ -53,7 +53,7 @@ public class AccountValidator implements Validator<AccountDto, Integer> {
     }
 
     private void isEmptyOrNull(String str) throws ServiceException{
-        if (str != null && !str.isEmpty()) {
+        if (str == null || str.isEmpty()) {
             throw new ServiceException(STR_EMPTY_OR_NULL_EXCEPTION);
         }
     }

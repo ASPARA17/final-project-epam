@@ -61,7 +61,7 @@ public class BookValidator implements Validator<BookDto, Integer> {
         isEmptyOrNull(yearPublishing);
         int currentYearPublishing = Integer.parseInt(yearPublishing);
         if (!yearPublishing.matches(YEAR_PUBLISHING_REGEX)
-                && (DateUtil.getCurrentYear() < currentYearPublishing)) {
+                || (DateUtil.getCurrentYear() < currentYearPublishing)) {
             throw new ServiceException(INVALID_YEAR_EXCEPTION);
         }
     }
@@ -70,7 +70,7 @@ public class BookValidator implements Validator<BookDto, Integer> {
         isEmptyOrNull(numberOfPage);
         int currentNumberOfPage = Integer.parseInt(numberOfPage);
         if (!numberOfPage.matches(NUMBER_OF_PAGE_REGEX)
-                && (MIN_NUMBER_OF_PAGE > currentNumberOfPage
+                || (MIN_NUMBER_OF_PAGE > currentNumberOfPage
                 || currentNumberOfPage > MAX_NUMBER_OF_PAGE)) {
             throw new ServiceException(INVALID_PAGES_EXCEPTION);
         }
@@ -80,14 +80,14 @@ public class BookValidator implements Validator<BookDto, Integer> {
         isEmptyOrNull(quantity);
         int currentQuantity = Integer.parseInt(quantity);
         if (!quantity.matches(QUANTITY_REGEX)
-                && (MIN_QUANTITY > currentQuantity
+                || (MIN_QUANTITY > currentQuantity
                 || currentQuantity > MAX_QUANTITY)) {
             throw new ServiceException(INVALID_QUANTITY_EXCEPTION);
         }
     }
 
     private void isEmptyOrNull(String str) throws  ServiceException {
-        if (str != null && !str.isEmpty()) {
+        if (str == null || str.isEmpty()) {
             throw new ServiceException(STR_EMPTY_OR_NULL_EXCEPTION);
         }
     }

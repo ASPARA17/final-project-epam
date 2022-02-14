@@ -28,6 +28,8 @@ public class MakeOrderCommand implements Command {
     private static final String CATALOG_PAGE = "/library?command=SHOW_ALL_BOOKS";
     private static final Command instance = new MakeOrderCommand();
     private static final String MAKE_ORDER_SUCCESS = "successMakeOrder";
+    private static final String ERROR_MESSAGE = "Can't make order";
+    private static final String ERROR_ATTRIBUTE = "error";
 
     private MakeOrderCommand() {
     }
@@ -76,14 +78,8 @@ public class MakeOrderCommand implements Command {
 
         java.util.Date dateOfIssueUtil = DateUtil.takeCurrentDateFormat();
         java.sql.Date dateOfIssue = new java.sql.Date(dateOfIssueUtil.getTime());
-
-        //todo make subscription
-        boolean subscription;
         String bookId = request.getParameter(BOOK_ID);
-
-        // TODO subscription replace boolean->Integer
-
-        subscription =
+        boolean subscription =
                 currentAccount.getSubscriptionId() != null || currentAccount.getSubscriptionId().isEmpty();
 
         try {
@@ -94,7 +90,6 @@ public class MakeOrderCommand implements Command {
                 OrderDto order = createOrder(currentAccount, orderBook, dateOfIssue,
                         subscription);
 
-                // TODO think about transaction
                 orderService.makeOrder(order);
                 bookService.updateQuantityById(orderBook.getQuantity() - 1, Integer.parseInt(bookId));
 
@@ -103,12 +98,14 @@ public class MakeOrderCommand implements Command {
                 session.setAttribute(ORDER_NAME_BOOK, orderBook.getName());
                 session.setAttribute(MAKE_ORDER_SUCCESS, isMakeOrderSuccessful);
             } else {
-                log.error("");
-                return ERROR_PAGE;
+                log.error(ERROR_MESSAGE);
+                request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
+                return SHOW_CATALOG;
             }
         } catch (ServiceException e) {
-            log.error(e);
-            return ERROR_PAGE;
+            log.error(ERROR_MESSAGE, e);
+            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
+            return SHOW_CATALOG;
         }
         return SHOW_CATALOG;
     }

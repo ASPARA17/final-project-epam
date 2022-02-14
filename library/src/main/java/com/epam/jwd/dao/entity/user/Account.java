@@ -4,17 +4,60 @@ import com.epam.jwd.dao.entity.Entity;
 
 import java.util.Objects;
 
+/**
+ * Account entity class which extends Entity with Integer id field
+ * Class describes account of library
+ */
 public class Account extends Entity<Integer> {
+    /**
+     * Integer field with user id which associated with current account
+     */
     private Integer userId;
+    /**
+     * String field with account's first name
+     */
     private String firstName;
+    /**
+     * String field with account's second name
+     */
     private String secondName;
+    /**
+     * String field with account's phone
+     */
     private String phone;
+    /**
+     * String field with account's subscription id
+     */
     private String subscriptionId;
 
+    /**
+     * Constructor without arguments for creating empty Account object
+     *
+     * @see Account#Account(Integer)
+     * @see Account#Account(Integer, Integer,String, String, String, String)
+     */
+
+    public Account() {
+    }
+
+    /**
+     * Constructor with Integer id argument for creating Account with associated id property
+     *
+     * @param id account's id
+     */
     public Account(Integer id) {
         super(id);
     }
 
+    /**
+     * Constructor with all amount of account's properties for creating account
+     * @param id                account's id
+     * @param userId            user id which associated with current account
+     * @param firstName         account's first name
+     * @param secondName        account's second name
+     * @param phone             account's phone
+     * @param subscriptionId    account's subscription id
+     */
     public Account(Integer id, Integer userId, String firstName, String secondName, String phone,
                    String subscriptionId) {
         super(id);

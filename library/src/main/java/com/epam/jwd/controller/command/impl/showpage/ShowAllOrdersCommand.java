@@ -22,6 +22,8 @@ public class ShowAllOrdersCommand implements Command {
     private static final String PAGE_ATTRIBUTE = "page";
     private static final Integer TOTAL_ORDER_ON_PAGE = 7;
     private static final Integer START_PAGE = 1;
+    private static final String ERROR_MESSAGE = "Can't find orders";
+    private static final String ERROR_ATTRIBUTE = "error";
 
     private ShowAllOrdersCommand() {
     }
@@ -82,10 +84,9 @@ public class ShowAllOrdersCommand implements Command {
             List<OrderDto> allOrders = orderService.findAllOrdersToPage(page, TOTAL_ORDER_ON_PAGE);
             session.setAttribute(ALL_ORDERS, allOrders);
         } catch (ServiceException e) {
-            log.error(e);
-            return ERROR_PAGE;
+            log.error(ERROR_MESSAGE, e);
+            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
         }
-
         return SHOW_ORDERS;
     }
 }

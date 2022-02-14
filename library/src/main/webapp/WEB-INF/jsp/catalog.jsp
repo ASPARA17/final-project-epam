@@ -58,6 +58,16 @@
                     </c:if>
                 </c:otherwise>
             </c:choose>
+            <c:choose>
+                <c:when test="${not empty requestScope.error}">
+                    <div class = "container p-3">
+                        <div class="alert alert-danger alert-dismissible" style="width: 500px; margin:auto">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                ${error}
+                        </div>
+                    </div>
+                </c:when>
+            </c:choose>
 
             <div class="booking-section">
                 <div class="booking-section__inner">

@@ -4,30 +4,55 @@ import com.epam.jwd.dao.entity.Entity;
 
 import java.util.Objects;
 
+/**
+ * Book entity class which extends Entity with Integer id field
+ * Class describes book of library
+ */
 public class Book extends Entity<Integer> {
+    /**
+     * Genre field with book's genre
+     * @see Genre
+     */
     private Genre genre;
+    /**
+     * String field with book's author
+     */
     private String author;
+    /**
+     * String field with book's name
+     */
     private String name;
+    /**
+     * String field with book's publisher
+     */
     private String publishingHouse;
+    /**
+     * int field with book's year publishing
+     */
     private int yearPublishing;
+    /**
+     * int field with book's pages
+     */
     private int numberOfPage;
+    /**
+     * int field with book's quantity
+     */
     private int quantity;
 
+    /**
+     * Constructor without arguments for creating empty Book Object
+     * @see Book#Book(Integer)
+     */
+    public Book() {
+    }
+
+    /**
+     * Constructor for creating Book object with id
+     * @param id    book's id
+     */
     public Book(Integer id) {
         super(id);
     }
-
-//    public Book(Integer id, Genre genre, String author, String name, String publishingHouse,
-//                int yearPublishing, int numberOfPage, int quantity) {
-//        super(id);
-//        this.genre = genre;
-//        this.author = author;
-//        this.name = name;
-//        this.publishingHouse = publishingHouse;
-//        this.yearPublishing = yearPublishing;
-//        this.numberOfPage = numberOfPage;
-//        this.quantity = quantity;
-//    }
 
     public Genre getGenre() {
         return genre;

@@ -13,16 +13,21 @@ import com.epam.jwd.service.exception.PasswordNotConfirmedException;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.UserServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
 import static com.epam.jwd.controller.command.RequestParameterName.*;
 
 public class RegistrationCommand implements Command {
+    private static final Logger log = LogManager.getLogger(RegistrationCommand.class);
     private final UserServiceImpl userService = UserServiceImpl.getInstance();
     private final AccountService accountService = AccountServiceImpl.getInstance();
     private static final Command instance = new RegistrationCommand();
     private static final String LOGIN_PAGE = "/library?command=SHOW_LOGIN_PAGE";
+    private static final String ERROR_MESSAGE = "Registration failed";
+    private static final String ERROR_ATTRIBUTE = "error";
 
     private RegistrationCommand() {
     }
@@ -54,17 +59,6 @@ public class RegistrationCommand implements Command {
             return false;
         }
     };
-    private static final CommandResponse SERVER_ERROR_RESPONSE = new CommandResponse() {
-        @Override
-        public String getPath() {
-            return PagePath.ERROR_500;
-        }
-
-        @Override
-        public boolean isRedirect() {
-            return true;
-        }
-    };
 
     @Override
     public CommandResponse execute(CommandRequest request) {
@@ -86,9 +80,11 @@ public class RegistrationCommand implements Command {
             isRegistrationSuccessful = true;
 
         } catch (ServiceException e) {
-            return SERVER_ERROR_RESPONSE;
+            log.error(ERROR_MESSAGE, e);
+            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
+            return REGISTRATION_ERROR_RESPONSE;
         } catch (LoginNotUniqueException | PasswordNotConfirmedException e) {
-            request.setAttribute("errorMessage", e.getMessage());
+            request.setAttribute(ERROR_ATTRIBUTE, e.getMessage());
             return REGISTRATION_ERROR_RESPONSE;
         }
         return successRegistration(request, isRegistrationSuccessful);

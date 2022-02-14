@@ -22,6 +22,8 @@ public class ShowCatalogCommand implements Command {
     private static final String PAGE_ATTRIBUTE = "page";
     private static final Integer TOTAL_BOOK_ON_PAGE = 7;
     private static final Integer START_PAGE = 1;
+    private static final String ERROR_MESSAGE = "Can't find books";
+    private static final String ERROR_ATTRIBUTE = "error";
 
     private ShowCatalogCommand() {
     }
@@ -84,8 +86,8 @@ public class ShowCatalogCommand implements Command {
             log.info(allBooks);
             session.setAttribute(ALL_BOOKS, allBooks);
         } catch (ServiceException e) {
-            log.error(e);
-            return ERROR_CATALOG;
+            log.error(ERROR_MESSAGE, e);
+            request.setAttribute(ERROR_ATTRIBUTE, ERROR_MESSAGE);
         }
         return SHOW_ALL_BOOKS;
     }

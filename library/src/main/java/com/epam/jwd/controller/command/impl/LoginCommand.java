@@ -12,6 +12,8 @@ import com.epam.jwd.service.exception.IncorrectSignInParametersException;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.UserServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
@@ -20,13 +22,13 @@ public class LoginCommand implements Command {
     private final UserServiceImpl userService = UserServiceImpl.getInstance();
     private final AccountService accountService = AccountServiceImpl.getInstance();
     private static final Command instance = new LoginCommand();
-
+    private static final Logger log = LogManager.getLogger(LoginCommand.class);
     private static final String ERROR_ATTRIB_NAME = "wrongData";
     private static final String INVALID_CREDENTIALS_MSG = "Wrong login or password";
     private static final String USER_ACCOUNT_SESSION_ATTRIB_NAME = "account";
     private static final String SPACE = " ";
-
     public static final String USER_ROLE_SESSION_ATTRIB_NAME = "userRole";
+    private static final String ERROR_MESSAGE = "Saving data was interrupted";
 
     private LoginCommand() {
     }
@@ -84,8 +86,10 @@ public class LoginCommand implements Command {
                 }
             }
         } catch (ServiceException e) {
+            log.error(ERROR_MESSAGE, e);
             return SERVER_ERROR_RESPONSE;
         } catch (IncorrectSignInParametersException e) {
+            log.error(INVALID_CREDENTIALS_MSG);
             return prepareErrorPage(request);
         }
         return LOGIN_ERROR_RESPONSE;
