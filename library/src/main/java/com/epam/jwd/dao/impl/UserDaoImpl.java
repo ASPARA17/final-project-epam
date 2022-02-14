@@ -64,7 +64,6 @@ public class UserDaoImpl implements UserDao {
         return false;
     }
 
-    // TODO: think about creator
     @Override
     public List<User> findAll() throws DaoException {
         List<User> allUsers = new ArrayList<>();

@@ -8,7 +8,11 @@ import com.epam.jwd.dao.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -161,13 +165,14 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public void updateAccount(Account account, Integer accountId) throws DaoException {
+    public void updateAccount(String firstName, String secondName, String phone,
+                              String subscriptionId, Integer accountId) throws DaoException {
         try (Connection connection = pool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(SqlQuery.UPDATE_ACCOUNT)) {
-            statement.setString(1, account.getFirstName());
-            statement.setString(2, account.getSecondName());
-            statement.setString(3, account.getPhone());
-            statement.setString(4, account.getSubscriptionId());
+            statement.setString(1, firstName);
+            statement.setString(2, secondName);
+            statement.setString(3, phone);
+            statement.setString(4, subscriptionId);
             statement.setInt(5, accountId);
             statement.executeUpdate();
         } catch (SQLException e) {
